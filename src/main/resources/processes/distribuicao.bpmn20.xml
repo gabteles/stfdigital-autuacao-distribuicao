@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples" xmlns:modeler="http://activiti.com/modeler" modeler:version="1.0ev" modeler:exportDateTime="20151224021340" modeler:modelId="968821" modeler:modelVersion="1" modeler:modelLastUpdated="1450923196562">
+
+    <process id="distribuicao" name="distribuicao">
+
+        <startEvent id="inicio" />
+
+		<sequenceFlow id="distribuir" sourceRef="inicio" targetRef="sorteio" />
+
+		<userTask id="sorteio" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
+			<documentation>DISTRIBUICAO</documentation>
+		</userTask>
+
+		<sequenceFlow id="finalizar" sourceRef="sorteio" targetRef="distribuido" />
+
+		<endEvent id="distribuido">
+            <documentation>DISTRIBUIDO</documentation>
+		</endEvent>
+
+	</process>
+	
+</definitions>
