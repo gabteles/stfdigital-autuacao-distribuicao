@@ -14,6 +14,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.Distribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
+import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rodrigo Barreiros
@@ -39,7 +40,8 @@ public class DistribuicaoApplicationService {
         
         Status status = statusAdapter.nextStatus(distribuicaoId);
 
-        Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(distribuicaoId, command.getProcessoId(), status);
+        Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(distribuicaoId, new ProcessoId(command.getProcessoId()), status);
+        System.out.println(command.getProcessoId());
         
         distribuicaoRepository.save(distribuicao);
     }

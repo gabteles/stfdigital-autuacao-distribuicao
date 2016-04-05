@@ -1,7 +1,5 @@
 package br.jus.stf.autuacao.distribuicao.application.commands;
 
-import br.jus.stf.core.shared.processo.ProcessoId;
-
 /**
  * @author Rodrigo Barreiros
  * 
@@ -10,13 +8,13 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  */
 public class IniciarDistribuicaoCommand {
 	
-	private ProcessoId processoId;
+	private Long processoId;
 
-	public IniciarDistribuicaoCommand(ProcessoId processoId) {
+	public IniciarDistribuicaoCommand(Long processoId) {
 		this.processoId = processoId;
 	}
 	
-	public ProcessoId getProcessoId() {
+	public Long getProcessoId() {
 		return processoId;
 	}
 
