@@ -3,6 +3,9 @@ package br.jus.stf.autuacao.distribuicao.domain.model;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
@@ -15,6 +18,7 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 03.02.2016
  */
 @Entity
+@Table(name = "DISTRIBUICAO", schema = "DISTRIBUICAO")
 public class Distribuicao extends EntitySupport<Distribuicao, DistribuicaoId> implements AggregateRoot<Distribuicao, DistribuicaoId> {
     
     @EmbeddedId
@@ -23,7 +27,8 @@ public class Distribuicao extends EntitySupport<Distribuicao, DistribuicaoId> im
     @Column
     private ProcessoId processoId;
     
-    @Column
+    @Column(name = "TIP_STATUS")
+   	@Enumerated(EnumType.STRING)
     private Status status;
     
     public Distribuicao() {

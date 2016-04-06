@@ -41,7 +41,6 @@ public class DistribuicaoApplicationService {
         Status status = statusAdapter.nextStatus(distribuicaoId);
 
         Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(distribuicaoId, new ProcessoId(command.getProcessoId()), status);
-        System.out.println(command.getProcessoId());
         
         distribuicaoRepository.save(distribuicao);
     }
