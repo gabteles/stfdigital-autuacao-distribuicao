@@ -20,7 +20,11 @@ services:
     image: services
     ports:
      - "8081:8081"
-     - "8281:8181"
+     - "8181:8181"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,suspend=n
+  ui:
+    container_name: ui
+    image: plataforma-ui
+    ports:
+     - "8080:8080"   
