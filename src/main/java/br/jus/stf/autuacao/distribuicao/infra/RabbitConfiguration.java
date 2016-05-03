@@ -28,7 +28,7 @@ public class RabbitConfiguration {
 
 	public static final String AUTUACAO_FINALIZADA_QUEUE = "autuacao.finalizada";
 
-	@Value("${rabbitmq.host:localhost}")
+	@Value("${rabbitmq.host:rabbit}")
 	private String host;
 	
 	@Value("${rabbitmq.port:5672}")
