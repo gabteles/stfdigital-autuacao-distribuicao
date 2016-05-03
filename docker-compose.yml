@@ -4,6 +4,7 @@ services:
     container_name: rabbit
     image: rabbitmq:management
     ports:
+     - "5672:5672"
      - "15672:15672"
   discovery:
     container_name: discovery
@@ -23,8 +24,16 @@ services:
      - "8181:8181"
     environment:
      - spring.profiles.active=development
+  documents:
+    container_name: documents
+    image: documents
+    ports:
+     - "8094:8094"
+     - "8194:8194"
+    environment:
+     - spring.profiles.active=development	 
   ui:
     container_name: ui
     image: plataforma-ui
     ports:
-     - "8080:8080"   
+     - "8080:8080"
