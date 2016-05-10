@@ -1,8 +1,10 @@
 package br.jus.stf.autuacao.distribuicao.application.commands;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 
-import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
  * @author Rodrigo Barreiros
@@ -13,10 +15,55 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 public class DistribuirProcessoCommand {
     
     @NotNull
-    private DistribuicaoId distribuicaoId;
+    @ApiModelProperty(value = "Identificador da distribuição.", required=true)
+    private Long distribuicaoId;
     
-    public DistribuicaoId getDistribuicaoId() {
+    @NotNull
+    @ApiModelProperty(value = "Identificador do processo que será distribuído.", required=true)
+    private Long processoId;
+    
+    @NotNull
+    @ApiModelProperty(value = "Tipo da distribuição.", required=true)
+    private String tipoDistribuicao;
+    
+    @ApiModelProperty(value = "Justificativa da distribuição.")
+    private String justificativa;
+    
+    @ApiModelProperty(value = "Lista dos ministros candidatos à relatoria.")
+	private Set<Long> ministrosCandidatos;
+	
+	@ApiModelProperty(value = "Lista dos ministros impedidos de relatar o processo.")
+	private Set<Long> ministrosImpedidos;
+	
+	@ApiModelProperty(value = "Lista dos processos que embasam a prevenção.")
+	private Set<Long> processosPreventos;
+    
+    public Long getDistribuicaoId() {
         return distribuicaoId;
     }
+    
+    public Long getProcessoId() {
+        return processoId;
+    }
+    
+    public String getTipoDistribuicao() {
+    	return tipoDistribuicao;
+    }
+    
+    public String getJustificativa() {
+    	return justificativa;
+    }
+    
+    public Set<Long> getMinistrosCandidatos() {
+		return this.ministrosCandidatos; 
+	}
+	
+	public Set<Long> getMinistrosImpedidos() {
+		return this.ministrosImpedidos; 
+	}
+	
+	public Set<Long> getProcessosPreventos() {
+		return this.processosPreventos; 
+	}
 
 }

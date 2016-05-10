@@ -31,7 +31,7 @@ services:
      - "8094:8094"
      - "8194:8194"
     environment:
-     - spring.profiles.active=development	 
+     - spring.profiles.active=development
   ui:
     container_name: ui
     image: plataforma-ui

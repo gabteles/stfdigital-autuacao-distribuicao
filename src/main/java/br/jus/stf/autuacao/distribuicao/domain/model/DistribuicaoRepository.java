@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.distribuicao.domain.model;
 
+import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rodrigo Barreiros
@@ -14,5 +15,9 @@ public interface DistribuicaoRepository {
     Distribuicao findOne(DistribuicaoId id);
     
     DistribuicaoId nextDistribuicaoId();
+    
+    <S extends Processo> S saveProcesso(Processo entity);
+    
+    Processo findOneProcesso(ProcessoId id);
 
 }

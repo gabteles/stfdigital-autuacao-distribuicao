@@ -2,6 +2,10 @@ package br.jus.stf.autuacao.distribuicao.application;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +17,13 @@ import br.jus.stf.autuacao.distribuicao.domain.StatusAdapter;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
+import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
+import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
+import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
+import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.core.shared.identidade.MinistroId;
+import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -35,25 +45,35 @@ public class DistribuicaoApplicationService {
     private StatusAdapter statusAdapter;
     
     @Transactional(propagation = REQUIRES_NEW)
-    public void handle(IniciarDistribuicaoCommand command) {
+    public Long handle(IniciarDistribuicaoCommand command) {
         DistribuicaoId distribuicaoId = distribuicaoRepository.nextDistribuicaoId();
-        
-        Status status = statusAdapter.nextStatus(distribuicaoId);
-
-        Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(distribuicaoId, new ProcessoId(command.getProcessoId()), status);
-        
-        distribuicaoRepository.save(distribuicao);
+        statusAdapter.nextStatus(distribuicaoId);
+        return distribuicaoId.toLong();
     }
 
     @Transactional
     public void handle(DistribuirProcessoCommand command) {
-        Distribuicao distribuicao = distribuicaoRepository.findOne(command.getDistribuicaoId());
+    	DistribuicaoId distribuicaoId = new DistribuicaoId(command.getDistribuicaoId());
+        Status status = statusAdapter.nextStatus(distribuicaoId);
+        TipoDistribuicao tipo = TipoDistribuicao.valueOf(command.getTipoDistribuicao());
+        //TODO: Verificar como serão recuperadas as informações do usuário da sessão.
+        Distribuidor distribuidor = new Distribuidor("USUARIO_FALSO", new PessoaId(1L));
+		Set<MinistroId> ministrosCandidatos = Optional.ofNullable(command.getMinistrosCandidatos()).isPresent() ? command
+				.getMinistrosCandidatos().stream().map(ministro -> new MinistroId(ministro))
+				.collect(Collectors.toSet()) : null;
+		Set<MinistroId> ministrosImpedidos = Optional.ofNullable(command.getMinistrosImpedidos()).isPresent() ? command
+				.getMinistrosImpedidos().stream().map(ministro -> new MinistroId(ministro))
+				.collect(Collectors.toSet()) : null;
+		Set<Processo> processosPreventos = Optional.ofNullable(command.getProcessosPreventos()).isPresent() ? command
+				.getProcessosPreventos().stream().map(processo -> distribuicaoRepository.findOneProcesso(new ProcessoId(processo)))
+				.collect(Collectors.toSet()) : null;
+		ParametroDistribuicao parametros = new ParametroDistribuicao(new ProcessoId(command.getProcessoId()), tipo,
+				command.getJustificativa(), ministrosCandidatos, ministrosImpedidos, processosPreventos);
         
-        Status status = statusAdapter.nextStatus(distribuicao.identity());
-        
-        distribuicao.relator(status);
-        
+        Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(distribuicaoId, parametros, status);
+        distribuicao.executar(parametros, distribuidor, status);
         distribuicaoRepository.save(distribuicao);
+        distribuicaoRepository.saveProcesso(new Processo(distribuicao.processo(),distribuicao.relator()));
     }
 
 }
