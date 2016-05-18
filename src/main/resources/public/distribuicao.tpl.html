@@ -1,0 +1,122 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <stf-header
+        fab-icon="{{ vm.selectedTab == 1 ? 'icon-content-save' : 'icon-magnify' }}" 
+        fab-text="{{ 'DISTRIBUICAO.NOVA.' + (vm.selectedTab == 1 ? 'SALVAR-PESQUISA' : 'BUSCAR') | translate }}">
+    </stf-header>
+    <div layout="column" class="content">
+        <div class="md-title mt-10">Distribuição de Processo</div>
+        <div class="pb-16">Informe os dados do processo a ser distribuído.</div>
+        <div layout="row">        
+            <div class="form-wrapper md-whiteframe-1dp" flex="100">
+                <form name="basicForm" class="md-inline-form" novalidate>
+                    <div layout="column">
+                        <div layout="row">
+                            <md-input-container flex="50">
+                                <label>Tipo de Distribuição</label>
+                                <md-select id="cboTipoDistribuicao" ng-model="vm.tipoDistribuicao">
+                                    <md-option ng-repeat="tipoDistribuicao in vm.tiposDistribuicao" value="{{tipoDistribuicao.id}}">
+                                        {{tipoDistribuicao.descricao}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div layout="column" ng-show="vm.tipoDistribuicao == 'COMUM'">
+                        <div style="padding-bottom: 3px;">
+                            <label>Selecione o(s) ministro(s) impedido(s)</label>
+                        </div>
+                        <div layout="row" layout-align="center center" ng-show="vm.tipoDistribuicao == 'COMUM'">
+                            <div flex="40">
+                                <select multiple size="9" ng-model="vm.ministrosSelecionados.multipleSelect" 
+                                    ng-options="ministro.nome for ministro in vm.ministrosCandidatos" style="width:100%;">
+                                </select>
+                            </div>
+                            <div flex="20">
+                                <div style="text-align:center; padding-left:25%;">
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                        ng-click="vm.adicionarMinistroImpedido()" ng-disabled="vm.ministrosCandidatos.length == 0">></md-button>
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                        ng-click="vm.adicionarTodosMinistrosImpedidos()"  ng-disabled="vm.ministrosCandidatos.length == 0">>></md-button>
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                        ng-click="vm.removerMinistroImpedido()" ng-disabled="vm.ministrosImpedidos.length == 0"><</md-button>
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                        ng-click="vm.removerTodosMinistrosImpedidos()"  ng-disabled="vm.ministrosImpedidos.length == 0"><<</md-button>
+                                </div>
+                            </div>
+                            <div flex="40">
+                                <select multiple size="9" ng-model="vm.ministrosAdicionados.multipleSelect" 
+                                    ng-options="ministro.nome for ministro in vm.ministrosImpedidos" style="width:100%;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="start start" ng-show="vm.tipoDistribuicao == 'PREVENCAO'">
+                        <div flex="50">
+                            <div layout="column">
+                                <md-input-container flex>
+                                    <label>Pesquisa de Processos para a Prevenção</label>
+                                    <input ng-model="vm.numProcessoPrevencao" id="txtNumProcessoPrevencao" class="ng-pristine ng-valid md-input ng-empty"
+                                        ng-keydown="$event.which === 13 && vm.consultarProcessoPrevento()" />
+                                </md-input-container>
+                                <div flex ng-show="vm.processosPreventos.length > 0">
+                                    <div class="simple-table-container md-whiteframe-4dp">
+                                        <div class="ms-responsive-table-wrapper">
+                                            <table class="simple" ms-responsive-table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Processo Nº</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="processoPrevento in vm.processosPreventos">
+                                                            <td>{{processoPrevento.numero}}</td>
+                                                        <td nowrap  class="text-right">
+                                                            <a title="Remover Processo" ng-click="vm.removerProcessoPrevento(processoPrevento)" data-placement="top" style="cursor:pointer;">
+                                                                <i class="icon icon-close s20"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div flex="50" style="padding-left: 15px;" ng-show="vm.processo.partes.length > 0">
+                            <div class="simple-table-container md-whiteframe-4dp">
+                                <div class="ms-responsive-table-wrapper">
+                                    <table class="simple" ms-responsive-table>
+                                        <thead>
+                                            <tr>
+                                                <th>Partes Envolvidas no Processo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="parte in vm.processo.partes">
+											    <td>{{parte}}</td>
+										    </tr>
+                                        </tbody>
+                                    </table>
+                                </div>  
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div layout="column" ng-show="vm.tipoDistribuicao == 'COMUM' || vm.tipoDistribuicao == 'PREVENCAO' ">
+                        <md-input-container flex>
+                            <label>Justificativa</label>
+                            <textarea rows="2" ng-model="vm.justificativa" id="txtJustificativa" class="ng-pristine ng-valid md-input ng-empty">
+                            </textarea>
+                        </md-input-container>
+                    </div>
+                    <md-button type="submit" id="btnDistribuirProcesso" ng-disabled="!vm.isFormValido()" class="md-raised md-primary md-button md-default-theme md-ink-ripple" 
+                        aria-label="Distribuir Processo" ng-click="vm.distribuirProcesso()">
+                        Distribuir Processo
+                    </md-button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
