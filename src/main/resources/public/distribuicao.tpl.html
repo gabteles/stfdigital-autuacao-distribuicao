@@ -27,24 +27,24 @@
                         </div>
                         <div layout="row" layout-align="center center" ng-show="vm.tipoDistribuicao == 'COMUM'">
                             <div flex="40">
-                                <select multiple size="9" ng-model="vm.ministrosSelecionados.multipleSelect" 
+                                <select multiple size="9" id="lstMinistrosCandidatos" ng-model="vm.ministrosSelecionados.multipleSelect" 
                                     ng-options="ministro.nome for ministro in vm.ministrosCandidatos" style="width:100%;">
                                 </select>
                             </div>
                             <div flex="20">
                                 <div style="text-align:center; padding-left:25%;">
-                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" id="btnAdicionarMinistro" 
                                         ng-click="vm.adicionarMinistroImpedido()" ng-disabled="vm.ministrosCandidatos.length == 0">></md-button>
-                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" id="btnAdicionarTodosMinistros" 
                                         ng-click="vm.adicionarTodosMinistrosImpedidos()"  ng-disabled="vm.ministrosCandidatos.length == 0">>></md-button>
-                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" id="btnRemoverMinistro" 
                                         ng-click="vm.removerMinistroImpedido()" ng-disabled="vm.ministrosImpedidos.length == 0"><</md-button>
-                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" 
+                                    <md-button style="display: block;" md-no-ink class="md-raised md-primary" id="btnRemoverTodosMinistro"
                                         ng-click="vm.removerTodosMinistrosImpedidos()"  ng-disabled="vm.ministrosImpedidos.length == 0"><<</md-button>
                                 </div>
                             </div>
                             <div flex="40">
-                                <select multiple size="9" ng-model="vm.ministrosAdicionados.multipleSelect" 
+                                <select multiple size="9" id="lstMinistrosImpedidos" ng-model="vm.ministrosAdicionados.multipleSelect" 
                                     ng-options="ministro.nome for ministro in vm.ministrosImpedidos" style="width:100%;">
                                 </select>
                             </div>
