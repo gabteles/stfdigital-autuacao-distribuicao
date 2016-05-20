@@ -35,6 +35,16 @@ export class Processo {
     }
 }
 
+export class Parte {
+    public apresentação: string;
+    public polo: string;
+    
+    public constructor(apresentacao: string, polo: string) {
+        this.apresentação = apresentacao;
+        this.polo = polo;
+    }
+}
+
 /* Comando usado para enviar um processo para distribuição. */
 class DistribuirProcessoCommand {
     /* Identificador da distribuição. */
@@ -75,12 +85,17 @@ export class DistribuicaoService {
     //Endereço do serviço para salvar um documento temporário.
     private static urlServicoDistribuicao: string = "/distribuicao/api/distribuicao";
     private static urlServicoMinistro: string = "/distribuicao/api/ministros";
+    private static urlServicoPartes: string = "/autuacao/parte/";
 
     /** @ngInject **/
     constructor(private $http: IHttpService, private properties) { 
         
     }
     
+    /*
+     * Retorna a lista de tipos de distribuição aplicáveis a um processo.
+     * @return lista de tipos de distribuição.
+    */
     public listarTiposDistribuicao(): Array<TipoDistribuicao> {
         let tipos = new Array<TipoDistribuicao>();
         tipos.push(new TipoDistribuicao("COMUM", "Comum"));
@@ -89,30 +104,35 @@ export class DistribuicaoService {
         return tipos;
     }
     
+    /*
+     * Retorna a lista de ministros.
+     * @return lista de ministros.
+    */
     public listarMinistros(): IPromise<Ministro[]> {
         return this.$http.get(this.properties.url + ":" + this.properties.port + DistribuicaoService.urlServicoMinistro)
             .then((response: IHttpPromiseCallbackArg<Ministro[]>) => { 
                 return response.data;
-            });
-        
-        /*
-        let ministros: Array<Ministro> = new Array<Ministro>();
-        
-        ministros.push(new Ministro(1, "Min. Presidente"));
-        ministros.push(new Ministro(28, "Min. Celso de Mello"));
-        ministros.push(new Ministro(30, "Min. Marco Aurélio"));
-        ministros.push(new Ministro(36, "Min. Gilmar Mendes"));
-        ministros.push(new Ministro(42, "Min. Cármen Lúcia"));
-        ministros.push(new Ministro(44, "Min. Dias Toffoli"));
-        ministros.push(new Ministro(45, "Min. Luiz Fux"));
-        ministros.push(new Ministro(46, "Min. Rosa Weber"));
-        ministros.push(new Ministro(47, "Min. Teori Zavascki"));
-        ministros.push(new Ministro(48, "Min. Roberto Barroso"));
-        ministros.push(new Ministro(49, "Min. Edson Fachin"));
-        
-        return ministros;*/
+        });
     }
     
+    /*
+     * Retorna as partes do processo a ser distribuído.
+     * @param processoId Identificador do processo.
+     * @return Array de partes.
+    */
+    public consultarPartesProcesso(processoId: number): IPromise<Parte[]>{
+        let url = this.properties.url + ":" + this.properties.port + DistribuicaoService.urlServicoPartes + "/" + processoId;
+        return this.$http.get(url)
+            .then((response: IHttpPromiseCallbackArg<Parte[]>) => { 
+                return response.data;
+        });
+    }
+    
+    /*
+     * Consulta os dados de um processo para prevenção.
+     * @param numero: nº do processo no formado "CLASSE 000/AAAA".
+     * @return Dados do processo.
+     */
     public consultarProcessoPrevencao(numero: string): Processo {        
         let processo = new Processo(0, "", []);
         
@@ -127,6 +147,11 @@ export class DistribuicaoService {
         return processo;
     }
     
+    /*
+     * Consulta os dados de um processo para distribuição.
+     * @param numero: nº do processo (id).
+     * @return Dados do processo.
+     */
     public consultarProcessoParaDistribuicao(numero: number): Processo {        
         let partes = new Array<string>();
         partes.push("FULANO KAMEHAMEHA");
@@ -135,6 +160,16 @@ export class DistribuicaoService {
         return new Processo(1, "ADI 999/2016", partes);
     }
     
+    /*
+     * Realiza a distribuição de um processo para um ministro.
+     * @param processoId Id do processo.
+     * @param distribuicaoId: Id da distribuição gerado no ato de autuação do processo.
+     * @param tipo Tipo de distribuição.
+     * @param justificativa Justificativa da distribuição.
+     * @param minCandidatos Lista de ministros que podem ser o relator do processo.
+     * @param minImpedidos Lista de ministros que não podem ser o relator do processo.
+     * @param procPreventos Lista de processos usados para a prevenção.
+     */
     public enviarProcessoParaDistribuicao(processoId: number, distribuicaoId: number, tipo: string, justificativa: string, minCandidatos: Array<Ministro>,
         minImpedidos: Array<Ministro>, procPreventos: Array<Processo>): IPromise<any> {
         let ministrosCandidatos = [];
