@@ -1,5 +1,11 @@
 package br.jus.stf.autuacao.distribuicao.domain.model;
 
+/**
+ * @author Rafael Alencar
+ * 
+ * @since 1.0.0
+ * @since 19.05.2016
+ */
 public enum TipoDistribuicao {
 	
 	COMUM("Comum", false),

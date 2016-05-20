@@ -6,11 +6,16 @@ import java.util.Set;
 
 import br.jus.stf.core.framework.domaindrivendesign.ValueObjectSupport;
 import br.jus.stf.core.shared.identidade.MinistroId;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
+/**
+ * @author Rafael Alencar
+ * 
+ * @since 1.0.0
+ * @since 19.05.2016
+ */
 public class ParametroDistribuicao extends ValueObjectSupport<ParametroDistribuicao> {
 
-	private ProcessoId processoId;
+	private FilaDistribuicao fila;
 	private TipoDistribuicao tipoDistribuicao;
 	private String justificativa;
 	
@@ -18,9 +23,9 @@ public class ParametroDistribuicao extends ValueObjectSupport<ParametroDistribui
 	private Set<MinistroId> ministrosImpedidos;
 	private Set<Processo> processosPreventos;
 
-	public ParametroDistribuicao(ProcessoId processoId, TipoDistribuicao tipoDistribuicao, String justificativa,
+	public ParametroDistribuicao(FilaDistribuicao fila, TipoDistribuicao tipoDistribuicao, String justificativa,
 			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos, Set<Processo> processosPreventos) {
-		this.processoId = processoId;
+		this.fila = fila;
 		this.tipoDistribuicao = tipoDistribuicao;
 		this.justificativa = justificativa;
 
@@ -30,8 +35,8 @@ public class ParametroDistribuicao extends ValueObjectSupport<ParametroDistribui
 		this.processosPreventos = processosPreventos;
 	}
 	
-	public ProcessoId processoId() {
-		return processoId;
+	public FilaDistribuicao fila() {
+		return fila;
 	}
 
 	public TipoDistribuicao tipoDistribuicao() {

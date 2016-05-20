@@ -28,9 +28,9 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 03.02.2016
  */
 @Entity
-@Table(name = "DISTRIBUICAO", schema = "DISTRIBUICAO")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TIP_DISTRIBUICAO")
+@Table(name = "DISTRIBUICAO", schema = "DISTRIBUICAO")
 public abstract class Distribuicao extends EntitySupport<Distribuicao, DistribuicaoId> implements AggregateRoot<Distribuicao, DistribuicaoId> {
     
     @EmbeddedId
@@ -70,6 +70,10 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
         this.status = status;
     }
     
+    public abstract MinistroId sorteio();
+    
+    public abstract TipoDistribuicao tipo();
+    
     public ProcessoId processo() {
     	return processoId;
     }
@@ -78,19 +82,16 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     	return relator;
     }
     
-    public abstract TipoDistribuicao tipo();
-    
-    protected abstract MinistroId sorteio();
-    
     public void executar(ParametroDistribuicao parametros, Distribuidor distribuidor, Status status) {
 		Validate.notNull(parametros, "Parâmetros requeridos.");
 		Validate.notNull(distribuidor, "Distribuidor requerido.");
+		Validate.notNull(parametros.tipoDistribuicao(), "Tipo de distribução requerido.");
 		Validate.notNull(status, "Status requerido.");
 		Validate.isTrue(
 				!parametros.tipoDistribuicao().exigeJustificativa() || !StringUtils.isEmpty(parametros.justificativa()),
 				"Tipo de distribuição exige justificativa.");
     	
-    	relator = sorteio();
+		relator = sorteio();
     	justificativa = parametros.justificativa();
         this.distribuidor = distribuidor;
     	this.status = status;

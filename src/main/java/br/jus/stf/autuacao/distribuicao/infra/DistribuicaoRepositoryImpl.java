@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
+import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
@@ -34,6 +35,7 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
         this.entityManager = entityManager;
     }
 
+    /** Distribuição **/
     @Override
     public DistribuicaoId nextDistribuicaoId() {
     	Query q = entityManager.createNativeQuery("SELECT distribuicao.seq_distribuicao.NEXTVAL FROM DUAL");
@@ -41,6 +43,7 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
     	return new DistribuicaoId(((BigInteger) q.getSingleResult()).longValue());
     }
     
+    /** Processo **/
     @SuppressWarnings("unchecked")
 	@Override
     public <S extends Processo> S saveProcesso(Processo entity) {
@@ -49,7 +52,21 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
     
     @Override
     public Processo findOneProcesso(ProcessoId id) {
-    	TypedQuery<Processo> q = entityManager.createQuery("SELECT proc FROM Processo proc WHERE proc.id = :id", Processo.class);
+    	TypedQuery<Processo> q = entityManager.createQuery("FROM Processo proc WHERE proc.processoId = :id", Processo.class);
+    	
+    	q.setParameter("id", id);
+    	return q.getSingleResult();
+    }
+    
+    /** Fila de distribuição **/
+    @SuppressWarnings("unchecked")
+    @Override
+	public <F extends FilaDistribuicao> F saveFilaDistribuicao(FilaDistribuicao entity) {
+    	return (F)entityManager.merge(entity);
+    }
+    
+    public FilaDistribuicao findOneFilaDistribuicao(DistribuicaoId id) {
+    	TypedQuery<FilaDistribuicao> q = entityManager.createQuery("FROM FilaDistribuicao fila WHERE fila.distribuicaoId = :id", FilaDistribuicao.class);
     	
     	q.setParameter("id", id);
     	return q.getSingleResult();

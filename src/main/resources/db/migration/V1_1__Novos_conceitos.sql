@@ -22,3 +22,6 @@ alter table distribuicao.ministro_candidato add constraint fk_ministro_mica fore
 create table distribuicao.ministro_impedido (seq_distribuicao number not null, cod_ministro number not null, constraint pk_ministro_impedido primary key (seq_distribuicao, cod_ministro));
 alter table distribuicao.ministro_impedido add constraint fk_distribuicao_miim foreign key (seq_distribuicao) references distribuicao.distribuicao(seq_distribuicao);
 alter table distribuicao.ministro_impedido add constraint fk_ministro_miim foreign key (cod_ministro) references distribuicao.ministro(cod_ministro);
+
+create table distribuicao.fila_distribuicao (seq_distribuicao number not null, seq_processo number not null, tip_status varchar2(12) not null, constraint pk_fila_distribuicao primary key (seq_distribuicao));
+alter table distribuicao.fila_distribuicao add constraint ck_fidi_tip_status check (tip_status in ('DISTRIBUICAO', 'DISTRIBUIDO'));

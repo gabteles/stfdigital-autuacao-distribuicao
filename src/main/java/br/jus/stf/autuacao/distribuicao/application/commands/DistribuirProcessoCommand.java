@@ -15,12 +15,8 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 public class DistribuirProcessoCommand {
     
     @NotNull
-    @ApiModelProperty(value = "Identificador da distribuição.", required=true)
+    @ApiModelProperty(value = "Identificador da distribuição na fila.", required=true)
     private Long distribuicaoId;
-    
-    @NotNull
-    @ApiModelProperty(value = "Identificador do processo que será distribuído.", required=true)
-    private Long processoId;
     
     @NotNull
     @ApiModelProperty(value = "Tipo da distribuição.", required=true)
@@ -40,10 +36,6 @@ public class DistribuirProcessoCommand {
     
     public Long getDistribuicaoId() {
         return distribuicaoId;
-    }
-    
-    public Long getProcessoId() {
-        return processoId;
     }
     
     public String getTipoDistribuicao() {

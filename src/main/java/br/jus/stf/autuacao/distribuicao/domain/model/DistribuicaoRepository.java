@@ -10,14 +10,21 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  */
 public interface DistribuicaoRepository {
 
-    <S extends Distribuicao> S save(S entity);
+    /** Distribuição **/
+	<S extends Distribuicao> S save(S entity);
     
     Distribuicao findOne(DistribuicaoId id);
     
     DistribuicaoId nextDistribuicaoId();
     
-    <S extends Processo> S saveProcesso(Processo entity);
+    /** Processo **/
+    <P extends Processo> P saveProcesso(Processo entity);
     
     Processo findOneProcesso(ProcessoId id);
+    
+    /** Fila de distribuição **/
+    <F extends FilaDistribuicao> F saveFilaDistribuicao(FilaDistribuicao entity);
+    
+    FilaDistribuicao findOneFilaDistribuicao(DistribuicaoId id);
 
 }

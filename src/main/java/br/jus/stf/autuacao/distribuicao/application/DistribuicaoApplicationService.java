@@ -18,6 +18,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.Distribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
+import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
@@ -46,15 +47,19 @@ public class DistribuicaoApplicationService {
     
     @Transactional(propagation = REQUIRES_NEW)
     public Long handle(IniciarDistribuicaoCommand command) {
-        DistribuicaoId distribuicaoId = distribuicaoRepository.nextDistribuicaoId();
-        statusAdapter.nextStatus(distribuicaoId);
-        return distribuicaoId.toLong();
+		DistribuicaoId distribuicaoId = distribuicaoRepository.nextDistribuicaoId();
+		Status status = statusAdapter.nextStatus(distribuicaoId);
+		FilaDistribuicao fila = distribuicaoFactory.novaFilaDistribuicao(distribuicaoId,
+				new ProcessoId(command.getProcessoId()), status);
+
+		distribuicaoRepository.saveFilaDistribuicao(fila);
+		return distribuicaoId.toLong();
     }
 
     @Transactional
     public void handle(DistribuirProcessoCommand command) {
-    	DistribuicaoId distribuicaoId = new DistribuicaoId(command.getDistribuicaoId());
-        Status status = statusAdapter.nextStatus(distribuicaoId);
+    	FilaDistribuicao fila = distribuicaoRepository.findOneFilaDistribuicao(new DistribuicaoId(command.getDistribuicaoId()));
+        Status status = statusAdapter.nextStatus(fila.identity());
         TipoDistribuicao tipo = TipoDistribuicao.valueOf(command.getTipoDistribuicao());
         //TODO: Verificar como serão recuperadas as informações do usuário da sessão.
         Distribuidor distribuidor = new Distribuidor("USUARIO_FALSO", new PessoaId(1L));
@@ -67,13 +72,15 @@ public class DistribuicaoApplicationService {
 		Set<Processo> processosPreventos = Optional.ofNullable(command.getProcessosPreventos()).isPresent() ? command
 				.getProcessosPreventos().stream().map(processo -> distribuicaoRepository.findOneProcesso(new ProcessoId(processo)))
 				.collect(Collectors.toSet()) : null;
-		ParametroDistribuicao parametros = new ParametroDistribuicao(new ProcessoId(command.getProcessoId()), tipo,
-				command.getJustificativa(), ministrosCandidatos, ministrosImpedidos, processosPreventos);
+		ParametroDistribuicao parametros = new ParametroDistribuicao(fila, tipo, command.getJustificativa(),
+				ministrosCandidatos, ministrosImpedidos, processosPreventos);
+		Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(parametros);
         
-        Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(distribuicaoId, parametros, status);
         distribuicao.executar(parametros, distribuidor, status);
         distribuicaoRepository.save(distribuicao);
         distribuicaoRepository.saveProcesso(new Processo(distribuicao.processo(),distribuicao.relator()));
+        fila.alterarStatus(status);
+        distribuicaoRepository.saveFilaDistribuicao(fila);
     }
 
 }

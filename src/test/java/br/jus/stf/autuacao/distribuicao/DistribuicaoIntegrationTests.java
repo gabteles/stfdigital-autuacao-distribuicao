@@ -28,7 +28,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
     
 	@Autowired
 	private DistribuicaoApplicationService distribuicaoAppService;
-	
+
 	@Test
 	public void distribuiProcessoComum() throws Exception {
 		IniciarDistribuicaoCommand command = new IniciarDistribuicaoCommand(1L);
@@ -48,7 +48,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
 		result.andExpect(status().isOk());
 	}
-	
+
 	@Test
     public void naoDeveDistribuirUmProcessoInvalido() throws Exception {
         String processo = "{}";
