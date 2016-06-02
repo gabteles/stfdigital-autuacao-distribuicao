@@ -46,14 +46,14 @@ public class DistribuicaoApplicationService {
     private StatusAdapter statusAdapter;
     
     @Transactional(propagation = REQUIRES_NEW)
-    public Long handle(IniciarDistribuicaoCommand command) {
+    public void handle(IniciarDistribuicaoCommand command) {
 		DistribuicaoId distribuicaoId = distribuicaoRepository.nextDistribuicaoId();
 		Status status = statusAdapter.nextStatus(distribuicaoId);
 		FilaDistribuicao fila = distribuicaoFactory.novaFilaDistribuicao(distribuicaoId,
 				new ProcessoId(command.getProcessoId()), status);
 
 		distribuicaoRepository.saveFilaDistribuicao(fila);
-		return distribuicaoId.toLong();
+		distribuicaoId.toLong();
     }
 
     @Transactional
