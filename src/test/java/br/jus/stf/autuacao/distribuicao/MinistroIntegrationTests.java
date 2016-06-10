@@ -23,7 +23,7 @@ public class MinistroIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
 	public void listarMinistros() throws Exception{
-		mockMvc.perform(get("/api/ministros")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(11)));
+		mockMvc.perform(get("/api/ministros")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(12)));
 	}
 }
 
