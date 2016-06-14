@@ -23,6 +23,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.core.framework.component.command.Command;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -57,6 +58,7 @@ public class DistribuicaoApplicationService {
     }
 
     @Transactional
+    @Command(description = "Distribuição")
     public void handle(DistribuirProcessoCommand command) {
     	FilaDistribuicao fila = distribuicaoRepository.findOneFilaDistribuicao(new DistribuicaoId(command.getDistribuicaoId()));
         Status status = statusAdapter.nextStatus(fila.identity());

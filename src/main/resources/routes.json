@@ -1,0 +1,8 @@
+[   
+    {
+        "id": "distribuir-processo",
+        "stateName": "app.novo-processo.distribuicao",
+        "urlPrefix": "/novo-processo/distribuicao",
+        "src": "distribuicao/distribuicao"
+    }
+]
