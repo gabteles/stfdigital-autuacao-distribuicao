@@ -44,7 +44,7 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
     });
 }
 
-let distribuicao: IModule = angular.module('app.novo-processo.distribuicao', ['app.novo-processo', 'app.constants', 'ngCookies']);
+let distribuicao: IModule = angular.module('app.novo-processo.distribuicao', ['app.novo-processo', 'app.support', 'ngCookies']);
 distribuicao.config(config);
 
 export default distribuicao;
