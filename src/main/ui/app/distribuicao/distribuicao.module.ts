@@ -26,7 +26,7 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
         url : '',
         views : {
             'content@app.autenticado' : {
-                templateUrl : properties.apiUrl + "/distribuicao/distribuicao.tpl.html",
+                templateUrl : "distribuicao.tpl.html",
                 controller : 'app.novo-processo.distribuicao.DistribuicaoController',
                 controllerAs: 'vm'
             }

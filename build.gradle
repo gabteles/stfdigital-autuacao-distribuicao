@@ -21,6 +21,8 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPlugin}")
         classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.6.0")
+        classpath("com.moowork.gradle:gradle-node-plugin:0.12")
+        classpath("com.moowork.gradle:gradle-gulp-plugin:0.12")
     }
 }
 
@@ -35,6 +37,10 @@ apply plugin: 'maven'
 apply plugin: 'java'
 
 apply plugin: "com.palantir.docker"
+
+apply plugin: 'com.moowork.node'
+
+apply plugin: 'com.moowork.gulp'
 
 repositories {
     mavenLocal()
@@ -89,8 +95,36 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-test")
 }
 
+node {
+  // Version of node to use.
+  version = '5.9.1'
+
+  // Version of npm to use.
+  npmVersion = '3.7.3'
+
+  // Base URL for fetching node distributions (change if you have a mirror).
+  distBaseUrl = 'https://nodejs.org/dist'
+
+  // If true, it will download node using above parameters.
+  // If false, it will try to use globally installed node.
+  download = true
+
+  // Set the work directory for unpacking node
+  workDir = file("${project.buildDir}/node")
+
+  // Set the work directory where node_modules should be located
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+npmInstall.dependsOn npm_prune
+gulp_build.dependsOn tasks.npmInstall
+processResources.dependsOn gulp_build
+
+ext.dockerImageTag = project.hasProperty('dockerImageTag') ? project.getProperty('dockerImageTag') : ''
+
 docker {
-    name jar.baseName
+    name jar.baseName + (dockerImageTag ? ':' + dockerImageTag : '')
     dockerfile 'src/main/docker/Dockerfile'
+    files 'src/main/docker/docker-entrypoint.sh', 'truststores/truststore.jks'
     dependsOn tasks.jar, tasks.bootRepackage, tasks.build
 }
