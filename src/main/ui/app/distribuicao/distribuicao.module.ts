@@ -1,12 +1,12 @@
+import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
+import IStateProvider = angular.ui.IStateProvider;
+import IModule = angular.IModule;
+
 /*
  * Modulo de configuração do serviço de distribuição de processos.
  * autor: anderson.araujo
  * since: 12/05/2016.
 */
-
-import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
-import IStateProvider = angular.ui.IStateProvider;
-import IModule = angular.IModule;
 
 /** @ngInject **/
 function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider,
@@ -23,7 +23,7 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
      * Assim, a localização dos dos arquivos do projeto se dá a partir desse endereço.
     */
     $stateProvider.state('app.novo-processo.distribuicao', {
-        url : '',
+        url : '/distribuicao',
         views : {
             'content@app.autenticado' : {
                 templateUrl : "distribuicao.tpl.html",

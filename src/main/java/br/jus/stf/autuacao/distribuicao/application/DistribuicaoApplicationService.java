@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.jus.stf.autuacao.distribuicao.application.commands.DistribuirProcessoCommand;
@@ -24,6 +23,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.core.framework.component.command.Command;
+import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -34,7 +34,7 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 1.0.0
  * @since 03.02.2016
  */
-@Component
+@ApplicationService
 public class DistribuicaoApplicationService {
     
     @Autowired
