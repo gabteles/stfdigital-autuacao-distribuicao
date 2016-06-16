@@ -15,7 +15,7 @@ exports.config = {
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
-	  'browserName': 'chrome'
+	  'browserName': 'PhantomJS'
   },
   
   framework: 'jasmine2',
