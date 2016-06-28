@@ -21,10 +21,10 @@ public class ParametroDistribuicao extends ValueObjectSupport<ParametroDistribui
 	
 	private Set<MinistroId> ministrosCandidatos;
 	private Set<MinistroId> ministrosImpedidos;
-	private Set<Processo> processosPreventos;
+	private Set<ProcessoDistribuido> processosPreventos;
 
 	public ParametroDistribuicao(FilaDistribuicao fila, TipoDistribuicao tipoDistribuicao, String justificativa,
-			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos, Set<Processo> processosPreventos) {
+			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos, Set<ProcessoDistribuido> processosPreventos) {
 		this.fila = fila;
 		this.tipoDistribuicao = tipoDistribuicao;
 		this.justificativa = justificativa;
@@ -57,7 +57,7 @@ public class ParametroDistribuicao extends ValueObjectSupport<ParametroDistribui
 				: null;
 	}
 
-	public Set<Processo> processosPreventos() {
+	public Set<ProcessoDistribuido> processosPreventos() {
 		return Optional.ofNullable(processosPreventos).isPresent() ? Collections.unmodifiableSet(processosPreventos)
 				: null;
 	}

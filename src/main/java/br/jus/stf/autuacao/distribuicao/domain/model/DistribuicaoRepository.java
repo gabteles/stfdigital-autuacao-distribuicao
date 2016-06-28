@@ -18,9 +18,9 @@ public interface DistribuicaoRepository {
     DistribuicaoId nextDistribuicaoId();
     
     /** Processo **/
-    <P extends Processo> P saveProcesso(Processo entity);
+    <P extends ProcessoDistribuido> P saveProcesso(ProcessoDistribuido entity);
     
-    Processo findOneProcesso(ProcessoId id);
+    ProcessoDistribuido findOneProcesso(ProcessoId id);
     
     /** Fila de distribuição **/
     <F extends FilaDistribuicao> F saveFilaDistribuicao(FilaDistribuicao entity);

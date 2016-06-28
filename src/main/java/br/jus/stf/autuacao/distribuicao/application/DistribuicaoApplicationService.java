@@ -19,7 +19,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
-import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
+import br.jus.stf.autuacao.distribuicao.domain.model.ProcessoDistribuido;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.core.framework.component.command.Command;
@@ -71,7 +71,7 @@ public class DistribuicaoApplicationService {
 		Set<MinistroId> ministrosImpedidos = Optional.ofNullable(command.getMinistrosImpedidos()).isPresent() ? command
 				.getMinistrosImpedidos().stream().map(ministro -> new MinistroId(ministro))
 				.collect(Collectors.toSet()) : null;
-		Set<Processo> processosPreventos = Optional.ofNullable(command.getProcessosPreventos()).isPresent() ? command
+		Set<ProcessoDistribuido> processosPreventos = Optional.ofNullable(command.getProcessosPreventos()).isPresent() ? command
 				.getProcessosPreventos().stream().map(processo -> distribuicaoRepository.findOneProcesso(new ProcessoId(processo)))
 				.collect(Collectors.toSet()) : null;
 		ParametroDistribuicao parametros = new ParametroDistribuicao(fila, tipo, command.getJustificativa(),
@@ -80,7 +80,7 @@ public class DistribuicaoApplicationService {
         
         distribuicao.executar(parametros, distribuidor, status);
         distribuicaoRepository.save(distribuicao);
-        distribuicaoRepository.saveProcesso(new Processo(distribuicao.processo(),distribuicao.relator()));
+        distribuicaoRepository.saveProcesso(new ProcessoDistribuido(distribuicao.processo(),distribuicao.relator()));
         fila.alterarStatus(status);
         distribuicaoRepository.saveFilaDistribuicao(fila);
     }

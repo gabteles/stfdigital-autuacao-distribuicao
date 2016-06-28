@@ -22,7 +22,7 @@ import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 @Ignore
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
-    
+	
 	@Test
 	public void distribuiProcessoComum() throws Exception {
 		loadDataTests("distribuirProcessoEletronicoOriginario.sql");
@@ -33,7 +33,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 		
 		result.andExpect(status().isOk());
 	}
-	
+
 	@Test
 	public void distribuiProcessoPrevencao() throws Exception {
 		loadDataTests("distribuirProcessoFisicoOriginario.sql");
@@ -53,5 +53,44 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
         
         result.andExpect(status().isBadRequest());
     }
+	
+	@Test
+	public void naoDeveDistribuirComumQuandoHaSobreposicaoDeMinistros() throws Exception {
+		loadDataTests("distribuicaoQueNaoDevePassar.sql");
+		
+		String processo = "{\"distribuicaoId\":@distribuicaoId,\"processoId\":9003,\"tipoDistribuicao\":\"COMUM\",\"ministrosCandidatos\":[28,30,36,42,44,45,46,47,48,49],\"ministrosImpedidos\":[28,1,41]}";
+		String distribuicaoId = "9002";
+		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
+		
+		result.andExpect(status().isBadRequest());
+		
+		loadDataTests("distribuicaoQueNaoDevePassar-limpar.sql");
+	}
+	
+	@Test
+	public void naoDeveDistribuirPrevencaoQuandoProcessosTiveremRelatorDiferentes() throws Exception {
+		loadDataTests("distribuicaoQueNaoDevePassar.sql");
+		
+		String processo = "{\"distribuicaoId\":@distribuicaoId,\"processoId\":9003,\"justificativa\":\"Processos com relatores diferentes.\",\"tipoDistribuicao\":\"PREVENCAO\", \"processosPreventos\":[5585,5521,4978823]}";
+		String distribuicaoId = "9002";
+		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
+		
+		result.andExpect(status().isBadRequest());
+		
+		loadDataTests("distribuicaoQueNaoDevePassar-limpar.sql");
+	}
+	
+	@Test
+	public void naoDeveDistribuirPrevencaoSemJustificativa() throws Exception {
+		loadDataTests("distribuicaoQueNaoDevePassar.sql");
+		
+		String processo = "{\"distribuicaoId\":@distribuicaoId,\"processoId\":9003,\"tipoDistribuicao\":\"PREVENCAO\", \"processosPreventos\":[5521,4978823]}";
+		String distribuicaoId = "9002";
+		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
+		
+		result.andExpect(status().isBadRequest());
+		
+		loadDataTests("distribuicaoQueNaoDevePassar-limpar.sql");
+	}
     
 }
