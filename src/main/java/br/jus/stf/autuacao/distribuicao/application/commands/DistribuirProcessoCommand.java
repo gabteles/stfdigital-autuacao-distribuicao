@@ -33,6 +33,10 @@ public class DistribuirProcessoCommand {
 	
 	@ApiModelProperty(value = "Lista dos processos que embasam a prevenção.")
 	private Set<Long> processosPreventos;
+	
+	public DistribuirProcessoCommand() {
+		
+	}
     
     public Long getDistribuicaoId() {
         return distribuicaoId;

@@ -19,8 +19,8 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 03.05.2016
  */
 @Entity
-@Table(name = "PROCESSO", schema = "DISTRIBUICAO")
-public class Processo extends EntitySupport<Processo, ProcessoId> {
+@Table(name = "PROCESSO_DISTRIBUIDO", schema = "DISTRIBUICAO")
+public class ProcessoDistribuido extends EntitySupport<ProcessoDistribuido, ProcessoId> {
 
 	@EmbeddedId
 	private ProcessoId processoId;
@@ -29,11 +29,11 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
     @Column(nullable = false)
 	private MinistroId relator;
 	
-	public Processo() {
+	public ProcessoDistribuido() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
-	public Processo(ProcessoId processoId, MinistroId relator) {
+	public ProcessoDistribuido(ProcessoId processoId, MinistroId relator) {
 		Validate.notNull(processoId, "Id requerido");
 		Validate.notNull(relator, "Relator requerido");
 		
