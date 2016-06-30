@@ -1,6 +1,7 @@
-import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
+import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoaderService;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
+import Properties = app.support.constants.Properties;
 
 /*
  * Modulo de configuração do serviço de distribuição de processos.
@@ -9,14 +10,10 @@ import IModule = angular.IModule;
 */
 
 /** @ngInject **/
-function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider,
-                $stateProvider: IStateProvider,
+function config($stateProvider: IStateProvider,
                 msNavigationServiceProvider: any,
-                properties) {
-
-    //mecanismo de globalização da aplicação.
-    $translatePartialLoaderProvider.addPart(properties.apiUrl + "/i18n");
-
+                properties: Properties) {
+	
     /*
      * properties.apiUrl: retorna o endereço do contexto da aplicação acessado via gateway.
      * No caso do serviço de distribuição, o endereço é protocolo://docker:porta/distribuicao.
@@ -44,7 +41,13 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
     });
 }
 
+/** @ngInject **/
+function run($translatePartialLoader: ITranslatePartialLoaderService, properties: Properties) {
+    $translatePartialLoader.addPart(properties.apiUrl + '/distribuicao/distribuicao');
+}
+
 let distribuicao: IModule = angular.module('app.novo-processo.distribuicao', ['app.novo-processo', 'app.support', 'ngCookies']);
 distribuicao.config(config);
+distribuicao.run(run);
 
 export default distribuicao;
