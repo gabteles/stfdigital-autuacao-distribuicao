@@ -6,21 +6,21 @@ services:
      - "5672:5672"
      - "15672:15672"
   discovery:
-    image: discovery
+    image: stfdigital-plataforma-discovery
     ports:
      - "8761:8761"
      - "47961:8000"
     environment:
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
   gateway:
-    image: gateway
+    image: stfdigital-plataforma-gateway
     ports:
      - "8765:8765"
      - "47965:${JAVA_DEBUG_PORT}"
     environment:
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}     
   services:
-    image: services
+    image: stfdigital-plataforma-services
     ports:
      - "8081:8081"
      - "8181:8181"
@@ -29,11 +29,11 @@ services:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
   ui:
-    image: plataforma-ui
+    image: stfdigital-plataforma-ui
     ports:
      - "8443:8443"
   userauthentication:
-    image: userauthentication
+    image: stfdigital-plataforma-userauthentication
     ports:
      - "8095:8095"
      - "8195:8195"
@@ -41,9 +41,3 @@ services:
     environment:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
-  onlyoffice:
-    image: svendowideit/ambassador
-    ports:
-     - "443:443"
-    environment:
-     - ONLYOFFICE_PORT_443_TCP=tcp://10.112.20.123:443
