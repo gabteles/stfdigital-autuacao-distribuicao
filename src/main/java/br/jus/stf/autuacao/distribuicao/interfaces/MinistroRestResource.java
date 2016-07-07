@@ -29,8 +29,11 @@ public class MinistroRestResource {
 	@Autowired
 	MinistroDtoAssembler ministroDtoAssembler; 
 	
+	/**
+	 * @return
+	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<MinistroDto> listar(){
-		return ministroRepository.findAll().stream().map(min -> ministroDtoAssembler.toDto(min)).collect(Collectors.toList());
+		return ministroRepository.findAll().stream().map(ministroDtoAssembler::toDto).collect(Collectors.toList());
 	}
 }

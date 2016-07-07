@@ -23,6 +23,14 @@ public class ParametroDistribuicao extends ValueObjectSupport<ParametroDistribui
 	private Set<MinistroId> ministrosImpedidos;
 	private Set<ProcessoDistribuido> processosPreventos;
 
+	/**
+	 * @param fila
+	 * @param tipoDistribuicao
+	 * @param justificativa
+	 * @param ministrosCandidatos
+	 * @param ministrosImpedidos
+	 * @param processosPreventos
+	 */
 	public ParametroDistribuicao(FilaDistribuicao fila, TipoDistribuicao tipoDistribuicao, String justificativa,
 			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos, Set<ProcessoDistribuido> processosPreventos) {
 		this.fila = fila;
@@ -35,28 +43,46 @@ public class ParametroDistribuicao extends ValueObjectSupport<ParametroDistribui
 		this.processosPreventos = processosPreventos;
 	}
 	
+	/**
+	 * @return
+	 */
 	public FilaDistribuicao fila() {
 		return fila;
 	}
 
+	/**
+	 * @return
+	 */
 	public TipoDistribuicao tipoDistribuicao() {
 		return tipoDistribuicao;
 	}
 
+	/**
+	 * @return
+	 */
 	public String justificativa() {
 		return justificativa;
 	}
 
+	/**
+	 * @return
+	 */
 	public Set<MinistroId> ministrosCandidatos() {
 		return Optional.ofNullable(ministrosCandidatos).isPresent() ? Collections.unmodifiableSet(ministrosCandidatos)
 				: null;
 	}
 
+	/**
+	 * @return
+	 */
 	public Set<MinistroId> ministrosImpedidos() {
 		return Optional.ofNullable(ministrosImpedidos).isPresent() ? Collections.unmodifiableSet(ministrosImpedidos)
 				: null;
 	}
 
+	/**
+	 * @return
+	 */
 	public Set<ProcessoDistribuido> processosPreventos() {
 		return Optional.ofNullable(processosPreventos).isPresent() ? Collections.unmodifiableSet(processosPreventos)
 				: null;

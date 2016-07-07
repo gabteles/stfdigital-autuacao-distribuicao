@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.jus.stf.autuacao.distribuicao.application.commands.DistribuirProcessoCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.IniciarDistribuicaoCommand;
 import br.jus.stf.autuacao.distribuicao.domain.DistribuicaoFactory;
+import br.jus.stf.autuacao.distribuicao.domain.DistribuidorAdapter;
 import br.jus.stf.autuacao.distribuicao.domain.StatusAdapter;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
@@ -25,7 +26,6 @@ import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.core.framework.component.command.Command;
 import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.identidade.MinistroId;
-import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -46,6 +46,12 @@ public class DistribuicaoApplicationService {
     @Autowired
     private StatusAdapter statusAdapter;
     
+    @Autowired
+    private DistribuidorAdapter distribuidorAdapter;
+    
+    /**
+     * @param command
+     */
     @Transactional(propagation = REQUIRES_NEW)
     public void handle(IniciarDistribuicaoCommand command) {
 		DistribuicaoId distribuicaoId = distribuicaoRepository.nextDistribuicaoId();
@@ -57,14 +63,16 @@ public class DistribuicaoApplicationService {
 		distribuicaoId.toLong();
     }
 
+    /**
+     * @param command
+     */
     @Transactional
     @Command(description = "Distribuição")
     public void handle(DistribuirProcessoCommand command) {
     	FilaDistribuicao fila = distribuicaoRepository.findOneFilaDistribuicao(new DistribuicaoId(command.getDistribuicaoId()));
         Status status = statusAdapter.nextStatus(fila.identity());
         TipoDistribuicao tipo = TipoDistribuicao.valueOf(command.getTipoDistribuicao());
-        //TODO: Verificar como serão recuperadas as informações do usuário da sessão.
-        Distribuidor distribuidor = new Distribuidor("USUARIO_FALSO", new PessoaId(1L));
+        Distribuidor distribuidor = distribuidorAdapter.distribuidor();
 		Set<MinistroId> ministrosCandidatos = Optional.ofNullable(command.getMinistrosCandidatos()).isPresent() ? command
 				.getMinistrosCandidatos().stream().map(ministro -> new MinistroId(ministro))
 				.collect(Collectors.toSet()) : null;

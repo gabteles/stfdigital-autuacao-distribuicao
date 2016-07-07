@@ -11,6 +11,10 @@ public class MinistroDto {
 	private Long id;
 	private String nome;
 	
+	/**
+	 * @param id
+	 * @param nome
+	 */
 	public MinistroDto(Long id, String nome){
 		this.id = id;
 		this.nome = nome;

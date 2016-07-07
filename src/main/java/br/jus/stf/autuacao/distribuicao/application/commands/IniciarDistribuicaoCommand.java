@@ -10,6 +10,9 @@ public class IniciarDistribuicaoCommand {
 	
 	private Long processoId;
 
+	/**
+	 * @param processoId
+	 */
 	public IniciarDistribuicaoCommand(Long processoId) {
 		this.processoId = processoId;
 	}

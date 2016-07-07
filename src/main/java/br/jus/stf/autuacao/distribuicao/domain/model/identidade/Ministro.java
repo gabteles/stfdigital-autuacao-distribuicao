@@ -30,6 +30,10 @@ public class Ministro extends EntitySupport<Ministro, MinistroId> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 */
 	public Ministro(MinistroId id, String nome) {
 		Validate.notNull(id, "Id requerido.");
 		Validate.notBlank(nome, "Nome requerida.");
@@ -38,6 +42,9 @@ public class Ministro extends EntitySupport<Ministro, MinistroId> {
 		this.nome = nome;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String nome() {
 		return nome;
 	}

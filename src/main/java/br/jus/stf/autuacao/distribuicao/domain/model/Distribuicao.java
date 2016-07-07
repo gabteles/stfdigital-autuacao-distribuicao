@@ -60,6 +60,11 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     
+    /**
+     * @param distribuicaoId
+     * @param processoId
+     * @param status
+     */
     public Distribuicao(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status) {
     	Validate.notNull(distribuicaoId, "Distribuição requerida.");
     	Validate.notNull(processoId, "Processo requerido.");
@@ -70,18 +75,35 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
         this.status = status;
     }
     
+    /**
+     * @return
+     */
     public abstract MinistroId sorteio();
     
+    /**
+     * @return
+     */
     public abstract TipoDistribuicao tipo();
     
+    /**
+     * @return
+     */
     public ProcessoId processo() {
     	return processoId;
     }
     
+    /**
+     * @return
+     */
     public MinistroId relator() {
     	return relator;
     }
     
+    /**
+     * @param parametros
+     * @param distribuidor
+     * @param status
+     */
     public void executar(ParametroDistribuicao parametros, Distribuidor distribuidor, Status status) {
 		Validate.notNull(parametros, "Parâmetros requeridos.");
 		Validate.notNull(distribuidor, "Distribuidor requerido.");

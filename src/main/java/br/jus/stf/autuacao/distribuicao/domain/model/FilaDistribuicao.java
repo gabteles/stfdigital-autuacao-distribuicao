@@ -38,6 +38,11 @@ public class FilaDistribuicao extends EntitySupport<FilaDistribuicao, Distribuic
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     
+    /**
+     * @param distribuicaoId
+     * @param processoId
+     * @param status
+     */
     public FilaDistribuicao(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status) {
     	Validate.notNull(distribuicaoId, "Distribuição requerida.");
     	Validate.notNull(processoId, "Processo requerido.");
@@ -53,14 +58,23 @@ public class FilaDistribuicao extends EntitySupport<FilaDistribuicao, Distribuic
     	return distribuicaoId;
     }
     
+    /**
+     * @return
+     */
     public ProcessoId processo() {
     	return processoId;
     }
     
+    /**
+     * @return
+     */
     public Status status() {
     	return status;
     }
     
+    /**
+     * @param status
+     */
     public void alterarStatus(Status status) {
     	Validate.notNull(status, "Status requerido.");
     	

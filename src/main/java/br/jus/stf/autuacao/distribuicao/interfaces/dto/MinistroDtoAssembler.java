@@ -13,6 +13,11 @@ import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
  */
 @Component
 public class MinistroDtoAssembler {
+	
+	/**
+	 * @param ministro
+	 * @return
+	 */
 	public MinistroDto toDto(Ministro ministro){
 		return new MinistroDto(ministro.identity().toLong(), ministro.nome());
 	}

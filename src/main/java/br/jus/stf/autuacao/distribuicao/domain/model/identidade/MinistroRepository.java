@@ -12,8 +12,15 @@ import br.jus.stf.core.shared.identidade.MinistroId;
  */
 public interface MinistroRepository {
 
+	/**
+	 * @return
+	 */
 	List<Ministro> findAll();
 	
+	/**
+	 * @param id
+	 * @return
+	 */
 	Ministro findOne(MinistroId id);
 
 }

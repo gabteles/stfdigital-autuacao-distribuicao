@@ -1,12 +1,13 @@
 package br.jus.stf.autuacao.distribuicao;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.hasSize;
+
+import org.junit.Test;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 
 import  br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 
@@ -17,8 +18,8 @@ import  br.jus.stf.core.framework.testing.IntegrationTestsSupport;
  * @since 18/05/2016
  *
  */
-@Ignore
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
+@WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
 public class MinistroIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test

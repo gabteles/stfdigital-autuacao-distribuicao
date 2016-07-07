@@ -21,6 +21,9 @@ public class AutuacaoFinalizadaEventHandler {
     @Autowired
     private DistribuicaoApplicationService distribuicaoApplicationService;
     
+    /**
+     * @param event
+     */
     @RabbitListener(queues = RabbitConfiguration.AUTUACAO_FINALIZADA_QUEUE)
     public void handle(AutuacaoFinalizada event) {
         distribuicaoApplicationService.handle(new IniciarDistribuicaoCommand(event.getProcessoId()));

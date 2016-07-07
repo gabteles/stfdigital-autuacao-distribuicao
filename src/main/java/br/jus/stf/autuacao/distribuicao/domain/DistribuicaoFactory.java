@@ -21,10 +21,20 @@ import br.jus.stf.core.shared.processo.ProcessoId;
 @Component
 public class DistribuicaoFactory {
     
+    /**
+     * @param distribuicaoId
+     * @param processoId
+     * @param status
+     * @return
+     */
     public FilaDistribuicao novaFilaDistribuicao(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status) {
     	return new FilaDistribuicao(distribuicaoId, processoId, status);
     }
     
+    /**
+     * @param parametros
+     * @return
+     */
     public Distribuicao novaDistribuicao(ParametroDistribuicao parametros) {
     	Distribuicao distribuicao;
     	FilaDistribuicao fila = parametros.fila();

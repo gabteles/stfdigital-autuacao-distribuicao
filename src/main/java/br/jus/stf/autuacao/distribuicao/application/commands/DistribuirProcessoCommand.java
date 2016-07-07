@@ -35,7 +35,7 @@ public class DistribuirProcessoCommand {
 	private Set<Long> processosPreventos;
 	
 	public DistribuirProcessoCommand() {
-		
+		// Construtor default
 	}
     
     public Long getDistribuicaoId() {

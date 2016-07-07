@@ -19,14 +19,20 @@ public class DistribuicaoId extends ValueObjectSupport<DistribuicaoId> implement
     @Column(name = "SEQ_DISTRIBUICAO")
     private Long id;
     
-    public DistribuicaoId(Long id) {
-        this.id = id;
-    }
-    
     public DistribuicaoId() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
+    
+    /**
+     * @param id
+     */
+    public DistribuicaoId(Long id) {
+        this.id = id;
+    }
 
+    /**
+     * @return
+     */
     public Long toLong() {
         return id;
     }

@@ -25,6 +25,10 @@ public class DistribuicaoRestResource {
     @Autowired
     private DistribuicaoApplicationService distribuicaoApplicationService;
 
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(method = RequestMethod.POST)
     public void distribuir(@RequestBody @Valid DistribuirProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {

@@ -40,6 +40,13 @@ public class DistribuicaoComum extends Distribuicao {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     
+	/**
+	 * @param distribuicaoId
+	 * @param processoId
+	 * @param status
+	 * @param ministrosCandidatos
+	 * @param ministrosImpedidos
+	 */
 	public DistribuicaoComum(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status,
 			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos) {
         super(distribuicaoId, processoId, status);

@@ -20,10 +20,16 @@ public enum TipoDistribuicao {
 		this.exigeJustificativa = exigeJustificativa;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public boolean exigeJustificativa() {
 		return exigeJustificativa;
 	}

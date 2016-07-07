@@ -33,6 +33,10 @@ public class ProcessoDistribuido extends EntitySupport<ProcessoDistribuido, Proc
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param processoId
+	 * @param relator
+	 */
 	public ProcessoDistribuido(ProcessoId processoId, MinistroId relator) {
 		Validate.notNull(processoId, "Id requerido");
 		Validate.notNull(relator, "Relator requerido");
@@ -41,6 +45,9 @@ public class ProcessoDistribuido extends EntitySupport<ProcessoDistribuido, Proc
 		this.relator = relator;
 	}
 	
+	/**
+	 * @return
+	 */
 	public MinistroId relator() {
 		return relator;
 	}
