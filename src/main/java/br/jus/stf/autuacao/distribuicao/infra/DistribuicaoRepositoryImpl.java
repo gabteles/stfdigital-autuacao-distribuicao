@@ -28,6 +28,9 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
 
     private EntityManager entityManager;
 
+    /**
+     * @param entityManager
+     */
     @Autowired
     public DistribuicaoRepositoryImpl(EntityManager entityManager) {
         super(Distribuicao.class, entityManager);
@@ -35,7 +38,7 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
         this.entityManager = entityManager;
     }
 
-    /** Distribuição **/
+    // Distribuição
     @Override
     public DistribuicaoId nextDistribuicaoId() {
     	Query q = entityManager.createNativeQuery("SELECT distribuicao.seq_distribuicao.NEXTVAL FROM DUAL");
@@ -43,7 +46,7 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
     	return new DistribuicaoId(((BigInteger) q.getSingleResult()).longValue());
     }
     
-    /** Processo **/
+    // Processo
     @SuppressWarnings("unchecked")
 	@Override
     public <S extends ProcessoDistribuido> S saveProcesso(ProcessoDistribuido entity) {
@@ -55,20 +58,23 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
     	TypedQuery<ProcessoDistribuido> q = entityManager.createQuery("FROM ProcessoDistribuido proc WHERE proc.processoId = :id", ProcessoDistribuido.class);
     	
     	q.setParameter("id", id);
+    	
     	return q.getSingleResult();
     }
     
-    /** Fila de distribuição **/
+    // Fila de distribuição
     @SuppressWarnings("unchecked")
     @Override
 	public <F extends FilaDistribuicao> F saveFilaDistribuicao(FilaDistribuicao entity) {
     	return (F)entityManager.merge(entity);
     }
     
+    @Override
     public FilaDistribuicao findOneFilaDistribuicao(DistribuicaoId id) {
     	TypedQuery<FilaDistribuicao> q = entityManager.createQuery("FROM FilaDistribuicao fila WHERE fila.distribuicaoId = :id", FilaDistribuicao.class);
     	
     	q.setParameter("id", id);
+    	
     	return q.getSingleResult();
     }
 

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
@@ -48,15 +49,16 @@ public class DistribuicaoComum extends Distribuicao {
 	 * @param ministrosImpedidos
 	 */
 	public DistribuicaoComum(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status,
-			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos) {
+			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos, MinistroRepository ministroRepository) {
         super(distribuicaoId, processoId, status);
         
 		Validate.notEmpty(ministrosCandidatos, "Ministros candidatos requeridos.");
-		Validate.isTrue(listasMinistrosValidas(ministrosCandidatos, ministrosImpedidos),
-				"Há sobreposição entre as listas de ministros candidatos e impedidos.");
+		Validate.notNull(ministroRepository, "Repositório requerido.");
+		Validate.isTrue(listasMinistrosValidas(ministrosCandidatos, ministrosImpedidos, ministroRepository),
+				"As listas de candidatos e impedidos estão sobrepostas ou não contêm todos os ministros.");
         
-        this.ministrosCandidatos.addAll(ministrosCandidatos);
-        this.ministrosImpedidos.addAll(Optional.ofNullable(ministrosImpedidos).orElse(new HashSet<>(0)));
+        this.ministrosCandidatos = ministrosCandidatos;
+        this.ministrosImpedidos = Optional.ofNullable(ministrosImpedidos).orElse(new HashSet<>(0));
     }
 	
 	@Override
@@ -70,13 +72,15 @@ public class DistribuicaoComum extends Distribuicao {
 	public TipoDistribuicao tipo() {
 		return TipoDistribuicao.COMUM;
 	}
-    
-    private boolean listasMinistrosValidas(Set<MinistroId> candidatos, Set<MinistroId> impedidos) {
+	
+	private boolean listasMinistrosValidas(Set<MinistroId> candidatos, Set<MinistroId> impedidos, MinistroRepository ministroRepository) {
     	if (candidatos == null) {
     		return false;
     	}
-    	if (impedidos == null) {
-    		return true;
+    	
+		if (ministroRepository.count() != candidatos.size()
+				+ Optional.ofNullable(impedidos).orElse(new HashSet<>(0)).size()) {
+    		return false;
     	}
     	
 		Set<MinistroId> intersecaoCandidatoImpedido = new HashSet<>(candidatos);

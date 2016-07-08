@@ -23,6 +23,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.ProcessoDistribuido;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.framework.component.command.Command;
 import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.identidade.MinistroId;
@@ -48,6 +49,9 @@ public class DistribuicaoApplicationService {
     
     @Autowired
     private DistribuidorAdapter distribuidorAdapter;
+    
+    @Autowired
+    private MinistroRepository ministroRepository;
     
     /**
      * @param command
@@ -84,7 +88,7 @@ public class DistribuicaoApplicationService {
 				.collect(Collectors.toSet()) : null;
 		ParametroDistribuicao parametros = new ParametroDistribuicao(fila, tipo, command.getJustificativa(),
 				ministrosCandidatos, ministrosImpedidos, processosPreventos);
-		Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(parametros);
+		Distribuicao distribuicao = distribuicaoFactory.novaDistribuicao(parametros, ministroRepository);
         
         distribuicao.executar(parametros, distribuidor, status);
         distribuicaoRepository.save(distribuicao);

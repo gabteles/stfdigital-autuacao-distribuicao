@@ -19,6 +19,9 @@ import br.jus.stf.core.shared.identidade.MinistroId;
 @Repository
 public class MinistroRepositoryImpl extends SimpleJpaRepository<Ministro, MinistroId> implements MinistroRepository {
 
+    /**
+     * @param entityManager
+     */
     @Autowired
     public MinistroRepositoryImpl(EntityManager entityManager) {
         super(Ministro.class, entityManager);

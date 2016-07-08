@@ -22,5 +22,10 @@ public interface MinistroRepository {
 	 * @return
 	 */
 	Ministro findOne(MinistroId id);
+	
+	/**
+	 * @return
+	 */
+	long count();
 
 }

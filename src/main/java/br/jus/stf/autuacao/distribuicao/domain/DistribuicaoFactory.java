@@ -10,6 +10,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -35,7 +36,7 @@ public class DistribuicaoFactory {
      * @param parametros
      * @return
      */
-    public Distribuicao novaDistribuicao(ParametroDistribuicao parametros) {
+    public Distribuicao novaDistribuicao(ParametroDistribuicao parametros, MinistroRepository ministroRepository) {
     	Distribuicao distribuicao;
     	FilaDistribuicao fila = parametros.fila();
 		TipoDistribuicao tipoDistribuicao = parametros.tipoDistribuicao();
@@ -43,7 +44,7 @@ public class DistribuicaoFactory {
 		switch(tipoDistribuicao) {
 			case COMUM:
 			distribuicao = new DistribuicaoComum(fila.identity(), fila.processo(), fila.status(),
-					parametros.ministrosCandidatos(), parametros.ministrosImpedidos());
+					parametros.ministrosCandidatos(), parametros.ministrosImpedidos(), ministroRepository);
 				break;
 			case PREVENCAO:
 			distribuicao = new DistribuicaoPrevencao(fila.identity(), fila.processo(), fila.status(),
