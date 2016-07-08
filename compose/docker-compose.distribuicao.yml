@@ -1,0 +1,10 @@
+# Define a configuração para rodar o recebimento
+version: '2'
+services:
+  distribuicao:
+    extends:
+      file: compose/shared/common.yml
+      service: distribuicao
+    depends_on:
+     - rabbit
+     - discovery
