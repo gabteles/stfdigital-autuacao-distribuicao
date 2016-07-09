@@ -15,16 +15,16 @@ describe("Distribuição de Processos", () => {
     
     it("Deveria logar na aplicação.", () => {
        paginaLogin.open();
-       paginaLogin.setCredenciais("kakaroto", "kamehameha"); 
+       paginaLogin.setCredenciais("distribuidor", "123"); 
     });
     
-    it("Deveria acessar a pagina de distribuição de processos.", () => {
+    xit("Deveria acessar a pagina de distribuição de processos.", () => {
         paginaPrincipal.iniciarProcesso();
         paginaPrincipal.iniciarDistribuicaoProcesso();
         browser.sleep(3000);
     });
     
-    it("Deveria preencher os dados para uma distribuição do tipo COMUM.", () => {
+    xit("Deveria preencher os dados para uma distribuição do tipo COMUM.", () => {
         paginaDistribuicaoProcesso.selecionarTipoDistribuicao("Comum");
         browser.sleep(1500);
         paginaDistribuicaoProcesso.selecionarMinistroPrevento("MINISTRO PRESIDENTE");
