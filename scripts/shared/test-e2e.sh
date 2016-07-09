@@ -6,7 +6,7 @@ COMPOSE_FILES_PARAMS="$MAIN_DOCKER_COMPOSE_FILE -f compose/docker-compose.e2e.ym
 
 docker-compose $COMPOSE_FILES_PARAMS up -d
 
-./scripts/e2e-wait.sh
+./scripts/wait-ready.sh
 ./scripts/shared/wait-up.sh "http://docker:4444/wd/hub" 30
 
 gradle gulpTestE2E
