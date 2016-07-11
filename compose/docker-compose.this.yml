@@ -3,7 +3,7 @@ version: '2'
 services:
   distribuicao:
     extends:
-      file: compose/shared/common.yml
+      file: shared/compose/common.yml
       service: distribuicao
     image: stfdigital-autuacao-distribuicao
     depends_on:
