@@ -5,13 +5,13 @@
 
         <startEvent id="inicio" />
 
-		<sequenceFlow id="distribuir" sourceRef="inicio" targetRef="sorteio" />
+		<sequenceFlow id="distribuicao-processo" sourceRef="inicio" targetRef="distribuir-processo" />
 
-		<userTask id="sorteio" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
+		<userTask id="distribuir-processo" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
 			<documentation>DISTRIBUICAO</documentation>
 		</userTask>
 
-		<sequenceFlow id="finalizar" sourceRef="sorteio" targetRef="distribuido" />
+		<sequenceFlow id="finalizar" sourceRef="distribuir-processo" targetRef="distribuido" />
 
 		<endEvent id="distribuido">
             <documentation>DISTRIBUIDO</documentation>
