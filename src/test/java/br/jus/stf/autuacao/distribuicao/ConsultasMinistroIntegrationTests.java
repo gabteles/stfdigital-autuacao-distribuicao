@@ -20,7 +20,7 @@ import  br.jus.stf.core.framework.testing.IntegrationTestsSupport;
  */
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 @WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
-public class MinistroIntegrationTests extends IntegrationTestsSupport {
+public class ConsultasMinistroIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
 	public void listarMinistros() throws Exception{

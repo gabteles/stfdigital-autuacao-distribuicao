@@ -1,16 +1,22 @@
 package br.jus.stf.autuacao.distribuicao;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.web.servlet.ResultActions;
 
+import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
+import br.jus.stf.autuacao.distribuicao.infra.DistribuidorOauth2Adapter;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
+import br.jus.stf.core.shared.identidade.PessoaId;
 
 /**
  * Valida a API de distribuição de processos.
@@ -20,10 +26,21 @@ import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
  * @since 1.0.0
  * @since 17.02.2016
  */
-@Ignore
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 @WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
 public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
+	
+	@Configuration
+	static class ConfiguracaoTest {
+		@Bean
+		public DistribuidorOauth2Adapter distribuidorAdapter() {
+			DistribuidorOauth2Adapter distribuidorAdapter = Mockito.mock(DistribuidorOauth2Adapter.class);
+			
+			given(distribuidorAdapter.distribuidor()).willReturn(new Distribuidor("distribuidor", new PessoaId(1L)));
+			
+			return distribuidorAdapter;
+		}
+	}
 	
 	@Test
 	public void distribuiProcessoComum() throws Exception {
