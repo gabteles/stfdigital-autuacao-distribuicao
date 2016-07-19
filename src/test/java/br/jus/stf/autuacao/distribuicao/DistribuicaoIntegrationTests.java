@@ -11,6 +11,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
@@ -28,9 +30,11 @@ import br.jus.stf.core.shared.identidade.PessoaId;
  */
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 @WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
+@ActiveProfiles("test")
 public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	
 	@Configuration
+	@Profile("test")
 	static class ConfiguracaoTest {
 		@Bean
 		public DistribuidorOauth2Adapter distribuidorAdapter() {
