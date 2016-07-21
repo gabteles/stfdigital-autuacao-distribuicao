@@ -1,18 +1,15 @@
 package br.jus.stf.autuacao.distribuicao;
 
+import static br.jus.stf.core.framework.testing.Oauth2TestHelpers.oauthAuthentication;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
@@ -28,22 +25,15 @@ import br.jus.stf.core.shared.identidade.PessoaId;
  * @since 1.0.0
  * @since 17.02.2016
  */
-@SpringApplicationConfiguration(ApplicationContextInitializer.class)
-@WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
-@ActiveProfiles("test")
+@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
 public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	
-	@Configuration
-	@Profile("test")
-	static class ConfiguracaoTest {
-		@Bean
-		public DistribuidorOauth2Adapter distribuidorAdapter() {
-			DistribuidorOauth2Adapter distribuidorAdapter = Mockito.mock(DistribuidorOauth2Adapter.class);
-			
-			given(distribuidorAdapter.distribuidor()).willReturn(new Distribuidor("distribuidor", new PessoaId(1L)));
-			
-			return distribuidorAdapter;
-		}
+	@MockBean
+	private DistribuidorOauth2Adapter distribuidorOauth2Adapter;
+	
+	@Before
+	public void configuracao() {
+		given(distribuidorOauth2Adapter.distribuidor()).willReturn(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
 	
 	@Test
@@ -52,7 +42,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 
 		String processo = "{\"distribuicaoId\":@distribuicaoId,\"processoId\":9002,\"tipoDistribuicao\":\"COMUM\",\"ministrosCandidatos\":[28,30,36,42,44,45,46,47,48,49],\"ministrosImpedidos\":[1,41]}";
 		String distribuicaoId = "9000";
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao").with(oauthAuthentication("autuador")).contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
 		
 		result.andExpect(status().isOk());
 	}
@@ -63,7 +53,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 		
 		String processo = "{\"distribuicaoId\":@distribuicaoId,\"processoId\":9000,\"justificativa\":\"Processos correlatos.\",\"tipoDistribuicao\":\"PREVENCAO\", \"processosPreventos\":[5521,4978823]}";
 		String distribuicaoId = "9001";
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao").with(oauthAuthentication("autuador")).contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
 		
 		result.andExpect(status().isOk());
 	}
@@ -109,7 +99,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 		
 		String processo = "{\"distribuicaoId\":@distribuicaoId,\"processoId\":9003,\"tipoDistribuicao\":\"PREVENCAO\", \"processosPreventos\":[5521,4978823]}";
 		String distribuicaoId = "9002";
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao").with(oauthAuthentication("autuador")).contentType(APPLICATION_JSON).content(processo.replace("@distribuicaoId", distribuicaoId)));
 		
 		result.andExpect(status().isBadRequest());
 		
