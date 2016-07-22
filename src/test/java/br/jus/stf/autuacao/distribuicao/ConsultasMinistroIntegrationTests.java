@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import  br.jus.stf.core.framework.testing.IntegrationTestsSupport;
+import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 
 /**
  * Teste de integração do serviço REST de ministros.
@@ -18,6 +19,7 @@ import  br.jus.stf.core.framework.testing.IntegrationTestsSupport;
  *
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@WithMockOauth2User("distribuidor")
 public class ConsultasMinistroIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
@@ -25,4 +27,3 @@ public class ConsultasMinistroIntegrationTests extends IntegrationTestsSupport {
 		mockMvc.perform(get("/api/ministros")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(12)));
 	}
 }
-
