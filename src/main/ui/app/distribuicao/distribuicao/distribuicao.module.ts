@@ -2,7 +2,8 @@ import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoade
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
 import Properties = app.support.constants.Properties;
-
+import IStateParamsService = angular.ui.IStateParamsService;
+import {DistribuicaoService} from "./distribuicao.service";
 /*
  * Modulo de configuração do serviço de distribuição de processos.
  * autor: anderson.araujo
@@ -26,6 +27,17 @@ function config($stateProvider: IStateProvider,
                 templateUrl : "distribuicao.tpl.html",
                 controller : 'app.novo-processo.distribuicao.DistribuicaoController',
                 controllerAs: 'vm'
+            },
+            resolve : { 
+                tipoDistribuicao: ['app.novo-processo.distribuicao.DistribuicaoService', '$stateParams', (distribuicaoService: DistribuicaoService, $stateParams : IStateParamsService) => {
+                    return distribuicaoService.listarTiposDistribuicao();
+                }],
+                ministrosCandidatos: ['app.novo-processo.distribuicao.DistribuicaoService', '$stateParams', (distribuicaoService: DistribuicaoService, $stateParams : IStateParamsService) => {
+                    return distribuicaoService.listarMinistros();
+                }],
+            },
+            params : {
+                informationId : undefined
             }
         }
     });

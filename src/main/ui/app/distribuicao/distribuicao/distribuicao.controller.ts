@@ -1,37 +1,39 @@
 import distribuicao from "./distribuicao.module";
 import IDialogService = angular.material.IDialogService;
+import IStateParamsService = angular.ui.IStateParamsService;
 import IStateService = angular.ui.IStateService;
-import {DistribuicaoService, TipoDistribuicao, Ministro, Processo} from "./distribuicao.service";
+import {DistribuicaoService} from "./distribuicao.service";
+import {DistribuirProcessoCommand, Processo, Ministro} from "../shared/distribuicao.model"
 
 export class DistribuicaoController {
-    public tipoDistribuicao: string;
-    public tiposDistribuicao: Array<TipoDistribuicao>;
+   // public tiposDistribuicao: Array<TipoDistribuicao>;
     public ministrosSelecionados: { singleSelect: any, multipleSelect: Array<Ministro> };
     public ministrosAdicionados: { singleSelect: any, multipleSelect: Array<Ministro> };
-    public ministrosCandidatos: Array<Ministro>;
-    public ministrosImpedidos: Array<Ministro>;
     public justificativa: string;
     public numProcessoPrevencao: string;
-    public processosPreventos: Array<Processo>;
-    public processo: Processo;
     public distribuicaoId: number;
     
-    static $inject = ["$mdDialog", "$state", "app.novo-processo.distribuicao.DistribuicaoService"];
+    public cmdDistribuir : DistribuirProcessoCommand = new DistribuirProcessoCommand(); 
+    
+    static $inject = ['$state', '$stateParams', 'messagesService', "app.novo-processo.distribuicao.DistribuicaoService", "tipoDistribuicao", "ministrosCandidatos"];
     
     /** @ngInject **/
-    constructor(private $mdDialog: IDialogService, private $state: IStateService, private distribuicaoService: DistribuicaoService) {
-        this.tiposDistribuicao = distribuicaoService.listarTiposDistribuicao();
-        distribuicaoService.listarMinistros().then((ministros: Ministro[]) => {
-            this.ministrosCandidatos = ministros;
-        });
-        this.ministrosImpedidos = new Array<Ministro>();
+    constructor(private $state: IStateService, private $stateParams: IStateParamsService, private messagesService: app.support.messaging.MessagesService,
+    		private distribuicaoService: DistribuicaoService,  public tipoDistribuicao, public ministrosCandidatos) {
+        
+    	this.cmdDistribuir.distribuicaoId = $stateParams['informationId'];
+    	//this.tiposDistribuicao = distribuicaoService.listarTiposDistribuicao();
+        //distribuicaoService.listarMinistros().then((ministros: Ministro[]) => {
+        //    this.ministrosCandidatos = ministros;
+        //});
+        //this.ministrosImpedidos = new Array<Ministro>();
         this.ministrosAdicionados = {singleSelect: null, multipleSelect: []};
         this.ministrosSelecionados = {singleSelect: null, multipleSelect: []};
-        this.justificativa = "";
-        this.processosPreventos = [];
+        //this.justificativa = "";
+        //this.processosPreventos = [];
         //TO DO: Passar o nº do processo e da distribuição oriundos do mecanismo de ações.
-        this.processo = this.distribuicaoService.consultarProcessoParaDistribuicao(1);
-        this.distribuicaoId = 1;
+        //this.processo = this.distribuicaoService.consultarProcessoParaDistribuicao(1);
+        //this.distribuicaoId = 1;
     }
     
     public adicionarMinistroImpedido(): void {
@@ -78,12 +80,6 @@ export class DistribuicaoController {
         this.ministrosImpedidos.splice(0);
     }
     
-    private exibirMensagem(mensagem: string, titulo: string){
-        let alert = this.$mdDialog.alert().title(titulo).textContent(mensagem).ok("Fechar");
-        this.$mdDialog.show(alert).finally(function() {
-            alert = undefined;
-        });
-    }
     
     public isFormValido(): boolean {
         return (this.tipoDistribuicao != "" && this.justificativa != "");

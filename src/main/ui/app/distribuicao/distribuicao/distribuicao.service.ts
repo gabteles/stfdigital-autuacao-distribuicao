@@ -2,93 +2,23 @@ import distribuicao from "./distribuicao.module";
 import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
+import Properties = app.support.constants.Properties;
+import {DistribuirProcessoCommand, Ministro, Processo, TipoDistribuicao, API_DISTRIBUICAO, API_MINISTROS} from "../shared/distribuicao.model";
 
-export class TipoDistribuicao {
-    public id: string;
-    public descricao: string;
-    
-    constructor(id: string, descricao: string) {
-        this.id = id;
-        this.descricao = descricao;
-    }
-}
-
-export class Ministro {
-    public id: number;
-    public nome: string;
-    
-    constructor(id: number, nome: string){
-        this.id = id;
-        this.nome = nome;
-    }
-}
-
-export class Processo {
-    public id: number;
-    public numero: string;
-    public partes: Array<string>;
-    
-    constructor(id: number, numero: string, partes: Array<string>) {
-        this.id = id;
-        this.numero = numero;
-        this.partes = partes;
-    }
-}
-
-export class Parte {
-    public apresentação: string;
-    public polo: string;
-    
-    public constructor(apresentacao: string, polo: string) {
-        this.apresentação = apresentacao;
-        this.polo = polo;
-    }
-}
-
-/* Comando usado para enviar um processo para distribuição. */
-class DistribuirProcessoCommand {
-    /* Identificador da distribuição. */
-    public distribuicaoId: number;
-    
-    /* Identificador do processo que será distribuído. */
-    public processoId: number;
-    
-    /* Tipo da distribuição. */
-    public tipoDistribuicao: string;
-    
-    /* Justificativa da distribuição. */
-    public justificativa: string;
-    
-    /* Lista dos ministros candidatos à relatoria. */
-	public ministrosCandidatos: Array<number>;
-	
-	/* Lista dos ministros impedidos de relatar o processo. */
-	public ministrosImpedidos: Array<number>;
-	
-	/* Lista dos processos que embasam a prevenção. */
-	public processosPreventos: Array<number>;
-    
-    constructor(distribuicaoId: number, processoId: number, tipoDistribuicao: string, justificativa: string, ministrosCandidatos: Array<number>, 
-        ministrosImpedidos: Array<number>, processosPreventos: Array<number>) {
-        this.distribuicaoId = distribuicaoId;
-        this.processoId = processoId;
-        this.tipoDistribuicao = tipoDistribuicao;
-        this.justificativa = justificativa;
-        this.ministrosCandidatos = ministrosCandidatos;
-        this.ministrosImpedidos = ministrosImpedidos;
-        this.processosPreventos = processosPreventos;
-    }
-}
 
 export class DistribuicaoService {
     
+	private apiMinistro : string;
+    private apiDistribuicao : string;
+
     //Endereço do serviço para salvar um documento temporário.
-    private static urlServicoDistribuicao: string = "/distribuicao/api/distribuicao";
-    private static urlServicoMinistro: string = "/distribuicao/api/ministros";
-    private static urlServicoPartes: string = "/autuacao/parte/";
+    //private static urlServicoMinistro: string = "/distribuicao/api/ministros";
+    //private static urlServicoPartes: string = "/autuacao/parte/";
 
     /** @ngInject **/
-    constructor(private $http: IHttpService, private properties) { 
+    constructor(private $http: IHttpService, properties : Properties) { 
+    	this.apiMinistro = properties.apiUrl + API_MINISTROS;
+    	this.apiDistribuicao = properties.apiUrl + API_DISTRIBUICAO;
         
     }
     
@@ -96,12 +26,11 @@ export class DistribuicaoService {
      * Retorna a lista de tipos de distribuição aplicáveis a um processo.
      * @return lista de tipos de distribuição.
     */
-    public listarTiposDistribuicao(): Array<TipoDistribuicao> {
-        let tipos = new Array<TipoDistribuicao>();
-        tipos.push(new TipoDistribuicao("COMUM", "Comum"));
-        tipos.push(new TipoDistribuicao("PREVENCAO", "Prevenção Relator/Sucessor"));
-        
-        return tipos;
+    public listarTiposDistribuicao(): IPromise<TipoDistribuicao[]> {
+    	return this.$http.get(this.apiDistribuicao + "/tipo-distribuicao")
+            .then((response: IHttpPromiseCallbackArg<TipoDistribuicao[]>) => { 
+                return response.data;
+            });
     }
     
     /*
@@ -109,11 +38,19 @@ export class DistribuicaoService {
      * @return lista de ministros.
     */
     public listarMinistros(): IPromise<Ministro[]> {
-        return this.$http.get(this.properties.url + ":" + this.properties.port + DistribuicaoService.urlServicoMinistro)
+    	return this.$http.get(this.apiMinistro + "/")
             .then((response: IHttpPromiseCallbackArg<Ministro[]>) => { 
                 return response.data;
         });
     }
+    
+    public consultarProcesso(processoId : number) : IPromise<Processo> {
+        return this.$http.get(this.apiDistribuicao + "/" + processoId)
+                .then((response: IHttpPromiseCallbackArg<Processo>) => { 
+                    return response.data; 
+                });
+    }
+
     
     /*
      * Retorna as partes do processo a ser distribuído.

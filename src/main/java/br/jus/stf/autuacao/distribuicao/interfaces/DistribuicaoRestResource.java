@@ -1,5 +1,9 @@
 package br.jus.stf.autuacao.distribuicao.interfaces;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.distribuicao.application.DistribuicaoApplicationService;
 import br.jus.stf.autuacao.distribuicao.application.commands.DistribuirProcessoCommand;
+import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.TipoDistribuicaoDto;
 
 /**
  * @author Rodrigo Barreiros
@@ -24,6 +30,7 @@ public class DistribuicaoRestResource {
     
     @Autowired
     private DistribuicaoApplicationService distribuicaoApplicationService;
+    
 
     /**
      * @param command
@@ -37,5 +44,15 @@ public class DistribuicaoRestResource {
         
         distribuicaoApplicationService.handle(command);
     }
+    
+	/**
+	 * @return
+	 */
+	@RequestMapping(value="/tipo-distribuicao", method = RequestMethod.GET)
+    public List<TipoDistribuicaoDto> listarTiposDistribuicao(){
+		return Arrays.asList(TipoDistribuicao.values()).stream().map(tipo -> new TipoDistribuicaoDto(tipo.name(), tipo.exigeJustificativa()))
+				.collect(Collectors.toList());
+    }
+	
 
 }

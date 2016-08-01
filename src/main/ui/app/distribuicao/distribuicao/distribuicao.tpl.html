@@ -13,7 +13,7 @@
                         <div layout="row">
                             <md-input-container flex="50">
                                 <label>Tipo de Distribuição</label>
-                                <md-select id="cboTipoDistribuicao" ng-model="vm.tipoDistribuicao">
+                                <md-select id="cboTipoDistribuicao" ng-model="vm.cmdDistribuir.tipoDistribuicao">
                                     <md-option ng-repeat="tipoDistribuicao in vm.tiposDistribuicao" value="{{tipoDistribuicao.id}}">
                                         {{tipoDistribuicao.descricao}}
                                     </md-option>
@@ -107,7 +107,7 @@
                     <div layout="column" ng-show="vm.tipoDistribuicao == 'COMUM' || vm.tipoDistribuicao == 'PREVENCAO' ">
                         <md-input-container flex>
                             <label>Justificativa</label>
-                            <textarea rows="2" ng-model="vm.justificativa" id="txtJustificativa" class="ng-pristine ng-valid md-input ng-empty">
+                            <textarea rows="2" ng-model="vm.cmdDistribuir.justificativa" id="txtJustificativa" class="ng-pristine ng-valid md-input ng-empty">
                             </textarea>
                         </md-input-container>
                     </div>
