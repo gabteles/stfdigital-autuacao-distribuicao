@@ -26,9 +26,6 @@ import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.TipoDistribuicaoDto;
 
-import br.jus.stf.core.shared.processo.ProcessoId;
-import br.jus.stf.core.shared.processo.TipoProcesso;
-
 /**
  * @author Rodrigo Barreiros
  * 

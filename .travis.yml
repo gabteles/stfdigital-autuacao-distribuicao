@@ -23,9 +23,9 @@ before_install:
 - ./shared/scripts/upgrade-docker.sh
 - mkdir -p $HOME/docker_cache
 install: docker load -i $HOME/docker_cache/docker.tar || true
-script: ./gradlew docker --refresh-dependencies && ./gradlew gulpTestUnit && ./shared/scripts/test-e2e.sh
+script: gradle docker --refresh-dependencies && gradle gulpTestUnit && ./shared/scripts/test-e2e.sh
 after_success:
-- ./gradlew gulpPublishUnitCoverage
+- gradle gulpPublishUnitCoverage
 - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 - export REPO=supremotribunalfederal/stfdigital-autuacao-distribuicao
 - docker tag stfdigital-autuacao-distribuicao $REPO:latest
@@ -35,7 +35,7 @@ notifications:
     secure: pSuuzuvCAYER9bNz9855SUd77osPX35Wd098cg7xBUAJ7FFl4WQ86zlL5CBmhFxL4K5tWj3dp7oe9HcPb292dxFXMYX1qNW/xvRLx9u2YNkk7RcP6RpW+AwhcfTEPOWRjic+ev9BXFAVOHjNfcYSf0gDskt/irncqnSqjA/t2z9bROI4gDLtPetj+fKS4rb+iMknnTN3JslldD4dNiOAQU6iV+YgTnaIeIbsjhCwLW4WqLffhgkqTzWmvGc4PaL8oXMhg98s54/xCDEakJ8BKehE8vY0GSxNkxlPCw5589dgicNSgL4pOQSUZJUSI2TcurFa/TvHvhOu/wB11sklTuXsy3jt7nLb9t/hpPXWUKoQn9f9ff/kKBDm4OvNA4aXh8kUmdfoeDOjaKTe3FtTifVkPDrBdyXTaTngYUsFAa/Ch4q5LbuFGGVZ8jFID80weTku07TThtOXT6cPG0w0XWx2OvkRWT8i2WMlUHm4AB32Elr7ddPm60O6KWYAQ3LtzvnHb/JsKCOk1XLRkD87rEBlDFHVdUdQ6Zn56/P1ihBad0tV4SE50BDYuVI2g3Wvbik28ZwtYFkvLjXU96Hw04xG7PsyRSLBIVEHxs1J5Y1ky2ys9QXKPmkgB9kqXlehgi3r2tY6NY7vLTqXOvEDTW01evDZWvdBF1aMt/fGbi8=
 env:
   global:
-  - EUREKA_PREFER_IP_ADDRESS=false
+  - JAVA_SERVICE_SPRING_PROFILES=development,docker
   - RABBIT_OUT_NODE_PORT=5673
   - RABBIT_OUT_DIST_PORT=15673
   # DOCKER_EMAIL
