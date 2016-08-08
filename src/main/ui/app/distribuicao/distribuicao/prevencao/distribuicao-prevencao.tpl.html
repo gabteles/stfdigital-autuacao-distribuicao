@@ -1,0 +1,51 @@
+	<div flex="50">
+	    <div layout="column">
+	        <md-input-container flex>
+	            <label>Pesquisa de Processos para a Prevenção</label>
+	            <input ng-model="vm.numProcessoPrevencao" id="txtNumProcessoPrevencao" 
+	                ng-keydown="$event.which === 13 && vm.consultarProcessoPrevento()" />
+	        </md-input-container>
+	        <div flex ng-show="vm.processosPreventos.length > 0">
+	            <div class="simple-table-container md-whiteframe-4dp">
+	                <div class="ms-responsive-table-wrapper">
+	                    <table class="simple" ms-responsive-table>
+	                        <thead>
+	                            <tr>
+	                                <th>Processo Nº</th>
+	                                <th></th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr ng-repeat="processoPrevento in vm.processosPreventos">
+	                                    <td>{{processoPrevento.numero}}</td>
+	                                <td nowrap  class="text-right">
+	                                    <a title="Remover Processo" ng-click="vm.removerProcessoPrevento(processoPrevento)" data-placement="top" style="cursor:pointer;">
+	                                        <i class="icon icon-close s20"></i>
+	                                    </a>
+	                                </td>
+	                            </tr>
+	                        </tbody>
+	                    </table>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<div flex="50" style="padding-left: 15px;" ng-show="vm.processo.partes.length > 0">
+		<div class="simple-table-container md-whiteframe-4dp">
+			<div class="ms-responsive-table-wrapper">
+				<table class="simple" ms-responsive-table>
+					<thead>
+						<tr>
+							<th>Partes Envolvidas no Processo</th>
+                      	</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="parte in vm.processo.partes">
+ 							<td>{{parte.apresentacao}}</td>
+						</tr>
+                  	</tbody>
+              	</table>
+          	</div>  
+      	</div>
+	</div>
