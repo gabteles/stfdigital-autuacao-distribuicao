@@ -10,11 +10,17 @@
 		<userTask id="distribuir-processo" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
 			<documentation>DISTRIBUICAO</documentation>
 		</userTask>
+		
+		<sequenceFlow id="organizacao-pecas" sourceRef="distribuir-processo" targetRef="organizar-pecas"/>
+		
+		<userTask id="organizar-pecas" name="Organizar Peças" activiti:candidateGroups="organizador-pecas">
+      		<documentation>DISTRIBUIDO</documentation>
+    	</userTask>
 
-		<sequenceFlow id="finalizar" sourceRef="distribuir-processo" targetRef="distribuido" />
+		<sequenceFlow id="finalizar" sourceRef="organizar-pecas" targetRef="organizado"/>
 
-		<endEvent id="distribuido">
-            <documentation>DISTRIBUIDO</documentation>
+		<endEvent id="organizado">
+            <documentation>PECAS_ORGANIZADAS</documentation>
 		</endEvent>
 
 	</process>

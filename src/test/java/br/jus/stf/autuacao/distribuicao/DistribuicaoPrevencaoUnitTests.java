@@ -12,7 +12,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoPrevencao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
-import br.jus.stf.autuacao.distribuicao.domain.model.ProcessoDistribuido;
+import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.identidade.PessoaId;
@@ -20,13 +20,13 @@ import br.jus.stf.core.shared.processo.ProcessoId;
 
 public class DistribuicaoPrevencaoUnitTests {
 	
-	private ProcessoDistribuido mockPreventoRelator1 = new ProcessoDistribuido(new ProcessoId(1L), new MinistroId(1L));
+	private Processo mockPreventoRelator1 = new Processo(new ProcessoId(1L), new MinistroId(1L));
 	
-	private ProcessoDistribuido mockPreventoRelator2 = new ProcessoDistribuido(new ProcessoId(2L), new MinistroId(2L));
+	private Processo mockPreventoRelator2 = new Processo(new ProcessoId(2L), new MinistroId(2L));
 	
 	@Test
 	public void realizaDistribuicaoPrevencaoValida() {
-		Set<ProcessoDistribuido> processosPreventos = new HashSet<>(1);
+		Set<Processo> processosPreventos = new HashSet<>(1);
 
 		processosPreventos.add(mockPreventoRelator1);
 
@@ -40,7 +40,7 @@ public class DistribuicaoPrevencaoUnitTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaDistribuirPrevencaoComJustificativaBranca() {
-		Set<ProcessoDistribuido> processosPreventos = new HashSet<>(1);
+		Set<Processo> processosPreventos = new HashSet<>(1);
 		
 		processosPreventos.add(mockPreventoRelator1);
 		
@@ -52,7 +52,7 @@ public class DistribuicaoPrevencaoUnitTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaDistribuirParaPreventosComRelatoriaDiversa() {
-		Set<ProcessoDistribuido> processosPreventos = new HashSet<>(2);
+		Set<Processo> processosPreventos = new HashSet<>(2);
 		
 		processosPreventos.add(mockPreventoRelator1);
 		processosPreventos.add(mockPreventoRelator2);

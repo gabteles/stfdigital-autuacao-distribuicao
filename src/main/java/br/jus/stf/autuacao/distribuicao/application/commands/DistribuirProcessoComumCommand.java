@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
@@ -14,18 +16,19 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  */
 public class DistribuirProcessoComumCommand extends DistribuirProcessoCommand {
 	
-    @ApiModelProperty(value = "Lista dos ministros candidatos à relatoria.")
+    @NotEmpty
+	@ApiModelProperty(value = "Lista dos ministros candidatos à relatoria.")
 	private Set<Long> ministrosCandidatos;
 	
 	@ApiModelProperty(value = "Lista dos ministros impedidos de relatar o processo.")
 	private Set<Long> ministrosImpedidos;
     
     public Set<Long> getMinistrosCandidatos() {
-		return Optional.ofNullable(this.ministrosCandidatos).orElse(Collections.emptySet()); 
+		return ministrosCandidatos; 
 	}
 	
 	public Set<Long> getMinistrosImpedidos() {
-		return Optional.ofNullable(this.ministrosImpedidos).orElse(Collections.emptySet()); 
+		return Optional.ofNullable(ministrosImpedidos).orElse(Collections.emptySet()); 
 	}
 
 }

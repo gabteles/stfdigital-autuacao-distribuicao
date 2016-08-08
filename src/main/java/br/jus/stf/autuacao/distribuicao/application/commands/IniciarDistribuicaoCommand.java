@@ -1,5 +1,9 @@
 package br.jus.stf.autuacao.distribuicao.application.commands;
 
+import javax.validation.constraints.NotNull;
+
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -8,6 +12,8 @@ package br.jus.stf.autuacao.distribuicao.application.commands;
  */
 public class IniciarDistribuicaoCommand {
 	
+	@NotNull
+    @ApiModelProperty(value = "Identificador do processo", required=true)
 	private Long processoId;
 
 	/**

@@ -24,7 +24,7 @@ public class Distribuidor extends ValueObjectSupport<Distribuidor> {
 	@Transient
 	private PessoaId pessoa;
 	
-	public Distribuidor() {
+	Distribuidor() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

@@ -9,6 +9,7 @@ package br.jus.stf.autuacao.distribuicao.domain.model;
 public enum Status {
     
     DISTRIBUICAO(),
-    DISTRIBUIDO();
+    DISTRIBUIDO(),
+	PECAS_ORGANIZADAS();
 
 }

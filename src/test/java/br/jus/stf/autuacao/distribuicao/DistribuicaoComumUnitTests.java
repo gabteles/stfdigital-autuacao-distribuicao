@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.distribuicao;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -102,7 +103,7 @@ public class DistribuicaoComumUnitTests {
 		ministrosCandidatos.add(new MinistroId(48L));
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, null);
+		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, Collections.emptySet());
 		
 		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}

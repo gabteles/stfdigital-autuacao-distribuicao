@@ -34,7 +34,7 @@ public class FilaDistribuicao extends EntitySupport<FilaDistribuicao, Distribuic
    	@Enumerated(EnumType.STRING)
     private Status status;
     
-    public FilaDistribuicao() {
+    FilaDistribuicao() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     

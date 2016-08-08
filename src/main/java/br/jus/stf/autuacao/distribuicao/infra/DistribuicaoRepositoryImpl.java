@@ -14,8 +14,6 @@ import br.jus.stf.autuacao.distribuicao.domain.model.Distribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
-import br.jus.stf.autuacao.distribuicao.domain.model.ProcessoDistribuido;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rodrigo Barreiros
@@ -46,25 +44,9 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
     	return new DistribuicaoId(((BigInteger) q.getSingleResult()).longValue());
     }
     
-    // Processo
-    @SuppressWarnings("unchecked")
-	@Override
-    public <S extends ProcessoDistribuido> S saveProcesso(ProcessoDistribuido entity) {
-    	return (S)entityManager.merge(entity);
-    }
-    
-    @Override
-    public ProcessoDistribuido findOneProcesso(ProcessoId id) {
-    	TypedQuery<ProcessoDistribuido> q = entityManager.createQuery("FROM ProcessoDistribuido proc WHERE proc.processoId = :id", ProcessoDistribuido.class);
-    	q.setParameter("id", id);
-    	
-    	return q.getSingleResult();
-    }
-    
     // Fila de distribuição
-    @SuppressWarnings("unchecked")
     @Override
-	public <F extends FilaDistribuicao> F saveFilaDistribuicao(FilaDistribuicao entity) {
+	public <F extends FilaDistribuicao> F saveFilaDistribuicao(F entity) {
     	return (F)entityManager.merge(entity);
     }
     

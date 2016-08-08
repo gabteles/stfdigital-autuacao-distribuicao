@@ -2,7 +2,6 @@ package br.jus.stf.autuacao.distribuicao.domain.model;
 
 import static javax.persistence.FetchType.EAGER;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -40,8 +39,9 @@ public class DistribuicaoComum extends Distribuicao {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     
-	/**
+    /**
 	 * @param filaDistribuicao
+	 * @param ministroRepository
 	 * @param ministrosCandidatos
 	 * @param ministrosImpedidos
 	 */
@@ -50,6 +50,7 @@ public class DistribuicaoComum extends Distribuicao {
         
         Validate.notNull(ministroRepository, "Repositorório de ministros requerido.");
 		Validate.notEmpty(ministrosCandidatos, "Ministros candidatos requeridos.");
+		Validate.notNull(ministrosImpedidos, "Ministros impedidos requeridos.");
 		Validate.isTrue(isListasValidas(ministroRepository, ministrosCandidatos, ministrosImpedidos),
 				"As listas de candidatos e impedidos estão sobrepostas ou não contêm todos os ministros.");
         
@@ -70,10 +71,6 @@ public class DistribuicaoComum extends Distribuicao {
 	}
 	
 	private boolean isListasValidas(MinistroRepository ministroRepository, Set<MinistroId> candidatos, Set<MinistroId> impedidos) {
-		if (impedidos == null) {
-			impedidos = Collections.emptySet();
-		}
-		
 		if (ministroRepository.count() != candidatos.size() + impedidos.size()) {
 			return false;
 		}

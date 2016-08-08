@@ -28,9 +28,9 @@ public class DistribuicaoPrevencao extends Distribuicao {
     
 	@OneToMany(cascade = ALL, fetch = EAGER)
 	@JoinTable(name = "PROCESSO_PREVENTO", schema = "DISTRIBUICAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false), inverseJoinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
-	private Set<ProcessoDistribuido> processosPreventos = new HashSet<>(0);
+	private Set<Processo> processosPreventos = new HashSet<>(0);
     
-    public DistribuicaoPrevencao() {
+    DistribuicaoPrevencao() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     
@@ -39,7 +39,7 @@ public class DistribuicaoPrevencao extends Distribuicao {
 	 * @param justificativa
 	 * @param processosPreventos
 	 */
-	public DistribuicaoPrevencao(FilaDistribuicao filaDistribuicao, String justificativa, Set<ProcessoDistribuido> processosPreventos) {
+	public DistribuicaoPrevencao(FilaDistribuicao filaDistribuicao, String justificativa, Set<Processo> processosPreventos) {
 		super(filaDistribuicao);
 		super.justificar(justificativa);
 		
@@ -59,7 +59,7 @@ public class DistribuicaoPrevencao extends Distribuicao {
 		return TipoDistribuicao.PREVENCAO;
 	}
     
-    private boolean isListaValida(Set<ProcessoDistribuido> processosPreventos) {
+    private boolean isListaValida(Set<Processo> processosPreventos) {
 		MinistroId relator = processosPreventos.iterator().next().relator();
 		
 		return processosPreventos.stream().allMatch(processo -> relator.equals(processo.relator()));

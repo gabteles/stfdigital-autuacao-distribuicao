@@ -60,9 +60,7 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     }
     
     /**
-     * @param distribuicaoId
-     * @param processoId
-     * @param status
+     * @param filaDistribuicao
      */
     public Distribuicao(FilaDistribuicao filaDistribuicao) {
     	Validate.notNull(filaDistribuicao, "Fila de distribuição requerida.");
@@ -108,9 +106,21 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     	dataDistribuicao = new Date();
     }
     
+    /**
+     * @param justificativa
+     */
     public void justificar(String justificativa) {
     	Validate.notEmpty(justificativa, "Justificativa requerida.");
     	this.justificativa = justificativa;
+    }
+    
+    /**
+     * @param status
+     */
+    public void alterarStatus(Status status) {
+    	Validate.notNull(status, "Status requerido.");
+    	
+    	this.status = status;
     }
 
     @Override

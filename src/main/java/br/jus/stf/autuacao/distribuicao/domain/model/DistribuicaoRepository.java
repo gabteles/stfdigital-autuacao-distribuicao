@@ -1,7 +1,5 @@
 package br.jus.stf.autuacao.distribuicao.domain.model;
 
-import br.jus.stf.core.shared.processo.ProcessoId;
-
 /**
  * @author Rodrigo Barreiros
  * 
@@ -15,7 +13,7 @@ public interface DistribuicaoRepository {
 	 * @param entity
 	 * @return
 	 */
-	<S extends Distribuicao> S save(S entity);
+	<D extends Distribuicao> D save(D entity);
     
     /**
      * @param id
@@ -28,25 +26,12 @@ public interface DistribuicaoRepository {
      */
     DistribuicaoId nextDistribuicaoId();
     
-    // Processo
-    /**
-     * @param entity
-     * @return
-     */
-    <P extends ProcessoDistribuido> P saveProcesso(ProcessoDistribuido entity);
-    
-    /**
-     * @param id
-     * @return
-     */
-    ProcessoDistribuido findOneProcesso(ProcessoId id);
-    
     // Fila de distribuição
     /**
      * @param entity
      * @return
      */
-    <F extends FilaDistribuicao> F saveFilaDistribuicao(FilaDistribuicao entity);
+    <F extends FilaDistribuicao> F saveFilaDistribuicao(F entity);
     
     /**
      * @param id

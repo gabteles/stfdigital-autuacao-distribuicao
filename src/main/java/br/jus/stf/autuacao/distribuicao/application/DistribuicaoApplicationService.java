@@ -21,7 +21,8 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoPrevencao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
-import br.jus.stf.autuacao.distribuicao.domain.model.ProcessoDistribuido;
+import br.jus.stf.autuacao.distribuicao.domain.model.OrganizarPecaRepository;
+import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.framework.component.command.Command;
@@ -36,6 +37,7 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 03.02.2016
  */
 @ApplicationService
+@Transactional
 public class DistribuicaoApplicationService {
         
     @Autowired
@@ -49,6 +51,9 @@ public class DistribuicaoApplicationService {
     
     @Autowired
     private DistribuidorAdapter distribuidorAdapter;
+    
+    @Autowired
+    private OrganizarPecaRepository organizarPecaRepository;
     
     /**
      * @param command
@@ -68,10 +73,8 @@ public class DistribuicaoApplicationService {
     /**
      * @param command
      */
-    @Transactional
     @Command(description = "Distribuição comum")
     public void handle(DistribuirProcessoComumCommand command) {
-        
 		Set<MinistroId> ministrosCandidatos = command.getMinistrosCandidatos().stream()
 				.map(ministro -> new MinistroId(ministro))
 				.collect(Collectors.toSet());
@@ -93,12 +96,10 @@ public class DistribuicaoApplicationService {
     /**
      * @param command
      */
-    @Transactional
     @Command(description = "Distribuição por prevenção")
     public void handle(DistribuirProcessoPrevencaoCommand command) {
-    	    	
-    	Set<ProcessoDistribuido> processosPreventos = command.getProcessosPreventos().stream()
-				.map(processo -> distribuicaoRepository.findOneProcesso(new ProcessoId(processo)))
+		Set<Processo> processosPreventos = command.getProcessosPreventos().stream()
+				.map(processo -> organizarPecaRepository.findOne(new ProcessoId(processo)))
 				.collect(Collectors.toSet());
     	
     	DistribuicaoId distribuicaoId = new DistribuicaoId(command.getDistribuicaoId());
@@ -115,11 +116,10 @@ public class DistribuicaoApplicationService {
 	 * @param distribuicao
 	 */
 	private void executarDistribuicao(FilaDistribuicao filaDistribuicao, Distribuicao distribuicao) {
-        
         Distribuidor distribuidor = distribuidorAdapter.distribuidor();
         distribuicao.executar(distribuidor);
         distribuicaoRepository.save(distribuicao);
-        distribuicaoRepository.saveProcesso(new ProcessoDistribuido(distribuicao.processo(), distribuicao.relator()));
+        organizarPecaRepository.save(new Processo(distribuicao.processo(), distribuicao.relator()));
         distribuicaoRepository.saveFilaDistribuicao(filaDistribuicao);
 	}
 

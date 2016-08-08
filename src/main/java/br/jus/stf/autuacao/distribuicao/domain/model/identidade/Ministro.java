@@ -26,7 +26,7 @@ public class Ministro extends EntitySupport<Ministro, MinistroId> {
 	@Column(name = "NOM_MINISTRO")
 	private String nome;
 	
-	public Ministro() {
+	Ministro() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
