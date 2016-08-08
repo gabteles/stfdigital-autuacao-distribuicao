@@ -56,7 +56,6 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
     @Override
     public ProcessoDistribuido findOneProcesso(ProcessoId id) {
     	TypedQuery<ProcessoDistribuido> q = entityManager.createQuery("FROM ProcessoDistribuido proc WHERE proc.processoId = :id", ProcessoDistribuido.class);
-    	
     	q.setParameter("id", id);
     	
     	return q.getSingleResult();
@@ -72,7 +71,6 @@ public class DistribuicaoRepositoryImpl extends SimpleJpaRepository<Distribuicao
     @Override
     public FilaDistribuicao findOneFilaDistribuicao(DistribuicaoId id) {
     	TypedQuery<FilaDistribuicao> q = entityManager.createQuery("FROM FilaDistribuicao fila WHERE fila.distribuicaoId = :id", FilaDistribuicao.class);
-    	
     	q.setParameter("id", id);
     	
     	return q.getSingleResult();

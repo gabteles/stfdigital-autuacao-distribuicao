@@ -5,6 +5,7 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,6 +84,9 @@ public class DistribuicaoApplicationService {
     	
 		Distribuicao distribuicao = new DistribuicaoComum(filaDistribuicao, ministroRepository, ministrosCandidatos, ministrosImpedidos);
 		
+		if(StringUtils.isNotBlank(command.getJustificativa())) {
+			distribuicao.justificar(command.getJustificativa());
+		}
 		executarDistribuicao(filaDistribuicao, distribuicao);
     }
     
