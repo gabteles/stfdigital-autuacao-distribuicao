@@ -24,7 +24,7 @@ import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
  * @since 1.0.0
  * @since 17.02.2016
  */
-@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false", "spring.cloud.config.enabled:false"}, classes = ApplicationContextInitializer.class)
 @WithMockOauth2User("distribuidor")
 public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	
@@ -39,7 +39,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 				field("ministrosCandidatos", array(28, 30, 36, 42, 44, 45, 46, 47, 48, 49)),
 				field("ministrosImpedidos", array(1, 41))
 		);
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(distribuirProcessoComumJson.toString()));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao/comum").contentType(APPLICATION_JSON).content(distribuirProcessoComumJson.toString()));
 		
 		result.andExpect(status().isOk());
 	}
@@ -55,7 +55,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 				field("tipoDistribuicao", "PREVENCAO"),
 				field("processosPreventos", array(5521,4978823))
 		);
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(distribuirProcessoPrevencaoJson.toString()));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao/prevencao").contentType(APPLICATION_JSON).content(distribuirProcessoPrevencaoJson.toString()));
 		
 		result.andExpect(status().isOk());
 	}
@@ -63,7 +63,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	@Test
     public void naoDeveDistribuirUmProcessoInvalido() throws Exception {
         String processoInvalido = "{}";
-        ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processoInvalido));
+        ResultActions result = mockMvc.perform(post("/api/distribuicao/prevencao").contentType(APPLICATION_JSON).content(processoInvalido));
         
         result.andExpect(status().isBadRequest());
     }
@@ -79,7 +79,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 				field("ministrosCandidatos", array(28,30,36,42,44,45,46,47,48,49)),
 				field("ministrosImpedidos", array(28,1,41))
 		);
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processoInvalidoJson.toString()));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao/prevencao").contentType(APPLICATION_JSON).content(processoInvalidoJson.toString()));
 		
 		result.andExpect(status().isBadRequest());
 	}
@@ -95,7 +95,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 				field("tipoDistribuicao", "PREVENCAO"),
 				field("processosPreventos", array(5585,5521,4978823))
 		);
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processoInvalidoJson.toString()));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao/prevencao").contentType(APPLICATION_JSON).content(processoInvalidoJson.toString()));
 		
 		result.andExpect(status().isBadRequest());
 	}
@@ -110,7 +110,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 				field("tipoDistribuicao", "PREVENCAO"),
 				field("processosPreventos", array(5521,4978823))
 		);
-		ResultActions result = mockMvc.perform(post("/api/distribuicao").contentType(APPLICATION_JSON).content(processoInvalido.toString()));
+		ResultActions result = mockMvc.perform(post("/api/distribuicao/prevencao").contentType(APPLICATION_JSON).content(processoInvalido.toString()));
 		
 		result.andExpect(status().isBadRequest());
 	}

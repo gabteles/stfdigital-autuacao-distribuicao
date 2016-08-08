@@ -15,9 +15,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoComum;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
-import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
-import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.identidade.PessoaId;
@@ -55,10 +53,9 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(1L));
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, ministrosCandidatos, ministrosImpedidos);
 		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, ministrosImpedidos);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 		
 		MinistroId relator = distribuicao.relator();
 		
@@ -86,10 +83,9 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(48L));
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, ministrosCandidatos, ministrosImpedidos);
 		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, ministrosImpedidos);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -106,10 +102,9 @@ public class DistribuicaoComumUnitTests {
 		ministrosCandidatos.add(new MinistroId(48L));
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, ministrosCandidatos, null);
 		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, null);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -121,10 +116,9 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(48L));
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, null, ministrosImpedidos);
 		Distribuicao distribuicao = distribuicaoComum(fila, null, ministrosImpedidos);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -132,27 +126,18 @@ public class DistribuicaoComumUnitTests {
 		Set<MinistroId> ministrosCandidatos = new HashSet<>(0);
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, ministrosCandidatos, null);
 		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, null);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
 	
 	private FilaDistribuicao filaDistribuicao() {
 		return new FilaDistribuicao(new DistribuicaoId(1L), new ProcessoId(1L), Status.DISTRIBUICAO);
 	}
 	
-	private ParametroDistribuicao parametroDistribuicao(FilaDistribuicao filaDistribuicao,
-			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos) {
-		return new ParametroDistribuicao(filaDistribuicao, TipoDistribuicao.COMUM,
-				"Familiares ou amigos relacionados aos ministros impedidos.", ministrosCandidatos, ministrosImpedidos,
-				null);
-	}
-	
 	private DistribuicaoComum distribuicaoComum(FilaDistribuicao filaDistribuicao, Set<MinistroId> ministrosCandidatos,
 			Set<MinistroId> ministrosImpedidos) {
-		return new DistribuicaoComum(filaDistribuicao.identity(), filaDistribuicao.processo(), Status.DISTRIBUICAO,
-				ministrosCandidatos, ministrosImpedidos, mockMinistroRepository);
+		return new DistribuicaoComum(filaDistribuicao, mockMinistroRepository, ministrosCandidatos, ministrosImpedidos);
 	}
 	
 }

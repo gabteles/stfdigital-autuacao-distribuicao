@@ -2,8 +2,8 @@ package br.jus.stf.autuacao.distribuicao.domain.model;
 
 import static javax.persistence.FetchType.EAGER;
 
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -17,7 +17,6 @@ import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.shared.identidade.MinistroId;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rafael Alencar
@@ -37,35 +36,32 @@ public class DistribuicaoComum extends Distribuicao {
 	@CollectionTable(name = "MINISTRO_IMPEDIDO", schema = "DISTRIBUICAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false))
 	private Set<MinistroId> ministrosImpedidos = new HashSet<>(0);
     
-    public DistribuicaoComum() {
+    DistribuicaoComum() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     
 	/**
-	 * @param distribuicaoId
-	 * @param processoId
-	 * @param status
+	 * @param filaDistribuicao
 	 * @param ministrosCandidatos
 	 * @param ministrosImpedidos
 	 */
-	public DistribuicaoComum(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status,
-			Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos, MinistroRepository ministroRepository) {
-        super(distribuicaoId, processoId, status);
+	public DistribuicaoComum(FilaDistribuicao filaDistribuicao, MinistroRepository ministroRepository, Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos) {
+        super(filaDistribuicao);
         
+        Validate.notNull(ministroRepository, "Repositorório de ministros requerido.");
 		Validate.notEmpty(ministrosCandidatos, "Ministros candidatos requeridos.");
-		Validate.notNull(ministroRepository, "Repositório requerido.");
-		Validate.isTrue(listasMinistrosValidas(ministrosCandidatos, ministrosImpedidos, ministroRepository),
+		Validate.isTrue(isListasValidas(ministroRepository, ministrosCandidatos, ministrosImpedidos),
 				"As listas de candidatos e impedidos estão sobrepostas ou não contêm todos os ministros.");
         
         this.ministrosCandidatos = ministrosCandidatos;
-        this.ministrosImpedidos = Optional.ofNullable(ministrosImpedidos).orElse(new HashSet<>(0));
+        this.ministrosImpedidos = ministrosImpedidos;
     }
 	
 	@Override
 	public MinistroId sorteio() {
 		int indice = new Random().nextInt(ministrosCandidatos.size());
 		
-		return (MinistroId)ministrosCandidatos.toArray()[indice];
+		return (MinistroId) ministrosCandidatos.toArray()[indice];
 	}
 	
 	@Override
@@ -73,15 +69,14 @@ public class DistribuicaoComum extends Distribuicao {
 		return TipoDistribuicao.COMUM;
 	}
 	
-	private boolean listasMinistrosValidas(Set<MinistroId> candidatos, Set<MinistroId> impedidos, MinistroRepository ministroRepository) {
-    	if (candidatos == null) {
-    		return false;
-    	}
-    	
-		if (ministroRepository.count() != candidatos.size()
-				+ Optional.ofNullable(impedidos).orElse(new HashSet<>(0)).size()) {
-    		return false;
-    	}
+	private boolean isListasValidas(MinistroRepository ministroRepository, Set<MinistroId> candidatos, Set<MinistroId> impedidos) {
+		if (impedidos == null) {
+			impedidos = Collections.emptySet();
+		}
+		
+		if (ministroRepository.count() != candidatos.size() + impedidos.size()) {
+			return false;
+		}
     	
 		Set<MinistroId> intersecaoCandidatoImpedido = new HashSet<>(candidatos);
 		Set<MinistroId> intersecaoImpedidoCandidato = new HashSet<>(impedidos);
@@ -89,8 +84,7 @@ public class DistribuicaoComum extends Distribuicao {
 		intersecaoCandidatoImpedido.retainAll(impedidos);
 		intersecaoImpedidoCandidato.retainAll(candidatos);
 		
-		return intersecaoCandidatoImpedido.isEmpty() &&
-				intersecaoImpedidoCandidato.isEmpty();
+		return intersecaoCandidatoImpedido.isEmpty() &&	intersecaoImpedidoCandidato.isEmpty();
 	}
     
 }

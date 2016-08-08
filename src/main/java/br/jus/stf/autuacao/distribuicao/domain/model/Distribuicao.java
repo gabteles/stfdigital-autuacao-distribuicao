@@ -13,7 +13,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
@@ -47,16 +46,16 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     @Embedded
 	private MinistroId relator;
     
-    @Column(name = "TXT_JUSTIFICATIVA")
-	private String justificativa;
-    
     @Embedded
     private Distribuidor distribuidor;
     
     @Column(name = "DAT_DISTRIBUICAO")
     private Date dataDistribuicao;
     
-    public Distribuicao() {
+    @Column(name = "TXT_JUSTIFICATIVA")
+	private String justificativa;
+    
+    Distribuicao() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
     
@@ -65,14 +64,12 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
      * @param processoId
      * @param status
      */
-    public Distribuicao(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status) {
-    	Validate.notNull(distribuicaoId, "Distribuição requerida.");
-    	Validate.notNull(processoId, "Processo requerido.");
-    	Validate.notNull(status, "Status requerido.");
+    public Distribuicao(FilaDistribuicao filaDistribuicao) {
+    	Validate.notNull(filaDistribuicao, "Fila de distribuição requerida.");
     	
-        this.distribuicaoId = distribuicaoId;
-        this.processoId = processoId;
-        this.status = status;
+        this.distribuicaoId = filaDistribuicao.identity();
+        this.processoId = filaDistribuicao.processo();
+        this.status = filaDistribuicao.status();
     }
     
     /**
@@ -100,24 +97,20 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     }
     
     /**
-     * @param parametros
      * @param distribuidor
      * @param status
      */
-    public void executar(ParametroDistribuicao parametros, Distribuidor distribuidor, Status status) {
-		Validate.notNull(parametros, "Parâmetros requeridos.");
+    public void executar(Distribuidor distribuidor) {
 		Validate.notNull(distribuidor, "Distribuidor requerido.");
-		Validate.notNull(parametros.tipoDistribuicao(), "Tipo de distribução requerido.");
-		Validate.notNull(status, "Status requerido.");
-		Validate.isTrue(
-				!parametros.tipoDistribuicao().exigeJustificativa() || !StringUtils.isEmpty(parametros.justificativa()),
-				"Tipo de distribuição exige justificativa.");
-    	
-		relator = sorteio();
-    	justificativa = parametros.justificativa();
+		
         this.distribuidor = distribuidor;
-    	this.status = status;
+        relator = sorteio();
     	dataDistribuicao = new Date();
+    }
+    
+    public void justificar(String justificativa) {
+    	Validate.notEmpty(justificativa, "Justificativa requerida.");
+    	this.justificativa = justificativa;
     }
 
     @Override

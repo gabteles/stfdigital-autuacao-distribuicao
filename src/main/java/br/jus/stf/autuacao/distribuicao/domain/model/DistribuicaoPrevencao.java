@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.core.shared.identidade.MinistroId;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rafael Alencar
@@ -36,18 +35,16 @@ public class DistribuicaoPrevencao extends Distribuicao {
     }
     
 	/**
-	 * @param distribuicaoId
-	 * @param processoId
-	 * @param status
+	 * @param filaDistribuicao
+	 * @param justificativa
 	 * @param processosPreventos
 	 */
-	public DistribuicaoPrevencao(DistribuicaoId distribuicaoId, ProcessoId processoId, Status status,
-			Set<ProcessoDistribuido> processosPreventos) {
-		super(distribuicaoId, processoId, status);
+	public DistribuicaoPrevencao(FilaDistribuicao filaDistribuicao, String justificativa, Set<ProcessoDistribuido> processosPreventos) {
+		super(filaDistribuicao);
+		super.justificar(justificativa);
 		
         Validate.notEmpty(processosPreventos, "Processos preventos requeridos.");
-		Validate.isTrue(listaPreventosValida(processosPreventos),
-				"Todos os processos preventos devem ser do mesmo relator.");
+		Validate.isTrue(isListaValida(processosPreventos), "Todos os processos preventos devem ser do mesmo relator.");
         
         this.processosPreventos.addAll(processosPreventos);
     }
@@ -62,7 +59,7 @@ public class DistribuicaoPrevencao extends Distribuicao {
 		return TipoDistribuicao.PREVENCAO;
 	}
     
-    private boolean listaPreventosValida(Set<ProcessoDistribuido> processosPreventos) {
+    private boolean isListaValida(Set<ProcessoDistribuido> processosPreventos) {
 		MinistroId relator = processosPreventos.iterator().next().relator();
 		
 		return processosPreventos.stream().allMatch(processo -> relator.equals(processo.relator()));

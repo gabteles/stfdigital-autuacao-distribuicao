@@ -12,10 +12,8 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoPrevencao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
-import br.jus.stf.autuacao.distribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.ProcessoDistribuido;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
-import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -33,11 +31,9 @@ public class DistribuicaoPrevencaoUnitTests {
 		processosPreventos.add(mockPreventoRelator1);
 
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, processosPreventos, "Assuntos correlatos.");
-		Distribuicao distribuicao = new DistribuicaoPrevencao(fila.identity(), fila.processo(), fila.status(),
-				parametros.processosPreventos());
+		Distribuicao distribuicao = new DistribuicaoPrevencao(fila, "Assuntos correlatos.", processosPreventos);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 		
 		assertEquals(mockPreventoRelator1.relator(), distribuicao.relator());
 	}
@@ -49,10 +45,9 @@ public class DistribuicaoPrevencaoUnitTests {
 		processosPreventos.add(mockPreventoRelator1);
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, processosPreventos, "");
-		DistribuicaoPrevencao distribuicao = new DistribuicaoPrevencao(fila.identity(), fila.processo(), fila.status(), parametros.processosPreventos());
+		DistribuicaoPrevencao distribuicao = new DistribuicaoPrevencao(fila, "", processosPreventos);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -63,20 +58,13 @@ public class DistribuicaoPrevencaoUnitTests {
 		processosPreventos.add(mockPreventoRelator2);
 		
 		FilaDistribuicao fila = filaDistribuicao();
-		ParametroDistribuicao parametros = parametroDistribuicao(fila, processosPreventos, "Assuntos correlatos.");
-		Distribuicao distribuicao = new DistribuicaoPrevencao(fila.identity(), fila.processo(), fila.status(),
-				parametros.processosPreventos());
+		Distribuicao distribuicao = new DistribuicaoPrevencao(fila, "Assuntos correlatos.", processosPreventos);
 		
-		distribuicao.executar(parametros, new Distribuidor("distribuidor", new PessoaId(1L)), Status.DISTRIBUIDO);
+		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
 	
 	private FilaDistribuicao filaDistribuicao() {
 		return new FilaDistribuicao(new DistribuicaoId(1L), new ProcessoId(1L), Status.DISTRIBUICAO);
-	}
-	
-	private ParametroDistribuicao parametroDistribuicao(FilaDistribuicao filaDistribuicao, Set<ProcessoDistribuido> processosPreventos, String justificativa) {
-		return new ParametroDistribuicao(filaDistribuicao, TipoDistribuicao.PREVENCAO,
-				justificativa, null, null, processosPreventos);
 	}
 	
 }
