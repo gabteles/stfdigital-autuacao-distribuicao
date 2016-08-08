@@ -12,7 +12,7 @@ export class DistribuicaoComumService {
 
     /** @ngInject **/
     constructor(private $http: IHttpService, properties : Properties) { 
-    	this.apiDistribuicao = properties.apiUrl + API_DISTRIBUICAO;
+    	this.apiDistribuicao = properties.apiUrl + API_DISTRIBUICAO + "/comum";
     }
     
     /*
