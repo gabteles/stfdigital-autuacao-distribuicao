@@ -35,7 +35,7 @@ import br.jus.stf.core.shared.documento.DocumentoTemporarioId;
  * @since 1.0.0
  * @since 05.08.2016
  */
-@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false", "spring.cloud.config.enabled:false"}, classes = ApplicationContextInitializer.class)
 @WithMockOauth2User("organizador-pecas")
 @ActiveProfiles("development")
 public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
