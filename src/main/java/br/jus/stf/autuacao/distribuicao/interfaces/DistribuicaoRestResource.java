@@ -19,7 +19,6 @@ import br.jus.stf.autuacao.distribuicao.application.DistribuicaoApplicationServi
 import br.jus.stf.autuacao.distribuicao.application.commands.DistribuirProcessoComumCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.DistribuirProcessoPrevencaoCommand;
 import br.jus.stf.autuacao.distribuicao.domain.ProcessoAdapter;
-import br.jus.stf.autuacao.distribuicao.domain.model.Distribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;

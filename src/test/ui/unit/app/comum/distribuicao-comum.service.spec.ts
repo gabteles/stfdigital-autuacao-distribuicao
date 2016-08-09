@@ -3,7 +3,7 @@ import {DistribuirProcessoComumCommand, Ministro} from "distribuicao/distribuica
 import "distribuicao/distribuicao/comum/distribuicao-comum.service";
 import "distribuicao/distribuicao/distribuicao.module";
 
-describe("Teste do serviço de autuacao recursal", () => {
+describe("Teste do serviço de distribuição comum", () => {
 
     let $httpBackend : ng.IHttpBackendService;
     let distribuicaoComumService : DistribuicaoComumService;
