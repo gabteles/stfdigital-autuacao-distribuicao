@@ -102,6 +102,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	 */
 	public void juntarPeca(Peca peca) {
 		Validate.notNull(peca, "Peça requerida.");
+		Validate.isTrue(pecas.contains(peca), "Peça não pertence ao processo.");
 		
 		peca.juntar();
 	}
@@ -116,6 +117,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	 */
 	public void substituirPeca(Peca pecaOriginal, Peca pecaSubstituta) {
 		Validate.notNull(pecaOriginal, "Peça original requerida.");
+		Validate.isTrue(pecas.contains(pecaOriginal), "Peça original não pertence ao processo.");
 		Validate.notNull(pecaSubstituta, "Peça substituta requerida.");
 		
 		controladorOrdenacaoPecas.substituirPeca(pecaOriginal, pecaSubstituta);
@@ -132,6 +134,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	 */
 	public void editarPeca(Peca pecaOriginal, TipoPeca tipoPeca, String descricao, Integer numeroOrdem, Visibilidade visibilidade) {
 		Validate.notNull(pecaOriginal, "Peça original requerida.");
+		Validate.isTrue(pecas.contains(pecaOriginal), "Peça original não pertence ao processo.");
 		Validate.notNull(tipoPeca, "Tipo de peça requerida.");
 		Validate.notBlank(descricao, "Descrição requerida.");
 		Validate.notNull(numeroOrdem, "Número de ordem requerido.");
@@ -154,6 +157,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	 */
 	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
 		Validate.notNull(pecaDividida, "Peça dividida requerida.");
+		Validate.isTrue(pecas.contains(pecaDividida), "Peça dividida não pertence ao processo.");
 		Validate.notEmpty(pecasDivisao, "Lista de peças resultante da divisão requerida.");
 		Validate.isTrue(pecasDivisao.size() >= 2, "A divisão deve originar ao menos duas peças.");
 
@@ -174,6 +178,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	public void unirPecas(List<Peca> pecasUniao, Peca pecaUnida) {
 		Validate.notEmpty(pecasUniao, "Lista de peças unidas requerida.");
 		Validate.isTrue(pecasUniao.size() >= 2, "A lista de peças unidas deve ter ao menos duas peças.");
+		Validate.isTrue(pecas.containsAll(pecasUniao), "Algumas das peças unidas não pertencem ao processo.");
 		Validate.notNull(pecaUnida, "Peça resultado da união requerida.");
 		
 		Integer menorNumeroOrdem = pecasUniao.stream().min((p1, p2) -> p1.numeroOrdem().compareTo(p2.numeroOrdem())).get().numeroOrdem();
@@ -190,6 +195,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	 */
 	public void removerPeca(Peca peca) {
 		Validate.notNull(peca, "Peça requerida.");
+		Validate.isTrue(pecas.contains(peca), "Peça não pertence ao processo.");
 		
 		peca.excluir();
 	}

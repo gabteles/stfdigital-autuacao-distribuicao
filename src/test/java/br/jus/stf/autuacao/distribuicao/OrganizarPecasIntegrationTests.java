@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.github.jsonj.JsonObject;
@@ -36,6 +37,7 @@ import br.jus.stf.core.shared.documento.DocumentoTemporarioId;
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
 @WithMockOauth2User("organizador-pecas")
+@ActiveProfiles("development")
 public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	
 	@MockBean
@@ -55,7 +57,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void inserirPeca() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecas", array(object(
 						field("documentoTemporarioId", idDocTemp),
 						field("tipoPecaId", 101),
@@ -82,7 +84,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void excluirPeca() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecas", array(9000, 9001))
 		);
 		ResultActions result = mockMvc.perform(post("/api/organizacao-pecas/excluir").contentType(APPLICATION_JSON).content(pecaJson.toString()));
@@ -103,7 +105,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void juntarPeca() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecaId", 9001)
 		);
 		ResultActions result = mockMvc.perform(post("/api/organizacao-pecas/juntar").contentType(APPLICATION_JSON).content(pecaJson.toString()));
@@ -114,7 +116,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void naoDeveJuntarPecaSemDadosObrigatorios() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003)
+				field("processoId", 9002)
 		);
 		ResultActions result = mockMvc.perform(post("/api/organizacao-pecas/juntar").contentType(APPLICATION_JSON).content(pecaJson.toString()));
 		
@@ -124,7 +126,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void editarPeca() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecaId", 9001),
 				field("tipoPecaId", 1060),
 				field("descricao", "Despacho de Relator"),
@@ -139,7 +141,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void naoDeveEditarPecaSemDadosObrigatorios() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecaId", 9001),
 				field("tipoPecaId", 1060),
 				field("numeroOrdem", 2),
@@ -164,9 +166,11 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
 	public void organizarPecasFinalizandoTarefa() throws Exception {
+		loadDataTests("organizarPecasFinalizandoTarefa.sql");
+		
 		JsonObject pecaJson = object(
-				field("distribuicaoId", 9003),
-				field("pecas", array(9001, 9000)),
+				field("distribuicaoId", 9004),
+				field("pecas", array(9003, 9002)),
 				field("finalizarTarefa", true)
 		);
 		ResultActions result = mockMvc.perform(post("/api/organizacao-pecas/organizar").contentType(APPLICATION_JSON).content(pecaJson.toString()));
@@ -188,7 +192,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void unirPecas() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecas", array(9001, 9000))
 		);
 		ResultActions result = mockMvc.perform(post("/api/organizacao-pecas/unir").contentType(APPLICATION_JSON).content(pecaJson.toString()));
@@ -199,7 +203,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void naoDeveUnirPecasSemDadosObrigatorios() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecas", array())
 		);
 		ResultActions result = mockMvc.perform(post("/api/organizacao-pecas/unir").contentType(APPLICATION_JSON).content(pecaJson.toString()));
@@ -210,7 +214,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void dividirPeca() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecaOriginalId", 9000),
 				field("pecas", array(
 						object(
@@ -239,7 +243,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	@Test
 	public void naoDeveDividirPecaSemDadosObrigatorios() throws Exception {
 		JsonObject pecaJson = object(
-				field("processoId", 9003),
+				field("processoId", 9002),
 				field("pecas", array(
 						object(
 								field("documentoTemporarioId", idDocTemp),
