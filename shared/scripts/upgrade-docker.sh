@@ -3,8 +3,8 @@ set -e
 
 # http://graysonkoonce.com/managing-docker-and-docker-compose-versions-on-travis-ci/
 
-DOCKER_VERSION=1.11.2-0~trusty
-DOCKER_COMPOSE_VERSION=1.7.0
+DOCKER_VERSION=1.12.0-0~trusty
+DOCKER_COMPOSE_VERSION=1.8.0
 
 # list docker-engine versions
 apt-cache madison docker-engine
