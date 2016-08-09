@@ -10,11 +10,11 @@ import {DistribuicaoCommonService} from "./commons/distribuicao-common.service";
  * Modulo de configuração do serviço de distribuição de processos.
  * autor: anderson.araujo
  * since: 12/05/2016.
+ * alter: 05/08/2016 viniciusk
 */
 
 /** @ngInject **/
 function config($stateProvider: IStateProvider,
-                msNavigationServiceProvider: any,
                 properties: Properties) {
 	
     $stateProvider.state('app.tarefas.distribuicao', {
@@ -68,16 +68,6 @@ function config($stateProvider: IStateProvider,
        params : {
            informationId : undefined
        }
-    });
-    
-    console.log(properties.apiUrl);
-    
-    msNavigationServiceProvider.saveItem('distribuicao', {
-        title : 'Distribuição de Processos',
-        icon : 'icon-magnify',
-        state : 'app.distribuicao',
-        translation : 'DISTRIBUICAO.NOVA',
-        weight : 1
     });
 }
 
