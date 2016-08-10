@@ -55,6 +55,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "inserir-pecas")
 	public void inserirPeca() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
@@ -82,6 +83,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "excluir-pecas")
 	public void excluirPeca() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
@@ -103,6 +105,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "juntar-peca")
 	public void juntarPeca() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
@@ -124,6 +127,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "editar-peca")
 	public void editarPeca() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
@@ -153,6 +157,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
     
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "organizar-pecas")
 	public void organizarPecasSemFinalizarTarefa() throws Exception {
 		JsonObject pecaJson = object(
 				field("distribuicaoId", 9003),
@@ -165,6 +170,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "organizar-pecas")
 	public void organizarPecasFinalizandoTarefa() throws Exception {
 		loadDataTests("organizarPecasFinalizandoTarefa.sql");
 		
@@ -190,6 +196,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "unir-pecas")
 	public void unirPecas() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
@@ -212,6 +219,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "dividir-peca")
 	public void dividirPeca() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
