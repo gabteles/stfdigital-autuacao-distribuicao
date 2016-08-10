@@ -29,6 +29,7 @@ import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-comum")
 	public void distribuiProcessoComum() throws Exception {
 		loadDataTests("distribuirProcessoEletronicoOriginario.sql");
 
@@ -45,6 +46,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	}
 
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-prevencao")
 	public void distribuiProcessoPrevencao() throws Exception {
 		loadDataTests("distribuirProcessoFisicoOriginario.sql");
 		
@@ -69,6 +71,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-comum")
 	public void naoDeveDistribuirComumQuandoHaSobreposicaoDeMinistros() throws Exception {
 		loadDataTests("distribuicaoQueNaoDevePassar-limpar.sql", "distribuicaoQueNaoDevePassar.sql");
 		
@@ -85,6 +88,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-prevencao")
 	public void naoDeveDistribuirPrevencaoQuandoProcessosTiveremRelatorDiferentes() throws Exception {
 		loadDataTests("distribuicaoQueNaoDevePassar-limpar.sql", "distribuicaoQueNaoDevePassar.sql");
 		
