@@ -73,7 +73,7 @@ public class DistribuicaoApplicationService {
     /**
      * @param command
      */
-    @Command(description = "Distribuição comum")
+    @Command(value = "distribuir-processo", description = "Distribuição comum")
     public void handle(DistribuirProcessoComumCommand command) {
 		Set<MinistroId> ministrosCandidatos = command.getMinistrosCandidatos().stream()
 				.map(ministro -> new MinistroId(ministro))
@@ -96,7 +96,7 @@ public class DistribuicaoApplicationService {
     /**
      * @param command
      */
-    @Command(description = "Distribuição por prevenção")
+    @Command(value = "distribuir-processo", description = "Distribuição por prevenção")
     public void handle(DistribuirProcessoPrevencaoCommand command) {
 		Set<Processo> processosPreventos = command.getProcessosPreventos().stream()
 				.map(processo -> organizarPecaRepository.findOne(new ProcessoId(processo)))
