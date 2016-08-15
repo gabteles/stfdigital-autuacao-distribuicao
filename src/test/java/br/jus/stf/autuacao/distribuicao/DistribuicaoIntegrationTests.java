@@ -25,11 +25,11 @@ import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
  * @since 17.02.2016
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false", "spring.cloud.config.enabled:false"}, classes = ApplicationContextInitializer.class)
-@WithMockOauth2User("distribuidor")
+@WithMockOauth2User(value = "distribuidor", components = "distribuir-processo")
 public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
-	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-comum")
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo")
 	public void distribuiProcessoComum() throws Exception {
 		loadDataTests("distribuirProcessoEletronicoOriginario.sql");
 
@@ -46,7 +46,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	}
 
 	@Test
-	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-prevencao")
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo")
 	public void distribuiProcessoPrevencao() throws Exception {
 		loadDataTests("distribuirProcessoFisicoOriginario.sql");
 		
@@ -71,7 +71,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
-	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-comum")
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo")
 	public void naoDeveDistribuirComumQuandoHaSobreposicaoDeMinistros() throws Exception {
 		loadDataTests("distribuicaoQueNaoDevePassar-limpar.sql", "distribuicaoQueNaoDevePassar.sql");
 		
@@ -88,7 +88,7 @@ public class DistribuicaoIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
-	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo-prevencao")
+	@WithMockOauth2User(value = "organizador-pecas", components = "distribuir-processo")
 	public void naoDeveDistribuirPrevencaoQuandoProcessosTiveremRelatorDiferentes() throws Exception {
 		loadDataTests("distribuicaoQueNaoDevePassar-limpar.sql", "distribuicaoQueNaoDevePassar.sql");
 		
