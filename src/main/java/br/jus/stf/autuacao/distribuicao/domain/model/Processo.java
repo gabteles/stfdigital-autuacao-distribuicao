@@ -139,8 +139,8 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 		Validate.notBlank(descricao, "Descrição requerida.");
 		Validate.notNull(numeroOrdem, "Número de ordem requerido.");
 		Validate.notNull(visibilidade, "Visibilidade requerida.");
-		Validate.isTrue(numeroOrdem <= controladorOrdenacaoPecas.ultimoNumeroOrdemPeca() &&
-				numeroOrdem >= controladorOrdenacaoPecas.primeiroNumeroOrdemPeca(), "Número de ordem inválido.");
+		Validate.inclusiveBetween(controladorOrdenacaoPecas.primeiroNumeroOrdemPeca(),
+				controladorOrdenacaoPecas.ultimoNumeroOrdemPeca(), numeroOrdem, "Número de ordem inválido.");
 		
 		if (!pecaOriginal.numeroOrdem().equals(numeroOrdem)) {
 			controladorOrdenacaoPecas.reordenarPeca(pecaOriginal, numeroOrdem);

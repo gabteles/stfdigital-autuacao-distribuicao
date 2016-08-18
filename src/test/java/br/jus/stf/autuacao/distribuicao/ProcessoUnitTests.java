@@ -161,6 +161,109 @@ public class ProcessoUnitTests {
 		processo.substituirPeca(pecaOriginal, pecaSubstituta);
 	}
 	
+	@Test
+	public void editarPeca() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		Peca despacho = pecaValida(2L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.adicionarPeca(despacho);
+		processo.editarPeca(pecaOriginal, tipo, tipo.nome(), 2, Visibilidade.PENDENTE_VISUALIZACAO);
+		
+		Peca peca = processo.pecas().get(1);
+		
+		Assert.assertEquals("Peça que não foi editada deve mudar para primeira da lista.", despacho, processo.pecas().get(0));
+        Assert.assertEquals("Tipo de peça deve ser igual a 101.", tipo, peca.tipo());
+        Assert.assertEquals("Descrição deve ser igual a Petição inicial.", tipo.nome(), peca.descricao());
+        Assert.assertEquals("Visibilidade deve ser igual a PENDENTE_VISUALIZACAO.", Visibilidade.PENDENTE_VISUALIZACAO, peca.visibilidade());
+        Assert.assertEquals("Número de ordem deve ser 2.", new Integer(2), peca.numeroOrdem());
+        // Atributos que não devem ser modificados após a exução do método editarPeca(...)
+        Assert.assertEquals("Documento não deve ser alterado.", new DocumentoId(1L), peca.documento());
+        Assert.assertEquals("Situação não deve ser alterada.", Situacao.PENDENTE_JUNTADA, peca.situacao());
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveEditarPecaComPecaOriginalNula() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.editarPeca(null, tipo, tipo.nome(), 1, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveEditarPecaComOriginalQueNaoPertenceAoProcesso() {
+		Processo processo = processoValido();
+		Peca despacho = pecaValida(1L);
+		Peca pecaOriginal = pecaValida(2L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(despacho);
+		processo.editarPeca(pecaOriginal, tipo, tipo.nome(), 2, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveEditarPecaComTipoNulo() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.editarPeca(pecaOriginal, null, "Peça inválida.", 1, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveEditarPecaComDescricaoNula() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.editarPeca(pecaOriginal, tipo, null, 1, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveEditarPecaComDescricaoVazia() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.editarPeca(pecaOriginal, tipo, "", 1, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveEditarPecaComNumeroOrdemNulo() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.editarPeca(pecaOriginal, tipo, tipo.nome(), null, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveEditarPecaComVisibilidadeNula() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.editarPeca(pecaOriginal, tipo, tipo.nome(), 1, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveEditarPecaComNumeroOrdemForaDoIntervaloDeNumeracaoDasPecas() {
+		Processo processo = processoValido();
+		Peca pecaOriginal = pecaValida(1L);
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(101L), "Petição inicial");
+		
+		processo.adicionarPeca(pecaOriginal);
+		processo.editarPeca(pecaOriginal, tipo, tipo.nome(), 2, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
 	private Processo processoValido() {
 		return new Processo(new ProcessoId(1L), new MinistroId(2L));
 	}
