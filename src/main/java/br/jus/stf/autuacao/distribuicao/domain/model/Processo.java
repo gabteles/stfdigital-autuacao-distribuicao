@@ -204,8 +204,11 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	 * @param pecasOrganizadas
 	 */
 	public void organizarPecas(List<Long> pecasOrganizadas) {
-		Validate.notNull(pecasOrganizadas, "Lista de peças requerida.");
-		Validate.isTrue(pecas.size() == pecasOrganizadas.size(), "Organizar as peças não pode modificar o tamanho da lista.");
+		Validate.notEmpty(pecasOrganizadas, "Lista de peças requerida.");
+		Validate.isTrue(pecas.size() == pecasOrganizadas.size(),
+				"Organizar as peças não pode modificar o tamanho da lista.");
+		Validate.isTrue(pecas.stream().allMatch(p -> pecasOrganizadas.contains(p.identity())),
+				"Algumas das peças organizadas não pertencem ao processo.");
 		
 		pecas.forEach(p -> p.alterarOrdem(pecasOrganizadas.indexOf(p.identity()) + 1));
 		controladorOrdenacaoPecas.ordenarPecas();

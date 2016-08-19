@@ -1,5 +1,8 @@
 package br.jus.stf.autuacao.distribuicao;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -262,6 +265,203 @@ public class ProcessoUnitTests {
 		
 		processo.adicionarPeca(pecaOriginal);
 		processo.editarPeca(pecaOriginal, tipo, tipo.nome(), 2, Visibilidade.PENDENTE_VISUALIZACAO);
+	}
+	
+	@Test
+	public void dividirPeca() {
+		Processo processo = processoValido();
+		Peca pecaDividida = pecaValida(1L);
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		
+		processo.adicionarPeca(pecaDividida);
+		processo.dividirPeca(pecaDividida, Arrays.asList(pedaco1, pedaco2));
+		
+		Assert.assertFalse("Peça dividida não deve pertencer a lista de peças.", processo.pecas().contains(pecaDividida));
+		Assert.assertTrue("Primeiro pedaço deve pertencer a lista de peças.", processo.pecas().contains(pedaco1));
+		Assert.assertTrue("Segundo pedaço deve pertencer a lista de peças.", processo.pecas().contains(pedaco2));
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveDividirPecaComPecaDivididaNula() {
+		Processo processo = processoValido();
+		Peca pecaDividida = pecaValida(1L);
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		
+		processo.adicionarPeca(pecaDividida);
+		processo.dividirPeca(null, Arrays.asList(pedaco1, pedaco2));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveDividirPecaQueNaoPertencaAoProcesso() {
+		Processo processo = processoValido();
+		Peca pecaDividida = pecaValida(1L);
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		
+		processo.dividirPeca(pecaDividida, Arrays.asList(pedaco1, pedaco2));
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveDividirPecaComPecaDivisaoNula() {
+		Processo processo = processoValido();
+		Peca pecaDividida = pecaValida(1L);
+		
+		processo.adicionarPeca(pecaDividida);
+		processo.dividirPeca(pecaDividida, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveDividirPecaComPecaDivisaoVazia() {
+		Processo processo = processoValido();
+		Peca pecaDividida = pecaValida(1L);
+		
+		processo.adicionarPeca(pecaDividida);
+		processo.dividirPeca(pecaDividida, Collections.emptyList());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveDividirPecaEmApenasUmPedaco() {
+		Processo processo = processoValido();
+		Peca pecaDividida = pecaValida(1L);
+		Peca pedaco1 = pecaValida(2L);
+		
+		processo.dividirPeca(pecaDividida, Arrays.asList(pedaco1));
+	}
+	
+	@Test
+	public void unirPecas() {
+		Processo processo = processoValido();
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		Peca pecaUnida = pecaValida(1L);
+		
+		processo.adicionarPeca(pedaco1);
+		processo.adicionarPeca(pedaco2);
+		processo.unirPecas(Arrays.asList(pedaco1, pedaco2), pecaUnida);
+		
+		Assert.assertTrue("Peça unida deve pertencer a lista de peças.", processo.pecas().contains(pecaUnida));
+		Assert.assertFalse("Primeiro pedaço não deve pertencer a lista de peças.", processo.pecas().contains(pedaco1));
+		Assert.assertFalse("Segundo pedaço não deve pertencer a lista de peças.", processo.pecas().contains(pedaco2));
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveUnirPecasComPecasUniaoNula() {
+		Processo processo = processoValido();
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		Peca pecaUnida = pecaValida(1L);
+		
+		processo.adicionarPeca(pedaco1);
+		processo.adicionarPeca(pedaco2);
+		processo.unirPecas(null, pecaUnida);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveUnirPecasComPecasUniaoVazia() {
+		Processo processo = processoValido();
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		Peca pecaUnida = pecaValida(1L);
+		
+		processo.adicionarPeca(pedaco1);
+		processo.adicionarPeca(pedaco2);
+		processo.unirPecas(Collections.emptyList(), pecaUnida);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveUnirPecasComMenosDeDuasEmPecasUniao() {
+		Processo processo = processoValido();
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		Peca pecaUnida = pecaValida(1L);
+		
+		processo.adicionarPeca(pedaco1);
+		processo.adicionarPeca(pedaco2);
+		processo.unirPecas(Arrays.asList(pedaco1), pecaUnida);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveUnirPecasComPecasUniaoQueNaoPertencamAoProcesso() {
+		Processo processo = processoValido();
+		Peca pedaco1 = pecaValida(2L);
+		Peca pedaco2 = pecaValida(3L);
+		Peca pecaUnida = pecaValida(1L);
+		
+		processo.adicionarPeca(pedaco1);
+		processo.unirPecas(Arrays.asList(pedaco1, pedaco2), pecaUnida);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveUnirPecasComPecaUnidaNula() {
+		Processo processo = processoValido();
+		Peca pedaco1 = pecaValida(1L);
+		Peca pedaco2 = pecaValida(2L);
+		
+		processo.adicionarPeca(pedaco1);
+		processo.adicionarPeca(pedaco2);
+		processo.unirPecas(Arrays.asList(pedaco1, pedaco2), null);
+	}
+	
+	@Test
+	public void organizarPecas() {
+		Processo processo = processoValido();
+		Peca peca1 = pecaValida(1L);
+		Peca peca2 = pecaValida(2L);
+		
+		processo.adicionarPeca(peca1);
+		processo.adicionarPeca(peca2);
+		
+		Assert.assertEquals("Primeira peça deve peça 1.", peca1, processo.pecas().get(0));
+		Assert.assertEquals("Segunda peça deve peça 2.", peca2, processo.pecas().get(1));
+		
+		processo.organizarPecas(Arrays.asList(2L, 1L));
+		
+		Assert.assertEquals("Primeira peça deve peça 2.", peca2, processo.pecas().get(0));
+		Assert.assertEquals("Segunda peça deve peça 1.", peca1, processo.pecas().get(1));
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveOrganizarPecasComListaNula() {
+		Processo processo = processoValido();
+		Peca peca1 = pecaValida(1L);
+		Peca peca2 = pecaValida(2L);
+		
+		processo.adicionarPeca(peca1);
+		processo.adicionarPeca(peca2);
+		processo.organizarPecas(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveOrganizarPecasComListaVazia() {
+		Processo processo = processoValido();
+		Peca peca1 = pecaValida(1L);
+		Peca peca2 = pecaValida(2L);
+		
+		processo.adicionarPeca(peca1);
+		processo.adicionarPeca(peca2);
+		processo.organizarPecas(Collections.emptyList());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveOrganizarPecasQueModifiqueTamanhoDaListaDePecas() {
+		Processo processo = processoValido();
+		Peca peca1 = pecaValida(1L);
+		Peca peca2 = pecaValida(2L);
+		
+		processo.adicionarPeca(peca1);
+		processo.adicionarPeca(peca2);
+		processo.organizarPecas(Arrays.asList(2L));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveOrganizarPecasComPecaQueNaoPertenceAoProcesso() {
+		Processo processo = processoValido();
+		Peca peca1 = pecaValida(1L);
+		
+		processo.adicionarPeca(peca1);
+		processo.organizarPecas(Arrays.asList(3L));
 	}
 	
 	private Processo processoValido() {
