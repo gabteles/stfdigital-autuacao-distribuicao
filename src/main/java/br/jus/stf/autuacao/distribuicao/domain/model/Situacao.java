@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.distribuicao.domain;
+package br.jus.stf.autuacao.distribuicao.domain.model;
 
 /**
  * @author rafael.alencar

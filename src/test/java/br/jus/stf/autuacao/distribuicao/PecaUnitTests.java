@@ -3,10 +3,10 @@ package br.jus.stf.autuacao.distribuicao;
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.jus.stf.autuacao.distribuicao.domain.Situacao;
-import br.jus.stf.autuacao.distribuicao.domain.Visibilidade;
 import br.jus.stf.autuacao.distribuicao.domain.model.Peca;
 import br.jus.stf.autuacao.distribuicao.domain.model.PecaId;
+import br.jus.stf.autuacao.distribuicao.domain.model.Situacao;
+import br.jus.stf.autuacao.distribuicao.domain.model.Visibilidade;
 import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPeca;
 import br.jus.stf.core.shared.documento.DocumentoId;
 import br.jus.stf.core.shared.documento.TipoDocumentoId;
