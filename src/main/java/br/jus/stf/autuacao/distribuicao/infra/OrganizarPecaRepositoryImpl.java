@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import br.jus.stf.autuacao.distribuicao.domain.model.OrganizarPecaRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Peca;
+import br.jus.stf.autuacao.distribuicao.domain.model.PecaId;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
@@ -38,14 +39,14 @@ public class OrganizarPecaRepositoryImpl extends SimpleJpaRepository<Processo, P
 
     // Peça
     @Override
-    public Long nextPecaId() {
+    public PecaId nextPecaId() {
     	Query q = entityManager.createNativeQuery("SELECT distribuicao.seq_peca.NEXTVAL FROM DUAL");
     	
-    	return ((BigInteger)q.getSingleResult()).longValue();
+    	return new PecaId(((BigInteger) q.getSingleResult()).longValue());
     }
     
     @Override
-    public Peca findOnePeca(Long id) {
+    public Peca findOnePeca(PecaId id) {
     	TypedQuery<Peca> q = entityManager.createQuery("FROM Peca peca WHERE peca.id = :id", Peca.class);
     	
     	q.setParameter("id", id);

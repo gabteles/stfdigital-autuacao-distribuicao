@@ -14,13 +14,13 @@ public interface OrganizarPecaRepository {
 	/**
 	 * @return
 	 */
-	Long nextPecaId();
+	PecaId nextPecaId();
 	
     /**
      * @param id
      * @return
      */
-    Peca findOnePeca(Long id);
+    Peca findOnePeca(PecaId id);
     
     // Processo
     /**

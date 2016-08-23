@@ -17,6 +17,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.identidade.PessoaId;
@@ -36,29 +37,29 @@ public class DistribuicaoComumUnitTests {
 	
 	@Test
 	public void realizaDistribuicaoComumValida() {
-		Set<MinistroId> ministrosCandidatos = new HashSet<>(8);
+		Set<Ministro> ministrosCandidatos = new HashSet<>(8);
 		
-		ministrosCandidatos.add(new MinistroId(42L));
-		ministrosCandidatos.add(new MinistroId(28L));
-		ministrosCandidatos.add(new MinistroId(44L));
-		ministrosCandidatos.add(new MinistroId(49L));
-		ministrosCandidatos.add(new MinistroId(36L));
-		ministrosCandidatos.add(new MinistroId(45L));
-		ministrosCandidatos.add(new MinistroId(30L));
-		ministrosCandidatos.add(new MinistroId(48L));
+		ministrosCandidatos.add(new Ministro(new MinistroId(42L), "MIN. CÁRMEN LÚCIA"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(28L), "MIN. CELSO DE MELLO"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(44L), "MIN. DIAS TOFFOLI"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(49L), "MIN. EDSON FACHIN"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(36L), "MIN. GILMAR MENDES"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(45L), "MIN. LUIZ FUX"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(30L), "MIN. MARCO AURÉLIO"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(48L), "MIN. ROBERTO BARROSO"));
 		
-		Set<MinistroId> ministrosImpedidos = new HashSet<>(3);
+		Set<Ministro> ministrosImpedidos = new HashSet<>(3);
 		
-		ministrosImpedidos.add(new MinistroId(46L));
-		ministrosImpedidos.add(new MinistroId(47L));
-		ministrosImpedidos.add(new MinistroId(1L));
+		ministrosImpedidos.add(new Ministro(new MinistroId(46L), "MIN. ROSA WEBER"));
+		ministrosImpedidos.add(new Ministro(new MinistroId(47L), "MIN. TEORI ZAVASCKI"));
+		ministrosImpedidos.add(new Ministro(new MinistroId(1L), "MINISTRO PRESIDENTE"));
 		
 		FilaDistribuicao fila = filaDistribuicao();
 		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, ministrosImpedidos);
 		
 		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 		
-		MinistroId relator = distribuicao.relator();
+		Ministro relator = distribuicao.relator();
 		
 		Assert.assertTrue(ministrosCandidatos.contains(relator));
 		Assert.assertFalse(ministrosImpedidos.contains(relator));
@@ -66,22 +67,22 @@ public class DistribuicaoComumUnitTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaDistribuirComIntersecaoEntreListasMinistros() {
-		Set<MinistroId> ministrosCandidatos = new HashSet<>(8);
+		Set<Ministro> ministrosCandidatos = new HashSet<>(8);
 		
-		ministrosCandidatos.add(new MinistroId(42L));
-		ministrosCandidatos.add(new MinistroId(28L));
-		ministrosCandidatos.add(new MinistroId(44L));
-		ministrosCandidatos.add(new MinistroId(49L));
-		ministrosCandidatos.add(new MinistroId(36L));
-		ministrosCandidatos.add(new MinistroId(45L));
-		ministrosCandidatos.add(new MinistroId(30L));
-		ministrosCandidatos.add(new MinistroId(48L));
+		ministrosCandidatos.add(new Ministro(new MinistroId(42L), "MIN. CÁRMEN LÚCIA"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(28L), "MIN. CELSO DE MELLO"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(44L), "MIN. DIAS TOFFOLI"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(49L), "MIN. EDSON FACHIN"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(36L), "MIN. GILMAR MENDES"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(45L), "MIN. LUIZ FUX"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(30L), "MIN. MARCO AURÉLIO"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(48L), "MIN. ROBERTO BARROSO"));
 		
-		Set<MinistroId> ministrosImpedidos = new HashSet<>(3);
+		Set<Ministro> ministrosImpedidos = new HashSet<>(3);
 		
-		ministrosImpedidos.add(new MinistroId(46L));
-		ministrosImpedidos.add(new MinistroId(47L));
-		ministrosImpedidos.add(new MinistroId(48L));
+		ministrosImpedidos.add(new Ministro(new MinistroId(46L), "MIN. ROSA WEBER"));
+		ministrosImpedidos.add(new Ministro(new MinistroId(47L), "MIN. TEORI ZAVASCKI"));
+		ministrosImpedidos.add(new Ministro(new MinistroId(48L), "MIN. ROBERTO BARROSO"));
 		
 		FilaDistribuicao fila = filaDistribuicao();
 		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, ministrosImpedidos);
@@ -91,16 +92,16 @@ public class DistribuicaoComumUnitTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaDistribuirSemApresentarTodosMinistros() {
-		Set<MinistroId> ministrosCandidatos = new HashSet<>(8);
+		Set<Ministro> ministrosCandidatos = new HashSet<>(8);
 		
-		ministrosCandidatos.add(new MinistroId(42L));
-		ministrosCandidatos.add(new MinistroId(28L));
-		ministrosCandidatos.add(new MinistroId(44L));
-		ministrosCandidatos.add(new MinistroId(49L));
-		ministrosCandidatos.add(new MinistroId(36L));
-		ministrosCandidatos.add(new MinistroId(45L));
-		ministrosCandidatos.add(new MinistroId(30L));
-		ministrosCandidatos.add(new MinistroId(48L));
+		ministrosCandidatos.add(new Ministro(new MinistroId(42L), "MIN. CÁRMEN LÚCIA"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(28L), "MIN. CELSO DE MELLO"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(44L), "MIN. DIAS TOFFOLI"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(49L), "MIN. EDSON FACHIN"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(36L), "MIN. GILMAR MENDES"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(45L), "MIN. LUIZ FUX"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(30L), "MIN. MARCO AURÉLIO"));
+		ministrosCandidatos.add(new Ministro(new MinistroId(48L), "MIN. ROBERTO BARROSO"));
 		
 		FilaDistribuicao fila = filaDistribuicao();
 		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, Collections.emptySet());
@@ -110,11 +111,11 @@ public class DistribuicaoComumUnitTests {
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaDistribuirComMinistrosCandidatosNulo() {
-		Set<MinistroId> ministrosImpedidos = new HashSet<MinistroId>();
+		Set<Ministro> ministrosImpedidos = new HashSet<>(0);
 		
-		ministrosImpedidos.add(new MinistroId(46L));
-		ministrosImpedidos.add(new MinistroId(47L));
-		ministrosImpedidos.add(new MinistroId(48L));
+		ministrosImpedidos.add(new Ministro(new MinistroId(46L), "MIN. ROSA WEBER"));
+		ministrosImpedidos.add(new Ministro(new MinistroId(47L), "MIN. TEORI ZAVASCKI"));
+		ministrosImpedidos.add(new Ministro(new MinistroId(48L), "MIN. ROBERTO BARROSO"));
 		
 		FilaDistribuicao fila = filaDistribuicao();
 		Distribuicao distribuicao = distribuicaoComum(fila, null, ministrosImpedidos);
@@ -124,10 +125,8 @@ public class DistribuicaoComumUnitTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaDistribuirComMinistrosCandidatosVazio() {
-		Set<MinistroId> ministrosCandidatos = new HashSet<>(0);
-		
 		FilaDistribuicao fila = filaDistribuicao();
-		Distribuicao distribuicao = distribuicaoComum(fila, ministrosCandidatos, null);
+		Distribuicao distribuicao = distribuicaoComum(fila, Collections.emptySet(), null);
 		
 		distribuicao.executar(new Distribuidor("distribuidor", new PessoaId(1L)));
 	}
@@ -136,8 +135,8 @@ public class DistribuicaoComumUnitTests {
 		return new FilaDistribuicao(new DistribuicaoId(1L), new ProcessoId(1L), Status.DISTRIBUICAO);
 	}
 	
-	private DistribuicaoComum distribuicaoComum(FilaDistribuicao filaDistribuicao, Set<MinistroId> ministrosCandidatos,
-			Set<MinistroId> ministrosImpedidos) {
+	private DistribuicaoComum distribuicaoComum(FilaDistribuicao filaDistribuicao, Set<Ministro> ministrosCandidatos,
+			Set<Ministro> ministrosImpedidos) {
 		return new DistribuicaoComum(filaDistribuicao, mockMinistroRepository, ministrosCandidatos, ministrosImpedidos);
 	}
 	

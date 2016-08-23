@@ -1,21 +1,22 @@
 package br.jus.stf.autuacao.distribuicao.domain.model;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
-import br.jus.stf.core.shared.identidade.MinistroId;
 
 /**
  * @author Rafael Alencar
@@ -27,13 +28,13 @@ import br.jus.stf.core.shared.identidade.MinistroId;
 @DiscriminatorValue("COMUM")
 public class DistribuicaoComum extends Distribuicao {
     
-	@ElementCollection(fetch = EAGER)
-	@CollectionTable(name = "MINISTRO_CANDIDATO", schema = "DISTRIBUICAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false))
-	private Set<MinistroId> ministrosCandidatos = new HashSet<>(0);
+	@OneToMany(cascade = ALL, fetch = EAGER)
+	@JoinTable(name = "MINISTRO_CANDIDATO", schema = "DISTRIBUICAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false), inverseJoinColumns = @JoinColumn(name = "COD_MINISTRO", nullable = false))
+	private Set<Ministro> ministrosCandidatos = new HashSet<>(0);
 	
-	@ElementCollection(fetch = EAGER)
-	@CollectionTable(name = "MINISTRO_IMPEDIDO", schema = "DISTRIBUICAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false))
-	private Set<MinistroId> ministrosImpedidos = new HashSet<>(0);
+	@OneToMany(cascade = ALL, fetch = EAGER)
+	@JoinTable(name = "MINISTRO_IMPEDIDO", schema = "DISTRIBUICAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false), inverseJoinColumns = @JoinColumn(name = "COD_MINISTRO", nullable = false))
+	private Set<Ministro> ministrosImpedidos = new HashSet<>(0);
     
     DistribuicaoComum() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
@@ -45,7 +46,8 @@ public class DistribuicaoComum extends Distribuicao {
 	 * @param ministrosCandidatos
 	 * @param ministrosImpedidos
 	 */
-	public DistribuicaoComum(FilaDistribuicao filaDistribuicao, MinistroRepository ministroRepository, Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos) {
+	public DistribuicaoComum(FilaDistribuicao filaDistribuicao, MinistroRepository ministroRepository,
+			Set<Ministro> ministrosCandidatos, Set<Ministro> ministrosImpedidos) {
         super(filaDistribuicao);
         
         Validate.notNull(ministroRepository, "Repositorório de ministros requerido.");
@@ -59,10 +61,10 @@ public class DistribuicaoComum extends Distribuicao {
     }
 	
 	@Override
-	public MinistroId sorteio() {
+	public Ministro sorteio() {
 		int indice = new Random().nextInt(ministrosCandidatos.size());
 		
-		return (MinistroId) ministrosCandidatos.toArray()[indice];
+		return (Ministro) ministrosCandidatos.toArray()[indice];
 	}
 	
 	@Override
@@ -70,13 +72,13 @@ public class DistribuicaoComum extends Distribuicao {
 		return TipoDistribuicao.COMUM;
 	}
 	
-	private boolean isListasValidas(MinistroRepository ministroRepository, Set<MinistroId> candidatos, Set<MinistroId> impedidos) {
+	private boolean isListasValidas(MinistroRepository ministroRepository, Set<Ministro> candidatos, Set<Ministro> impedidos) {
 		if (ministroRepository.count() != candidatos.size() + impedidos.size()) {
 			return false;
 		}
     	
-		Set<MinistroId> intersecaoCandidatoImpedido = new HashSet<>(candidatos);
-		Set<MinistroId> intersecaoImpedidoCandidato = new HashSet<>(impedidos);
+		Set<Ministro> intersecaoCandidatoImpedido = new HashSet<>(candidatos);
+		Set<Ministro> intersecaoImpedidoCandidato = new HashSet<>(impedidos);
 		
 		intersecaoCandidatoImpedido.retainAll(impedidos);
 		intersecaoImpedidoCandidato.retainAll(candidatos);

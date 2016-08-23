@@ -6,11 +6,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
@@ -23,8 +22,8 @@ import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.autuacao.distribuicao.domain.Visibilidade;
 import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPeca;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
-import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -40,9 +39,9 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	@EmbeddedId
 	private ProcessoId processoId;
 	
-	@Embedded
-    @Column(nullable = false)
-	private MinistroId relator;
+	@ManyToOne
+	@JoinColumn(name = "COD_MINISTRO", nullable = false)
+	private Ministro relator;
 	
 	@OneToMany(cascade = ALL, orphanRemoval = true)
     @JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", nullable = false)
@@ -60,7 +59,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	 * @param processoId
 	 * @param relator
 	 */
-	public Processo(ProcessoId processoId, MinistroId relator) {
+	public Processo(ProcessoId processoId, Ministro relator) {
 		Validate.notNull(processoId, "Id requerido");
 		Validate.notNull(relator, "Relator requerido");
 		
@@ -79,7 +78,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 	/**
 	 * @return
 	 */
-	public MinistroId relator() {
+	public Ministro relator() {
 		return relator;
 	}
 	
@@ -207,10 +206,10 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
 		Validate.notEmpty(pecasOrganizadas, "Lista de peças requerida.");
 		Validate.isTrue(pecas.size() == pecasOrganizadas.size(),
 				"Organizar as peças não pode modificar o tamanho da lista.");
-		Validate.isTrue(pecas.stream().allMatch(p -> pecasOrganizadas.contains(p.identity())),
+		Validate.isTrue(pecas.stream().allMatch(p -> pecasOrganizadas.contains(p.identity().toLong())),
 				"Algumas das peças organizadas não pertencem ao processo.");
 		
-		pecas.forEach(p -> p.alterarOrdem(pecasOrganizadas.indexOf(p.identity()) + 1));
+		pecas.forEach(p -> p.alterarOrdem(pecasOrganizadas.indexOf(p.identity().toLong()) + 1));
 		controladorOrdenacaoPecas.ordenarPecas();
 	}
 

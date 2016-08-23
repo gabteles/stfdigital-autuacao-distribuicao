@@ -24,6 +24,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.OrganizarPecaRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.autuacao.distribuicao.domain.model.identidade.MinistroRepository;
 import br.jus.stf.core.framework.component.command.Command;
 import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
@@ -75,12 +76,10 @@ public class DistribuicaoApplicationService {
      */
     @Command(value = "distribuir-processo", description = "Distribuição comum")
     public void handle(DistribuirProcessoComumCommand command) {
-		Set<MinistroId> ministrosCandidatos = command.getMinistrosCandidatos().stream()
-				.map(ministro -> new MinistroId(ministro))
-				.collect(Collectors.toSet());
-		Set<MinistroId> ministrosImpedidos = command.getMinistrosImpedidos().stream()
-				.map(ministro -> new MinistroId(ministro))
-				.collect(Collectors.toSet());
+		Set<Ministro> ministrosCandidatos = command.getMinistrosCandidatos().stream()
+				.map(ministroId -> ministroRepository.findOne(new MinistroId(ministroId))).collect(Collectors.toSet());
+		Set<Ministro> ministrosImpedidos = command.getMinistrosImpedidos().stream()
+				.map(ministroId -> ministroRepository.findOne(new MinistroId(ministroId))).collect(Collectors.toSet());
 
     	DistribuicaoId distribuicaoId = new DistribuicaoId(command.getDistribuicaoId());
     	FilaDistribuicao filaDistribuicao = configurarFilaDistribuicao(distribuicaoId);

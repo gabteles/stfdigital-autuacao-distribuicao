@@ -28,6 +28,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.OrganizarPecaRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.Peca;
+import br.jus.stf.autuacao.distribuicao.domain.model.PecaId;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
 import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPeca;
@@ -126,7 +127,7 @@ public class OrganizarPecaApplicationService {
     @Command(description = "Dividir peça.")
 	public void handle(DividirPecaCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
-		Peca pecaOriginal = organizarPecasRepository.findOnePeca(command.getPecaOriginalId());
+		Peca pecaOriginal = organizarPecasRepository.findOnePeca(new PecaId(command.getPecaOriginalId()));
 		List<Range<Integer>> intervalos = new LinkedList<>();
 		
 		command.getPecas().forEach(peca -> intervalos.add(Range.between(peca.getPaginaInicial(), peca.getPaginaFinal())));
@@ -155,8 +156,8 @@ public class OrganizarPecaApplicationService {
     @Command(description = "Unir peças.")
 	public void handle(UnirPecasCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
-		List<Peca> pecasUnidas = command.getPecas().stream().map(organizarPecasRepository::findOnePeca)
-				.collect(Collectors.toList());
+		List<Peca> pecasUnidas = command.getPecas().stream()
+				.map(pecaId -> organizarPecasRepository.findOnePeca(new PecaId(pecaId))).collect(Collectors.toList());
 		
 		//1º passo: recupera-se os ids dos documentos vinculados às peças para a criação de um novo documento com o conteúdo das peças unificado.
 		List<DocumentoId> documentos = pecasUnidas.stream().map(p -> p.documento()).collect(Collectors.toList());
@@ -180,7 +181,7 @@ public class OrganizarPecaApplicationService {
     @Command(description = "Editar peça.")
 	public void handle(EditarPecaCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
-		Peca pecaOriginal = organizarPecasRepository.findOnePeca(command.getPecaId());
+		Peca pecaOriginal = organizarPecasRepository.findOnePeca(new PecaId(command.getPecaId()));
 		TipoPeca tipoPeca = tipoPecaRepository.findOne(new TipoDocumentoId(command.getTipoPecaId()));
 		Visibilidade visibilidade = Visibilidade.valueOf(command.getVisibilidade());
 		
@@ -196,7 +197,7 @@ public class OrganizarPecaApplicationService {
     @Command(description = "Juntar peça.")
 	public void handle(JuntarPecaCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
-		Peca peca = organizarPecasRepository.findOnePeca(command.getPecaId());
+		Peca peca = organizarPecasRepository.findOnePeca(new PecaId(command.getPecaId()));
 		
 		processo.juntarPeca(peca);
 		organizarPecasRepository.save(processo);

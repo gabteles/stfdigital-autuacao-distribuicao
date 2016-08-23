@@ -6,6 +6,7 @@ import org.junit.Test;
 import br.jus.stf.autuacao.distribuicao.domain.Situacao;
 import br.jus.stf.autuacao.distribuicao.domain.Visibilidade;
 import br.jus.stf.autuacao.distribuicao.domain.model.Peca;
+import br.jus.stf.autuacao.distribuicao.domain.model.PecaId;
 import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPeca;
 import br.jus.stf.core.shared.documento.DocumentoId;
 import br.jus.stf.core.shared.documento.TipoDocumentoId;
@@ -26,7 +27,7 @@ public class PecaUnitTests {
         Peca peca = pecaValida();
         
         Assert.assertNotNull("Peça não deve ser nula.", peca);
-        Assert.assertEquals("Identidade deve ser igual a 1.", new Long(1L), peca.identity());
+        Assert.assertEquals("Identidade deve ser igual a 1.", new PecaId(1L), peca.identity());
         Assert.assertEquals("Documento deve ser igual a 1.", new DocumentoId(1L), peca.documento());
         Assert.assertEquals("Tipo de peça deve ser igual a 1060.", tipo, peca.tipo());
         Assert.assertEquals("Descrição deve ser igual a Despacho de Relator.", tipo.nome(), peca.descricao());
@@ -46,33 +47,33 @@ public class PecaUnitTests {
 	public void naoDeveCriarPecaComDocumentoNulo() {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
         
-		new Peca(1L, null, tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		new Peca(new PecaId(1L), null, tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void naoDeveCriarPecaComTipoPecaNulo() {
-		new Peca(1L, new DocumentoId(1L), null, "Nulo", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		new Peca(new PecaId(1L), new DocumentoId(1L), null, "Nulo", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void naoDeveCriarPecaComDescricaoNula() {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
         
-		new Peca(1L, new DocumentoId(1L), tipo, null, Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		new Peca(new PecaId(1L), new DocumentoId(1L), tipo, null, Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void naoDeveCriarPecaComDescricaoVazia() {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
         
-		new Peca(1L, new DocumentoId(1L), tipo, "", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		new Peca(new PecaId(1L), new DocumentoId(1L), tipo, "", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 	}
 	
 	@Test
 	public void criaPecaComVisualizacaoESituacaoDefault() {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
         
-		Peca peca = new Peca(1L, new DocumentoId(1L), tipo, tipo.nome(), null, null);
+		Peca peca = new Peca(new PecaId(1L), new DocumentoId(1L), tipo, tipo.nome(), null, null);
 		
 		Assert.assertEquals("Visibilidade deve ser igual a PUBLICO.", Visibilidade.PUBLICO, peca.visibilidade());
         Assert.assertEquals("Situação deve ser igual a JUNTADA.", Situacao.JUNTADA, peca.situacao());
@@ -90,7 +91,7 @@ public class PecaUnitTests {
 	@Test(expected = IllegalArgumentException.class)
 	public void naoDeveJuntarPecaComSituacaoInvalida() {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
-        Peca peca = new Peca(1L, new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.JUNTADA);
+        Peca peca = new Peca(new PecaId(1L), new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		peca.juntar();
 	}
@@ -107,7 +108,7 @@ public class PecaUnitTests {
 	@Test(expected = IllegalArgumentException.class)
 	public void naoDeveExcluirPecaComSituacaoInvalida() {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
-        Peca peca = new Peca(1L, new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.EXCLUIDA);
+        Peca peca = new Peca(new PecaId(1L), new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.EXCLUIDA);
 		
 		peca.excluir();
 	}
@@ -181,7 +182,7 @@ public class PecaUnitTests {
 	private Peca pecaValida() {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
         
-		return new Peca(1L, new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		return new Peca(new PecaId(1L), new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 	}
     
 }

@@ -9,8 +9,10 @@ import org.junit.Test;
 import br.jus.stf.autuacao.distribuicao.domain.Situacao;
 import br.jus.stf.autuacao.distribuicao.domain.Visibilidade;
 import br.jus.stf.autuacao.distribuicao.domain.model.Peca;
+import br.jus.stf.autuacao.distribuicao.domain.model.PecaId;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPeca;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.core.shared.documento.DocumentoId;
 import br.jus.stf.core.shared.documento.TipoDocumentoId;
 import br.jus.stf.core.shared.identidade.MinistroId;
@@ -32,13 +34,13 @@ public class ProcessoUnitTests {
         
         Assert.assertNotNull("Processo não deve ser nulo.", processo);
         Assert.assertEquals("Identidade deve ser igual a 1.", new ProcessoId(1L), processo.identity());
-        Assert.assertEquals("Ministro deve ser igual a 2.", new MinistroId(2L), processo.relator());
+        Assert.assertEquals("Ministro deve ser igual a 2.", new Ministro(new MinistroId(2L), "Ministro 2"), processo.relator());
         Assert.assertEquals("Processo não deve ter peças.", 0, processo.pecas().size());
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void naoDeveCriarProcessoComIdNulo() {
-		new Processo(null, new MinistroId(1L));
+		new Processo(null, new Ministro(new MinistroId(1L), "Ministro 1"));
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -465,13 +467,13 @@ public class ProcessoUnitTests {
 	}
 	
 	private Processo processoValido() {
-		return new Processo(new ProcessoId(1L), new MinistroId(2L));
+		return new Processo(new ProcessoId(1L), new Ministro(new MinistroId(2L), "Ministro 2"));
 	}
 	
 	private Peca pecaValida(Long identificador) {
 		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1060L), "Despacho de Relator");
         
-		return new Peca(identificador, new DocumentoId(identificador), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		return new Peca(new PecaId(identificador), new DocumentoId(identificador), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 	}
     
 }

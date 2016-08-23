@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.core.shared.identidade.MinistroId;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 
 /**
  * @author Rafael Alencar
@@ -50,7 +50,7 @@ public class DistribuicaoPrevencao extends Distribuicao {
     }
 	
 	@Override
-	public MinistroId sorteio() {
+	public Ministro sorteio() {
 		return processosPreventos.iterator().next().relator();
 	}
 	
@@ -60,7 +60,7 @@ public class DistribuicaoPrevencao extends Distribuicao {
 	}
     
     private boolean isListaValida(Set<Processo> processosPreventos) {
-		MinistroId relator = processosPreventos.iterator().next().relator();
+		Ministro relator = processosPreventos.iterator().next().relator();
 		
 		return processosPreventos.stream().allMatch(processo -> relator.equals(processo.relator()));
 	}

@@ -14,15 +14,16 @@ import br.jus.stf.autuacao.distribuicao.domain.model.Distribuidor;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.Processo;
 import br.jus.stf.autuacao.distribuicao.domain.model.Status;
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 public class DistribuicaoPrevencaoUnitTests {
 	
-	private Processo mockPreventoRelator1 = new Processo(new ProcessoId(1L), new MinistroId(1L));
+	private Processo mockPreventoRelator1 = new Processo(new ProcessoId(1L), new Ministro(new MinistroId(1L), "Ministro 1"));
 	
-	private Processo mockPreventoRelator2 = new Processo(new ProcessoId(2L), new MinistroId(2L));
+	private Processo mockPreventoRelator2 = new Processo(new ProcessoId(2L), new Ministro(new MinistroId(2L), "Ministro 2"));
 	
 	@Test
 	public void realizaDistribuicaoPrevencaoValida() {

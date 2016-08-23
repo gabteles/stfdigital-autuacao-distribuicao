@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -31,11 +31,10 @@ import br.jus.stf.core.shared.documento.DocumentoId;
  */
 @Entity
 @Table(name = "PECA", schema = "DISTRIBUICAO")
-public class Peca extends EntitySupport<Peca, Long> {
+public class Peca extends EntitySupport<Peca, PecaId> {
 	
-	@Id
-	@Column(name = "SEQ_PECA")
-	private Long id;
+	@EmbeddedId
+    private PecaId id;
 	
 	@Embedded
 	@Column(nullable = false)
@@ -71,7 +70,7 @@ public class Peca extends EntitySupport<Peca, Long> {
 	 * @param visibilidade
 	 * @param situacao
 	 */
-	public Peca(Long id, DocumentoId documento, TipoPeca tipo, String descricao, Visibilidade visibilidade, Situacao situacao) {
+	public Peca(PecaId id, DocumentoId documento, TipoPeca tipo, String descricao, Visibilidade visibilidade, Situacao situacao) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notNull(documento, "Documento requerido.");
 		Validate.notNull(tipo, "Tipo de peça requerido.");
@@ -171,7 +170,7 @@ public class Peca extends EntitySupport<Peca, Long> {
 	}
 	
 	@Override
-	public Long identity() {
+	public PecaId identity() {
 		return id;
 	}
 

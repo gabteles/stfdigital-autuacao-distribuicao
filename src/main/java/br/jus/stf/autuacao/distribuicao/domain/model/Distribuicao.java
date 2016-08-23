@@ -11,13 +11,15 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
-import br.jus.stf.core.shared.identidade.MinistroId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -43,8 +45,9 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
    	@Enumerated(EnumType.STRING)
     private Status status;
     
-    @Embedded
-	private MinistroId relator;
+    @ManyToOne
+	@JoinColumn(name = "COD_MINISTRO")
+	private Ministro relator;
     
     @Embedded
     private Distribuidor distribuidor;
@@ -73,7 +76,7 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     /**
      * @return
      */
-    public abstract MinistroId sorteio();
+    public abstract Ministro sorteio();
     
     /**
      * @return
@@ -90,7 +93,7 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     /**
      * @return
      */
-    public MinistroId relator() {
+    public Ministro relator() {
     	return relator;
     }
     
