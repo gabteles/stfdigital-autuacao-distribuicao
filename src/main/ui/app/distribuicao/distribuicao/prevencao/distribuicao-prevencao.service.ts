@@ -29,7 +29,7 @@ export class DistribuicaoPrevencaoService {
      * Realiza a distribuição de um processo para um ministro.
      */
     public distribuirPorPrevencao( cmdDistribuir : DistribuirProcessoPrevencaoCommand): IPromise<any> {
-         return this.$http.post(this.apiDistribuicao + '/prevencao', cmdDistribuir);
+         return this.$http.post(this.apiDistribuicao, cmdDistribuir);
     }     
      
 }

@@ -35,12 +35,12 @@ export class DistribuicaoPrevencaoController {
     }
     
     public consultarProcesso (parte: String, indice: number) : void {
-        //this.partes[indice].processos = [<ProcessoIndexado>{processoId: '1', classe: "HC", numero: 123}]; //mock para exibir um processo prevento
-        this.distribuicaoPrevencaoService.pesquisarProcessoPelaParte(parte).then(processos => {
+        this.partes[indice].processos = [<ProcessoIndexado>{processoId: '5521', classe: "HC", numero: 123, relator : {id: 44, nome: 'Marco Aurélio'}}]; //mock para exibir um processo prevento
+   /*     this.distribuicaoPrevencaoService.pesquisarProcessoPelaParte(parte).then(processos => {
             this.partes[indice].processos = processos;
         }, () => {
             this.messagesService.error('Ocorreu um erro e a pesquisa de processsos da parte não pode ser realizada!');
-        });
+        }); */
     };
     
     public adicionarProcessosPreventos (processoPrevento : ProcessoIndexado) : void {

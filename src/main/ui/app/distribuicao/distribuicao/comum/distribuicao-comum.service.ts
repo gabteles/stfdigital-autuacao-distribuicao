@@ -21,7 +21,7 @@ export class DistribuicaoComumService {
      * Realiza a distribuição de um processo para um ministro.
      */
     public enviarProcessoParaDistribuicao( cmdDistribuir : DistribuirProcessoComumCommand): IPromise<any> {
-         return this.$http.post(this.apiDistribuicao + '/comum', cmdDistribuir);
+         return this.$http.post(this.apiDistribuicao, cmdDistribuir);
     }      
 }
 

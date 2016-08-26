@@ -42,6 +42,7 @@ export interface ProcessoIndexado {
     classe: string;
     numero: number;
     partes: Array<string>;
+    relator : Ministro;
 }
 
 export class DistribuirCommand implements Command {
