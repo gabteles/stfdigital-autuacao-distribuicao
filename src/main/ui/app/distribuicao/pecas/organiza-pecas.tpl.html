@@ -1,0 +1,66 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+
+        <div class="md-title mt-10">Organiza Peças</div>
+
+        <div layout="row">
+            <div class="form-wrapper md-whiteframe-1dp" flex="100">
+                <form name="basicForm" class="md-inline-form">
+                	<div layout="row" ui-view></div>
+	                <div class="form-title">Peças</div>
+					<div  layout="row" layout-gt-xs="row">
+						<md-card flex layout="column">
+							<md-card-title flex="nogrow">
+								<md-card-title-text>
+									<span class="md-headline">Peças do Processo</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+								<div layout="row">
+									<md-input-container flex class="md-block">
+			                            <md-switch ng-model="analise.cmd.processoApto" aria-label="Classificação"  id="classificacao" ng-change="organiza.atualizaEstado()">
+		    								{{ organiza.cmd.habilitado ? 'Habilidato' : 'Desabilitado' }} 
+		  							</md-switch>
+		                        	</md-input-container>
+	                       		</div>
+								<div class="simple-table-container" ng-show="organiza.cmd.pecas > 0">
+	                                <div class="ms-responsive-table-wrapper">
+	                                    <table datatable="ng" class="simple" dt-options="organiza.dtOptions" id="tabelaPecas" ms-responsive-table>
+	                                        <thead>
+										        <tr>
+										        	<th style="width: 10px;"><input type="checkbox" ng-model="organiza.checkToggle" ng-change="organiza.toggleCheck()"></th>
+										            <th>ID</th>
+										            <th>descricao</th>
+										            <th>Numero Ordem</th>
+										            <th>visibilidade</th>
+										            <th>situação</th>
+										        </tr>
+								    		</thead>
+									        <tbody ui-sortable="organiza.sortableOptions" ng-model="organiza.processo.pecas">
+										        <tr ng-repeat="peca in organiza.processo.pecas" ng-class='{"line-through": peca.situacao === "EXCLUIDA"}'>
+										        	<td><input type="checkbox" checklist-model="organiza.selecao" checklist-value="organiza.buildSelectedObject(peca)"></td>
+										            <td>{{ peca.sequencial }}</td>
+										            <td>{{ peca.descricao }}</td>
+										            <td>{{ peca.numeroOrdem }}</td>
+										            <td>{{ peca.visibilidade }}</td>
+										            <td>{{ peca.situacao }}</td>
+										        </tr>
+									        </tbody>
+										</table>
+	                                </div>
+	                  			</div>
+	                  		</md-card-content>
+	                  	</md-card>
+					</div>
+					
+	                 <md-button type="button" class="md-raised md-accent" id="analisar-pressupostos-formais" aria-label="Submit"
+	                 	command="organiza.cmd" ng-click ="analise.concluir()">
+	                     	Concluir Tarefa
+	                 </md-button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

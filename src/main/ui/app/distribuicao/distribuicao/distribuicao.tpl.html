@@ -9,7 +9,8 @@
 	</div>
 	
 	<md-button type="button" id="distribuir-processo" class="md-raised md-accent"
-		aria-label="Distribuir Processo" ng-click="vm.distribuirProcesso()" ng-disabled=!vm.isFormValido()> 
+		aria-label="Distribuir Processo" ng-click="vm.distribuirProcesso()" command="vm.cmdDistribuir"
+		validador="vm.validadorId"> 
 		Distribuir Processo
 	</md-button>
 

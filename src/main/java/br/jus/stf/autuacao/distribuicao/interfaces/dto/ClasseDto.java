@@ -9,6 +9,9 @@ public class ClasseDto {
 	private String id;
 	private String nome;
 	
+	public ClasseDto() {
+	}
+	
 	/**
 	 * @param id
 	 * @param nome

@@ -3,7 +3,7 @@ import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import Properties = app.support.constants.Properties;
-import {DistribuirCommand, Ministro, Processo, TipoDistribuicao, Distribuicao, Parte, API_DISTRIBUICAO, API_MINISTROS} from "../commons/distribuicao-common.model";
+import {DistribuirCommand, Ministro, Processo, TipoDistribuicao, Parte, API_DISTRIBUICAO, API_MINISTROS} from "../commons/distribuicao-common.model";
 
 
 export class DistribuicaoCommonService {
@@ -33,93 +33,13 @@ export class DistribuicaoCommonService {
         });
     }
     
-    public consultarProcessoPelaDistribuicao(distrbuicaoId : number) : IPromise<Distribuicao> {
+    public consultarProcessoPelaDistribuicao(distrbuicaoId : number) : IPromise<Processo> {
         return this.$http.get(this.apiDistribuicao + "/" + distrbuicaoId + "/processo")
-                .then((response: IHttpPromiseCallbackArg<Distribuicao>) => { 
+                .then((response: IHttpPromiseCallbackArg<Processo>) => { 
                     return response.data; 
                 });
     }
 
-    
-    /*
-     * Retorna as partes do processo a ser distribuído.
-     * @param processoId Identificador do processo.
-     * @return Array de partes.
-    */
- /*   public consultarPartesProcesso(processoId: number): IPromise<Parte[]>{
-        let url = this.properties.url + ":" + this.properties.port + DistribuicaoService.urlServicoPartes + "/" + processoId;
-        return this.$http.get(url)
-            .then((response: IHttpPromiseCallbackArg<Parte[]>) => { 
-                return response.data;
-        });
-    }
-*/    
-    /*
-     * Consulta os dados de um processo para prevenção.
-     * @param numero: nº do processo no formado "CLASSE 000/AAAA".
-     * @return Dados do processo.
-     */
-/*    public consultarProcessoPrevencao(numero: string): Processo {        
-        let processo = new Processo(0, "", []);
-        
-        if (numero == "ADI 123/2016") {
-            processo.id = 5800;
-            processo.numero = numero; 
-        } else if (numero == "ADI 456/2016") {
-            processo.id = 5969;
-            processo.numero = numero; 
-        }
-        
-        return processo;
-    }
-*/    
-    /*
-     * Consulta os dados de um processo para distribuição.
-     * @param numero: nº do processo (id).
-     * @return Dados do processo.
-     */
-/*    public consultarProcessoParaDistribuicao(numero: number): Processo {        
-        let partes = new Array<string>();
-        partes.push("FULANO KAMEHAMEHA");
-        partes.push("ISAMU MINAMI");
-        
-        return new Processo(1, "ADI 999/2016", partes);
-    }
- */   
-    /*
-     * Realiza a distribuição de um processo para um ministro.
-     * @param processoId Id do processo.
-     * @param distribuicaoId: Id da distribuição gerado no ato de autuação do processo.
-     * @param tipo Tipo de distribuição.
-     * @param justificativa Justificativa da distribuição.
-     * @param minCandidatos Lista de ministros que podem ser o relator do processo.
-     * @param minImpedidos Lista de ministros que não podem ser o relator do processo.
-     * @param procPreventos Lista de processos usados para a prevenção.
-     */
-/*    public enviarProcessoParaDistribuicao(processoId: number, distribuicaoId: number, tipo: string, justificativa: string, minCandidatos: Array<Ministro>,
-        minImpedidos: Array<Ministro>, procPreventos: Array<Processo>): IPromise<any> {
-        let ministrosCandidatos = [];
-        let ministrosImpedidos = [];
-        let processosPreventos = [];
-        
-        for (let i = 0; i < minCandidatos.length; i++){
-            ministrosCandidatos.push(minCandidatos[i].id);
-        }
-                
-        for (let j = 0; j < minImpedidos.length; j++){
-            ministrosImpedidos.push(minImpedidos[j].id);    
-        }
-        
-        for (let k = 0; k < procPreventos.length; k++) {
-            processosPreventos.push(procPreventos[k].id);
-        }
-                
-        let distribuirProcessoCommand = new DistribuirProcessoCommand(distribuicaoId, processoId, tipo, justificativa, ministrosCandidatos, 
-            ministrosImpedidos, processosPreventos);
-        
-        return this.$http.post(this.properties.url + ":" + this.properties.port + DistribuicaoService.urlServicoDistribuicao, distribuirProcessoCommand);
-    }
-*/    
 }
 
 distribuicao.service('app.distribuicao.DistribuicaoCommonService', DistribuicaoCommonService);

@@ -23,6 +23,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.TipoDistribuicaoDto;
 
@@ -85,7 +86,7 @@ public class DistribuicaoRestResource {
      * @return
      */
     @RequestMapping(value = "/{id}/processo", method = RequestMethod.GET)
-    public ProcessoDto consultarDistribuicao(@PathVariable("id") Long id) {
+    public ProcessoDto consultarProcessoDistribuicao(@PathVariable("id") Long id) {
     	Optional<FilaDistribuicao> fila =  Optional.ofNullable(distribuicaoRepository.findOneFilaDistribuicao(new DistribuicaoId(id)));
     	
     	return Optional.ofNullable(processoAdapter.consultar(fila.get().processo().toLong()))

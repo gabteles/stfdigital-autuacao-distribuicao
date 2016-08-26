@@ -1,51 +1,79 @@
-	<div flex="50">
-	    <div layout="column">
-	        <md-input-container flex>
-	            <label>Pesquisa de Processos para a Prevenção</label>
-	            <input ng-model="vm.numProcessoPrevencao" id="txtNumProcessoPrevencao" 
-	                ng-keydown="$event.which === 13 && vm.consultarProcessoPrevento()" />
-	        </md-input-container>
-	        <div flex ng-show="vm.processosPreventos.length > 0">
-	            <div class="simple-table-container md-whiteframe-4dp">
-	                <div class="ms-responsive-table-wrapper">
-	                    <table class="simple" ms-responsive-table>
-	                        <thead>
-	                            <tr>
-	                                <th>Processo Nº</th>
-	                                <th></th>
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-	                            <tr ng-repeat="processoPrevento in vm.processosPreventos">
-	                                    <td>{{processoPrevento.numero}}</td>
-	                                <td nowrap  class="text-right">
-	                                    <a title="Remover Processo" ng-click="vm.removerProcessoPrevento(processoPrevento)" data-placement="top" style="cursor:pointer;">
-	                                        <i class="icon icon-close s20"></i>
-	                                    </a>
-	                                </td>
-	                            </tr>
-	                        </tbody>
-	                    </table>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
+	<div layout="row" layout-gt-xs="row">
+		<md-card flex layout="column">
+			<md-card-title flex="nogrow">
+				<md-card-title-text>
+					<span class="md-headline">Partes Relacionadas</span>
+					<span class="md-subhead">Partes relacionadas ao processo</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content layout="column">
+		        <div flex ng-show="vm.processo.partes.length > 0">
+		            <md-item ng-repeat="parte in vm.partes track by $index">
+				        <md-item-content layout="column">
+				          <div layout="row" layout-fill ng-click="vm.consultarProcesso(parte.nome, $index)" class="folded">
+				            <div class="md-tile-content" layout="column" layout-align="center start">
+				              <h3><a ng-click="vm.consultarProcesso(parte.nome, $index)" href="#">{{parte.nome}}</a></h3>
+				            </div>
+				          </div>
+				          <div layout="column" layout-fill class="expanded" ng-repeat="processo in parte.processos track by $index">
+				            <a ng-click="vm.adicionarProcessosPreventos(processo)" style="padding-left: 10px; color: red;" href="#"> {{processo.classe}}&nbsp;{{processo.numero}}</a>
+				          </div>
+				        </md-item-content>
+				        <md-divider></md-divider>
+				     </md-item>
+		        </div>
+			</md-card-content>
+		</md-card>
+		
+		<md-card flex layout="column" ng-show="vm.processosPreventosAdicionados.length > 0">
+			<md-card-title flex="nogrow">
+				<md-card-title-text>
+					<span class="md-headline">Processo Preventos</span>
+					<span class="md-subhead">Processos preventos adicionados</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content layout="column">
+				<div class="simple-table-container">
+					<div class="ms-responsive-table-wrapper">
+						<table class="simple" ms-responsive-table>
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+	                          	<tr ng-repeat="processo in vm.processosPreventosAdicionados">
+								    <td>{{processo.classe}}&nbsp;{{processo.numero}}</td>
+								    <td align="right">
+	                                   	<span class="hint-text small">
+	                                       	<a href="#" ng-click="vm.removerProcessoPrevento(processo)">Remover</a>
+	                                    </span>
+	                              	</td>
+				    			</tr>
+                            </tbody>
+                        </table>
+                     </div>
+            	</div>
+             </md-card-content>
+        </md-card>
 	</div>
-	<div flex="50" style="padding-left: 15px;" ng-show="vm.processo.partes.length > 0">
-		<div class="simple-table-container md-whiteframe-4dp">
-			<div class="ms-responsive-table-wrapper">
-				<table class="simple" ms-responsive-table>
-					<thead>
-						<tr>
-							<th>Partes Envolvidas no Processo</th>
-                      	</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="parte in vm.processo.partes">
- 							<td>{{parte.apresentacao}}</td>
-						</tr>
-                  	</tbody>
-              	</table>
-          	</div>  
-      	</div>
+    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row" >
+		<md-card flex layout="column">
+			<md-card-title flex="nogrow">
+				<md-card-title-text>
+					<span class="md-headline">Justificativa</span>
+					<span class="md-subhead">Por favor, preencha a justificativa para prevenção.</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content layout="column">
+	        	<md-input-container>
+					<textarea ng-model="vm.cmdDistribuir.justificativa" md-maxlength="150" rows="1" md-select-on-focus id="txtJustificativa"></textarea>
+				</md-input-container>
+			</md-card-content>
+		</md-card>
 	</div>
+	
+	<div ng-include="'distribuicaoCommon.html'"></div>		
+	
+	

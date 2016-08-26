@@ -12,6 +12,7 @@ export class DistribuicaoComumController {
     public justificativa: string;
     public numProcessoPrevencao: string;
     public distribuicaoId: number;
+    public validadorId: string = "disitribuir-processo-comum";
     
     public cmdDistribuir : DistribuirProcessoComumCommand = new DistribuirProcessoComumCommand(); 
     
@@ -79,10 +80,6 @@ export class DistribuicaoComumController {
         this.ministrosImpedidos.splice(0);
         this.cmdDistribuir.ministrosImpedidos.splice(0);
         this.ministrosCandidatos.forEach(ministro => this.cmdDistribuir.ministrosCandidatos.push(ministro.id));
-    }
-    
-    public isFormValido(): boolean {
-        return (this.cmdDistribuir.justificativa != "");
     }
     
     public distribuirProcesso(): void {

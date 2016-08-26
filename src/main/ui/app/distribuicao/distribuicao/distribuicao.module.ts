@@ -59,12 +59,12 @@ function config($stateProvider: IStateProvider,
                 controllerAs: 'vm'
             }
         },
-/*        resolve: {
+        resolve: {
             processo: ['app.distribuicao.DistribuicaoCommonService', '$stateParams', (distribuicaoCommonService: DistribuicaoCommonService, $stateParams : IStateParamsService) => {
             	let distribuicaoId = $stateParams['informationId'];
                 return distribuicaoCommonService.consultarProcessoPelaDistribuicao(distribuicaoId);
             }]
-       }, */ 
+       },  
        params : {
            informationId : undefined
        }

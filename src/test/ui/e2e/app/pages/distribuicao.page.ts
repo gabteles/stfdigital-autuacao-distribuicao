@@ -1,20 +1,11 @@
-/*
- * @autor: anderson.araujo
- * @since: 19/05/2016
-*/
 import ElementFinder = protractor.ElementFinder;
+
+import mdHelpers = require('../shared/helpers/md-helpers');
 
 export class DistribuicaoProcessoPage {
     
-    public selecionarTipoDistribuicao(tipo: string): void {
-        element(by.id("cboTipoDistribuicao")).click();        
-        element.all(by.repeater("tipoDistribuicao in vm.tiposDistribuicao")).filter(function(elemento, indice) {
-           return elemento.getText().then(function(texto){
-               return texto.trim().toUpperCase() === tipo.trim().toUpperCase();
-           });
-        }).then(function(elementosFiltrados){
-            elementosFiltrados[0].click();
-        });
+    public selecionarComboTipoDistribuicao(tipo: string): void {
+        mdHelpers.mdSelect.selectOptionWithText(element(by.id('cboTipoDistribuicao')), tipo);
     }
     
     public selecionarMinistroPrevento(nome:string): void {
@@ -29,7 +20,7 @@ export class DistribuicaoProcessoPage {
         element(by.id("btnAdicionarMinistro")).click();
     }
     
-    public informarProcessoPrevento(numeroProcesso: string): void {
+    public selecionarProcessoPrevento(numeroProcesso: string): void {
         element(by.id("txtNumProcessoPrevencao")).sendKeys(numeroProcesso, protractor.Key.ENTER);
     }
     
@@ -38,6 +29,6 @@ export class DistribuicaoProcessoPage {
     }
     
     public distribuirProcesso(): void {
-        element(by.id("btnDistribuirProcesso")).click();
+        element(by.id("distribuir-processo")).click();
     }
 }

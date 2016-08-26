@@ -1,9 +1,14 @@
 package br.jus.stf.autuacao.distribuicao.interfaces;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +22,15 @@ import br.jus.stf.autuacao.distribuicao.application.commands.InserirPecasCommand
 import br.jus.stf.autuacao.distribuicao.application.commands.JuntarPecaCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.OrganizarPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.UnirPecasCommand;
+import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
+import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
+import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
+import br.jus.stf.autuacao.distribuicao.domain.model.OrganizarPecaRepository;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.PecaDto;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.PecaDtoAssembler;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDtoAssembler;
+import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rafael Alencar
@@ -30,6 +44,16 @@ public class OrganizarPecasRestResource {
     
     @Autowired
     private OrganizarPecaApplicationService organizarPecasApplicationService;
+    
+    @Autowired
+    private OrganizarPecaRepository organizarPecaRepository;
+    
+    @Autowired
+    private DistribuicaoRepository distribuicaoRepository;
+    
+    @Autowired
+    private ProcessoDtoAssembler processoDtoAssembler;
+    
 
     /**
      * @param command
@@ -120,6 +144,23 @@ public class OrganizarPecasRestResource {
         }
         
         organizarPecasApplicationService.handle(command);
+    }
+    
+	
+    /**
+     * Retorna o processo distribuído com o seu relator e suas peças correspondentes
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/{id}/processo", method = RequestMethod.GET)
+    public ProcessoDistribuidoDto consultarProcesso(@PathVariable("id") Long id) {
+    	
+    	FilaDistribuicao fila =  distribuicaoRepository.findOneFilaDistribuicao(new DistribuicaoId(id));
+    	
+    	return Optional.ofNullable(organizarPecaRepository.findOne(fila.processo()))
+    			.map(processo -> processoDtoAssembler.toDto(processo))
+			.orElse((ProcessoDistribuidoDto) Collections.emptyList());
+    	
     }
 
 }

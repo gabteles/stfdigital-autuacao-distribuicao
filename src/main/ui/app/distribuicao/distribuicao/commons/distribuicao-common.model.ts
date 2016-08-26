@@ -16,13 +16,9 @@ export class Parte {
                 public polo?: string) {}
 }
 
-export class Preferencia {
-    constructor(public id: number, public nome: string) {}
-}
 
 export class Classe {
-    constructor(public id: string, public nome: string,
-                public preferencias: Array<Preferencia>) {}
+    constructor(public id: string, public nome: string) {}
 }
 
 export interface Processo {
@@ -36,21 +32,16 @@ export interface Processo {
     meioTramitacao: string;
     sigilo: string;
     partes: Array<Parte>;
-    preferencias: Array<Preferencia>;
 }
 
-export interface Distribuicao {
+export interface ProcessoIndexado {
     
-    processoId: number;
-    status: string;
-    classe: Classe;
+    processoId: string;
+    protocoloId: number;
+    protocolo: string;
+    classe: string;
     numero: number;
-    identificacao: string;
-    autuador: string;
-    meioTramitacao: string;
-    sigilo: string;
-    partes: Array<Parte>;
-    preferencias: Array<Preferencia>;
+    partes: Array<string>;
 }
 
 export class DistribuirCommand implements Command {

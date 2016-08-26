@@ -1,76 +1,73 @@
 import IStateParamsService = angular.ui.IStateParamsService;
 import IStateService = angular.ui.IStateService;
 import {DistribuicaoPrevencaoService} from "./distribuicao-prevencao.service";
-import {DistribuirProcessoPrevencaoCommand, Processo, Ministro} from "../commons/distribuicao-common.model"
+import {DistribuirProcessoPrevencaoCommand, Processo, ProcessoIndexado, Ministro} from "../commons/distribuicao-common.model"
 import distribuicao from "../distribuicao.module";
 
+export class PartePrevencao {
+    
+    public processos: Array<ProcessoIndexado> = [];
+    
+    constructor(public nome: string) { }
+}
+
 export class DistribuicaoPrevencaoController {
-    public ministrosSelecionados: { singleSelect: any, multipleSelect: Array<Ministro> };
-    public ministrosAdicionados: { singleSelect: any, multipleSelect: Array<Ministro> };
-    public ministrosImpedidos: Array<Ministro>;
     public justificativa: string;
     public numProcessoPrevencao: string;
     public distribuicaoId: number;
+    public partes : Array<PartePrevencao> = [];
+    public processosPreventosAdicionados : Array<ProcessoIndexado> = [];
     
     public cmdDistribuir : DistribuirProcessoPrevencaoCommand = new DistribuirProcessoPrevencaoCommand(); 
     
-    static $inject = ['$state', '$stateParams', 'messagesService', "app.distribuicao.DistribuicaoService"];
+    static $inject = ['$state', '$stateParams', 'messagesService', 'app.distribuicao.DistribuicaoPrevencaoService', 'processo'];
     
     /** @ngInject **/
     constructor(private $state: IStateService, private $stateParams: IStateParamsService, private messagesService: app.support.messaging.MessagesService,
-    		private distribuicaoPrevencaoService: DistribuicaoPrevencaoService) {
+    		public distribuicaoPrevencaoService: DistribuicaoPrevencaoService, public processo : Processo) {
         
     	this.cmdDistribuir.distribuicaoId = $stateParams['informationId'];
-        
+    	processo.partes.forEach(parte => this.partes.push(new PartePrevencao(parte.apresentacao)));
     }
-    
-    
+       
     public isFormValido(): boolean {
         return (this.cmdDistribuir.justificativa != "");
     }
- /*   
-    public adicionarProcessoPrevento(processo: Processo): void {
-        if (this.processosPreventos.length === 0){
-            this.processosPreventos.push(processo);
-        } else {
-            let existe: boolean = false;
-            for (let i = 0; i > this.processosPreventos.length; i++) {
-                if (this.processosPreventos[i].id == processo.id) {
-                   existe = true;
-                   break; 
-                }
-            }
-                        
-            if (!existe) {
-                this.processosPreventos.push(processo);
+    
+    public consultarProcesso (parte: String, indice: number) : void {
+        //this.partes[indice].processos = [<ProcessoIndexado>{processoId: '1', classe: "HC", numero: 123}]; //mock para exibir um processo prevento
+        this.distribuicaoPrevencaoService.pesquisarProcessoPelaParte(parte).then(processos => {
+            this.partes[indice].processos = processos;
+        }, () => {
+            this.messagesService.error('Ocorreu um erro e a pesquisa de processsos da parte não pode ser realizada!');
+        });
+    };
+    
+    public adicionarProcessosPreventos (processoPrevento : ProcessoIndexado) : void {
+        
+        for (let i = 0; i < this.cmdDistribuir.processosPreventos.length; i++){
+            if (this.cmdDistribuir.processosPreventos[i].toString() === processoPrevento.processoId){
+                this.messagesService.error('O processo já foi adicionado!');
+                return;
             }
         }
-        
-        this.numProcessoPrevencao = "";
-    }
+        this.cmdDistribuir.processosPreventos.push(+processoPrevento.processoId);
+        this.processosPreventosAdicionados.push(processoPrevento);
+    };
     
-    public removerProcessoPrevento(processo: Processo): void {
-        let indice = this.processosPreventos.indexOf(processo);
-        this.processosPreventos.splice(indice, 1);        
-    }
-    
-    public consultarProcessoPrevento(): void {
-        let processo = this.distribuicaoService.consultarProcessoPrevencao(this.numProcessoPrevencao.toUpperCase());
-        
-        if (processo.id > 0){
-            this.adicionarProcessoPrevento(processo);
-        } else {
-            this.exibirMensagem("Processo não encontrado.", "Distribuição de Processos");
-        }
+    public removerProcessoPrevento(indice : number) : void {
+        this.cmdDistribuir.processosPreventos.splice(indice, 1);
+        this.processosPreventosAdicionados.splice(indice,1);
     }
     
     public distribuirProcesso(): void {
-        this.distribuicaoService.enviarProcessoParaDistribuicao(this.processo.id, this.distribuicaoId, this.tipoDistribuicao, 
-            this.justificativa, this.ministrosCandidatos, this.ministrosImpedidos, this.processosPreventos).then(() => {
-                this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });    
-            });
+        this.distribuicaoPrevencaoService.distribuirPorPrevencao(this.cmdDistribuir).then(() => {
+            this.$state.go('app.tarefas.minhas-tarefas');
+            this.messagesService.success('Processo distribuído com sucesso.');
+        }, () => {
+            this.messagesService.error('Erro ao distribuir o processo.');
+        });
     }
-   */ 
 }
 
 distribuicao.controller('app.distribuicao.DistribuicaoPrevencaoController', DistribuicaoPrevencaoController);

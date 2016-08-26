@@ -8,8 +8,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @author viniciusk
+ * @author Lucas Rodrigues
+ *
  */
-public abstract class ProcessoDto {
+public class ProcessoDto {
 
 	private Long processoId;
 	private String status;
@@ -116,5 +118,4 @@ public abstract class ProcessoDto {
 	public void setPartes(List<ParteDto> partes) {
 		this.partes = partes;
 	}
-
 }
