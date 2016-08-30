@@ -24,8 +24,7 @@ public class ProcessoDto {
 	private List<ParteDto> partes;
 
 
-	ProcessoDto() {
-	}
+	public ProcessoDto() {}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private Date dataAutuacao;
