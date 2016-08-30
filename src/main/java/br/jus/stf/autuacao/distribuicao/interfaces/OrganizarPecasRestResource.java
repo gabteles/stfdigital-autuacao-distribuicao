@@ -1,7 +1,6 @@
 package br.jus.stf.autuacao.distribuicao.interfaces;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -26,11 +25,8 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.OrganizarPecaRepository;
-import br.jus.stf.autuacao.distribuicao.interfaces.dto.PecaDto;
-import br.jus.stf.autuacao.distribuicao.interfaces.dto.PecaDtoAssembler;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDtoAssembler;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rafael Alencar
@@ -158,7 +154,7 @@ public class OrganizarPecasRestResource {
     	FilaDistribuicao fila =  distribuicaoRepository.findOneFilaDistribuicao(new DistribuicaoId(id));
     	
     	return Optional.ofNullable(organizarPecaRepository.findOne(fila.processo()))
-    			.map(processo -> processoDtoAssembler.toDto(processo))
+    			.map(processoDtoAssembler::toDto)
 			.orElse((ProcessoDistribuidoDto) Collections.emptyList());
     	
     }

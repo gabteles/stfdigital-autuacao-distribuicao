@@ -23,7 +23,6 @@ import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.TipoDistribuicao;
-import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.TipoDistribuicaoDto;
 
