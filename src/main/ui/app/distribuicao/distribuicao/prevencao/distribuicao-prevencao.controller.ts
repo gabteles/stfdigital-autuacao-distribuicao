@@ -1,7 +1,7 @@
 import IStateParamsService = angular.ui.IStateParamsService;
 import IStateService = angular.ui.IStateService;
 import {DistribuicaoPrevencaoService} from "./distribuicao-prevencao.service";
-import {DistribuirProcessoPrevencaoCommand, Processo, ProcessoIndexado, Ministro} from "../commons/distribuicao-common.model"
+import {DistribuirProcessoPrevencaoCommand, Processo, ProcessoIndexado, DistribuicaoIndexada} from "../commons/distribuicao-common.model"
 import distribuicao from "../distribuicao.module";
 
 export class PartePrevencao {
@@ -35,7 +35,7 @@ export class DistribuicaoPrevencaoController {
     }
     
     public consultarProcesso (parte: String, indice: number) : void {
-        this.partes[indice].processos = [<ProcessoIndexado>{processoId: '5521', classe: "HC", numero: 123, relator : {id: 44, nome: 'Marco Aurélio'}}]; //mock para exibir um processo prevento
+        this.partes[indice].processos = [<ProcessoIndexado>{processoId: '5521', classe: "HC", numero: 123, distribuicoes : <Array<DistribuicaoIndexada>>[{relatorId: 44, relator: 'Marco Aurélio', data: new Date()}]}]; //mock para exibir um processo prevento
    /*     this.distribuicaoPrevencaoService.pesquisarProcessoPelaParte(parte).then(processos => {
             this.partes[indice].processos = processos;
         }, () => {

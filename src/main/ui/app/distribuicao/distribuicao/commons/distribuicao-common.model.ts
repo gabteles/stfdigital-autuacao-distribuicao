@@ -16,9 +16,15 @@ export class Parte {
                 public polo?: string) {}
 }
 
-
 export class Classe {
     constructor(public id: string, public nome: string) {}
+}
+
+export interface DistribuicaoIndexada {
+    
+    relatorId: number;
+    relator: string;
+    data: Date;
 }
 
 export interface Processo {
@@ -42,7 +48,7 @@ export interface ProcessoIndexado {
     classe: string;
     numero: number;
     partes: Array<string>;
-    relator : Ministro;
+    distribuicoes : Array<DistribuicaoIndexada>;
 }
 
 export class DistribuirCommand implements Command {
