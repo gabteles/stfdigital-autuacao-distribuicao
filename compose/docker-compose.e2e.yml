@@ -16,6 +16,8 @@ services:
       file: shared/compose/common.yml
       service: distribuicao
     image: stfdigital-autuacao-distribuicao
+    environment:
+     - spring.profiles.active=development,docker,e2e
     depends_on:
      - rabbit
      - discovery
