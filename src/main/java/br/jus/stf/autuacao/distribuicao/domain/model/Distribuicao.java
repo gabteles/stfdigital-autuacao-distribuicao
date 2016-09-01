@@ -1,6 +1,11 @@
 package br.jus.stf.autuacao.distribuicao.domain.model;
 
+import static java.util.Comparator.comparing;
+import static javax.persistence.CascadeType.ALL;
+
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -12,14 +17,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.autuacao.distribuicao.domain.model.identidade.Ministro;
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
+import br.jus.stf.core.framework.domaindrivendesign.DomainEvent;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
+import br.jus.stf.core.shared.eventos.ProcessoDistribuido;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -57,6 +66,11 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     
     @Column(name = "TXT_JUSTIFICATIVA")
 	private String justificativa;
+    
+    @OneToMany(cascade = ALL)
+    @JoinTable(name = "DISTRIBUICAO_EVENTO", schema = "DISTRIBUICAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "SEQ_EVENTO", nullable = false))
+    private Set<Evento> eventos = new TreeSet<>(comparing(Evento::criacao));
     
     Distribuicao() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
@@ -107,6 +121,8 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
         this.distribuidor = distribuidor;
         relator = sorteio();
     	dataDistribuicao = new Date();
+    	
+    	registrarEvento(new ProcessoDistribuido(processoId.toString(), relator.identity().toLong(), relator.nome(), dataDistribuicao));
     }
     
     /**
@@ -130,5 +146,9 @@ public abstract class Distribuicao extends EntitySupport<Distribuicao, Distribui
     public DistribuicaoId identity() {
         return distribuicaoId;
     }
+   
+	protected void registrarEvento(DomainEvent<?> evento) {
+		eventos.add(new Evento(evento));
+	}
     
 }
