@@ -1,6 +1,5 @@
 package br.jus.stf.autuacao.distribuicao.interfaces;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -18,7 +17,7 @@ import br.jus.stf.autuacao.distribuicao.application.commands.DividirPecaCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.EditarPecaCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.ExcluirPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.InserirPecasCommand;
-import br.jus.stf.autuacao.distribuicao.application.commands.JuntarPecaCommand;
+import br.jus.stf.autuacao.distribuicao.application.commands.JuntarPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.OrganizarPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.UnirPecasCommand;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
@@ -134,7 +133,7 @@ public class OrganizarPecasRestResource {
      * @param binding
      */
     @RequestMapping(method = RequestMethod.POST, value = "/juntar")
-    public void juntarPecas(@RequestBody @Valid JuntarPecaCommand command, BindingResult binding) {
+    public void juntarPecas(@RequestBody @Valid JuntarPecasCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
             throw new IllegalArgumentException("Junção de Peças Inválida: " + binding.getAllErrors());
         }
@@ -154,8 +153,7 @@ public class OrganizarPecasRestResource {
     	FilaDistribuicao fila =  distribuicaoRepository.findOneFilaDistribuicao(new DistribuicaoId(id));
     	
     	return Optional.ofNullable(organizarPecaRepository.findOne(fila.processo()))
-    			.map(processoDtoAssembler::toDto)
-			.orElse((ProcessoDistribuidoDto) Collections.emptyList());
+    			.map(processoDtoAssembler::toDto).orElseThrow(IllegalArgumentException::new);
     	
     }
 

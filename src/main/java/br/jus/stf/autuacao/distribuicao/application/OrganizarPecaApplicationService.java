@@ -14,7 +14,7 @@ import br.jus.stf.autuacao.distribuicao.application.commands.DividirPecaCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.EditarPecaCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.ExcluirPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.InserirPecasCommand;
-import br.jus.stf.autuacao.distribuicao.application.commands.JuntarPecaCommand;
+import br.jus.stf.autuacao.distribuicao.application.commands.JuntarPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.OrganizarPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.UnirPecasCommand;
 import br.jus.stf.autuacao.distribuicao.domain.PecaAdapter;
@@ -34,6 +34,7 @@ import br.jus.stf.autuacao.distribuicao.domain.model.Visibilidade;
 import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPeca;
 import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPecaRepository;
 import br.jus.stf.core.framework.component.command.Command;
+import br.jus.stf.core.framework.component.command.CommandTarget.Mode;
 import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.documento.DocumentoId;
 import br.jus.stf.core.shared.documento.DocumentoTemporarioId;
@@ -69,7 +70,7 @@ public class OrganizarPecaApplicationService {
 	 * Insere peças em um processo
 	 * @param command
 	 */
-    @Command(description = "Inserir peças.")
+    @Command(description = "Inserir peças", targetType = Peca.class, targetMode = Mode.None)
 	public void handle(InserirPecasCommand command) {		
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
 		
@@ -82,12 +83,12 @@ public class OrganizarPecaApplicationService {
 	 * 
 	 * @param command
 	 */
-    @Command(description = "Excluir peças.")
+    @Command(description = "Excluir peças", targetType = Peca.class, targetMode = Mode.OneOrMany)
 	public void handle(ExcluirPecasCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
 		
 		processo.pecas().forEach(peca -> command.getPecas().forEach(pecaExcluida -> {
-			if (peca.identity().equals(pecaExcluida)) {
+			if (peca.identity().toLong().equals(pecaExcluida)) {
 				processo.removerPeca(peca);
 			}
 		}));
@@ -100,7 +101,7 @@ public class OrganizarPecaApplicationService {
 	 * 
 	 * @param command
 	 */
-    @Command(description = "Organizar peças.", startProcess = true)
+    @Command(description = "Organizar peças", startProcess = true, listable = false)
 	public void handle(OrganizarPecasCommand command) {
 		Distribuicao distribuicao = distribuicaoRepository.findOne(new DistribuicaoId(command.getDistribuicaoId()));
 		Processo processo = organizarPecasRepository.findOne(distribuicao.processo());
@@ -124,7 +125,7 @@ public class OrganizarPecaApplicationService {
 	 * 
 	 * @param command
 	 */
-    @Command(description = "Dividir peça.")
+    @Command(description = "Dividir peça", targetType = Peca.class)
 	public void handle(DividirPecaCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
 		Peca pecaOriginal = organizarPecasRepository.findOnePeca(new PecaId(command.getPecaOriginalId()));
@@ -153,7 +154,7 @@ public class OrganizarPecaApplicationService {
 	 *
 	 * @param command
 	 */
-    @Command(description = "Unir peças.")
+    @Command(description = "Unir peças", targetType = Peca.class, targetMode = Mode.Many)
 	public void handle(UnirPecasCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
 		List<Peca> pecasUnidas = command.getPecas().stream()
@@ -178,7 +179,7 @@ public class OrganizarPecaApplicationService {
 	 * 
 	 * @param command
 	 */
-    @Command(description = "Editar peça.")
+    @Command(description = "Editar peça", targetType = Peca.class)
 	public void handle(EditarPecaCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
 		Peca pecaOriginal = organizarPecasRepository.findOnePeca(new PecaId(command.getPecaId()));
@@ -194,12 +195,14 @@ public class OrganizarPecaApplicationService {
 	 * 
 	 * @param command
 	 */
-    @Command(description = "Juntar peça.")
-	public void handle(JuntarPecaCommand command) {
+    @Command(description = "Juntar peças", targetType = Peca.class, targetMode = Mode.OneOrMany)
+	public void handle(JuntarPecasCommand command) {
 		Processo processo = organizarPecasRepository.findOne(new ProcessoId(command.getProcessoId()));
-		Peca peca = organizarPecasRepository.findOnePeca(new PecaId(command.getPecaId()));
 		
-		processo.juntarPeca(peca);
+		command.getPecas().forEach(pecaId -> {
+			Peca peca = organizarPecasRepository.findOnePeca(new PecaId(pecaId));
+			processo.juntarPeca(peca);
+		});
 		organizarPecasRepository.save(processo);
 	}
 	

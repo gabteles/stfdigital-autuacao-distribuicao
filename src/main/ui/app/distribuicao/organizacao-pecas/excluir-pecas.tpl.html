@@ -1,0 +1,27 @@
+<md-dialog aria-label="Excluir Peça">
+	<form ng-cloak>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Excluir Peça</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="vm.sair()">
+					<md-icon md-svg-src="assets/icons/ic_close_24px.svg" aria-label="Sair"></md-icon>
+				</md-button>
+      		</div>
+    	</md-toolbar>
+    	<md-dialog-content>
+      		<div class="md-dialog-content">
+        		<h2>Deseja excluir as peças:</h2>
+        		<div>
+        			<ol ng-repeat="pecaSelecionada in vm.pecas">
+        				<li>{{pecaSelecionada.peca.descricao}}</li>
+        			</ol>
+        		</div>
+      		</div>
+    	</md-dialog-content>
+		<md-dialog-actions>
+  			<md-button ng-click="vm.excluirPecas()" class="md-primary"> Excluir </md-button>
+   			<md-button ng-click="vm.sair()">Sair</md-button>
+  		</md-dialog-actions>
+	</form>
+</md-dialog>

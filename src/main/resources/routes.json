@@ -4,5 +4,30 @@
         "stateName": "app.tarefas.distribuicao",
         "urlPrefix": "/distribuicao/distribuicao",
         "src": "distribuicao/distribuicao"
+    },
+    
+    {
+        "id": "organizar-pecas",
+        "stateName": "app.tarefas.organizacao-pecas",
+        "url": "/distribuicao/organizacao-pecas/:informationId",
+        "src": "distribuicao/organizacao-pecas"
+    },
+    
+    
+    {
+        "id": "excluir-pecas",
+        "stateName": "app.tarefas.organizacao-pecas.excluir-pecas",
+        "url": "/distribuicao/organizacao-pecas/:informationId/excluir-pecas",
+        "src": "distribuicao/organizacao-pecas"
+    },
+    
+    
+    {
+        "id": "juntar-pecas",
+        "stateName": "app.tarefas.organizacao-pecas.juntar-pecas",
+        "url": "/distribuicao/organizacao-pecas/:informationId/juntar-pecas",
+        "src": "distribuicao/organizacao-pecas"
     }
+    
+    
 ]

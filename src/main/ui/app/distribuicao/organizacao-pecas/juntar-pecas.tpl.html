@@ -1,0 +1,27 @@
+<md-dialog aria-label="Juntar Peça">
+	<form ng-cloak>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Juntar Peça</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="vm.sair()">
+					<md-icon md-svg-src="assets/icons/ic_close_24px.svg" aria-label="Sair"></md-icon>
+				</md-button>
+      		</div>
+    	</md-toolbar>
+    	<md-dialog-content>
+      		<div class="md-dialog-content">
+        		<h2>Deseja alterar a(s) situação(ões) da(s) peça(s) para juntada?</h2>
+        		<div>
+        			<ol ng-repeat="pecaSelecionada in vm.pecas">
+        				<li>{{pecaSelecionada.peca.descricao}}</li>
+        			</ol>
+        		</div>
+      		</div>
+    	</md-dialog-content>
+		<md-dialog-actions>
+  			<md-button ng-click="vm.juntar()" class="md-primary"> Juntar </md-button>
+   			<md-button ng-click="vm.sair()">Sair</md-button>
+  		</md-dialog-actions>
+	</form>
+</md-dialog>

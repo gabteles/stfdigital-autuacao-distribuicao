@@ -1,6 +1,10 @@
 package br.jus.stf.autuacao.distribuicao.application.commands;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -10,35 +14,35 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @since 1.0.0
  * @since 04.08.2016
  */
-public class JuntarPecaCommand {
+public class JuntarPecasCommand {
 	
 	@NotNull
     @ApiModelProperty(value = "Identificador do processo.", required = true)
 	private Long processoId;
 	
-	@NotNull
-    @ApiModelProperty(value = "Identificador da peça editada.", required = true)
-	private Long pecaId;
+	@NotEmpty
+    @ApiModelProperty(value = "Identificadores das peças que serão marcadas como Juntada.", required = true)
+	private List<Long> pecas;
 	
-	public JuntarPecaCommand() {
+	public JuntarPecasCommand() {
 		// Construtor default.
 	}
 	
 	/**
 	 * @param processoId
-	 * @param pecaId
+	 * @param pecas
 	 */
-	public JuntarPecaCommand(Long processoId, Long pecaId) {
+	public JuntarPecasCommand(Long processoId, List<Long> pecas) {
 		this.processoId = processoId;
-		this.pecaId = pecaId;
+		this.pecas = pecas;
 	}
 	
 	public Long getProcessoId() {
 		return processoId;
 	}
 	
-	public Long getPecaId() {
-		return pecaId;
+	public List<Long> getPecas() {
+		return pecas;
 	}
 
 }

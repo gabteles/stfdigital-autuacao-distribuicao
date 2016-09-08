@@ -1,0 +1,68 @@
+<style>
+	.line-through{
+		text-decoration: line-through;
+	}
+</style>
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+
+        <div class="md-title mt-10">Organiza Peças</div>
+
+        <div layout="row">
+            <div class="form-wrapper md-whiteframe-1dp" flex="100">
+                <form name="basicForm" class="md-inline-form">
+                	<div layout="row" ui-view></div>
+					<div  layout="row" layout-gt-xs="row">
+						<md-card flex layout="column">
+							<md-card-content layout="column">
+								<div layout="row">
+									<div layout="column" layout-align="center start" flex="50">
+										<commands targets="organiza.selecao" context="distribuicao" target-type="Peca"></commands>
+									</div>
+									<div layout="column" layout-align="start end" flex="50">
+										<md-input-container>
+				                            <md-switch ng-model="organiza.desabilitado" aria-label="Classificação" class="md-warn" id="desabilitado" ng-change="organiza.atualizaEstado()">
+			    								{{ organiza.desabilitado ? 'Desabilitado' : 'Habilitado' }} 
+			  								</md-switch>
+			                        	</md-input-container>
+			                        </div>
+	                       		</div>
+								<div class="simple-table-container">
+	                                <div class="ms-responsive-table-wrapper">
+	                                    <table datatable="ng" class="simple" dt-options="organiza.dtOptions" id="tabelaPecas" ms-responsive-table>
+	                                        <thead>
+										        <tr>
+										        	<th style="width: 10px;"><input type="checkbox" ng-model="organiza.checkToggle" ng-change="organiza.toggleCheck()"></th>
+										            <th>Descrição</th>
+										            <th>Nmero Ordem</th>
+										            <th>Visibilidade</th>
+										            <th>Situação</th>
+										        </tr>
+								    		</thead>
+									        <tbody ui-sortable="organiza.sortableOptions" ng-model="organiza.processo.pecas">
+										        <tr ng-repeat="pecaSelecionavel in organiza.pecas" ng-class='pecaSelecionavel.peca.situacao === "Excluída" ? "line-through" : ""'>
+										        	<td><input type="checkbox" checklist-model="organiza.selecao" checklist-value="pecaSelecionavel"></td>
+										            <td>{{ pecaSelecionavel.peca.descricao }}</td>
+										            <td>{{ pecaSelecionavel.peca.numeroOrdem }}</td>
+										            <td>{{ pecaSelecionavel.peca.visibilidade }}</td>
+										            <td>{{ pecaSelecionavel.peca.situacao }}</td>
+										        </tr>
+									        </tbody>
+										</table>
+	                                </div>
+	                  			</div>
+	                  		</md-card-content>
+	                  	</md-card>
+					</div>
+					
+	                 <md-button type="button" class="md-raised md-accent" id="organizar-pecas" aria-label="Submit"
+	                 	 ng-click ="organiza.finalizar()">
+	                     	Concluir Tarefa
+	                 </md-button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
