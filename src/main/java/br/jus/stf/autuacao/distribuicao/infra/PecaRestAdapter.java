@@ -36,7 +36,7 @@ public class PecaRestAdapter implements PecaAdapter {
 		
 		List<Map<String, Object>> documentos = documentoRestClient.salvar(command);
 		
-		return documentos.stream().map(doc -> new DocumentoId((Long)doc.get("documentoId"))).collect(Collectors.toList());
+		return documentos.stream().map(doc -> new DocumentoId(new Long(doc.get("documentoId").toString()))).collect(Collectors.toList());
 	}
 	
 	@Override

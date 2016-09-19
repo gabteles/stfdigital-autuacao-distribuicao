@@ -1,6 +1,9 @@
 package br.jus.stf.autuacao.distribuicao.interfaces;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -20,12 +23,19 @@ import br.jus.stf.autuacao.distribuicao.application.commands.InserirPecasCommand
 import br.jus.stf.autuacao.distribuicao.application.commands.JuntarPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.OrganizarPecasCommand;
 import br.jus.stf.autuacao.distribuicao.application.commands.UnirPecasCommand;
+import br.jus.stf.autuacao.distribuicao.domain.DocumentoAdapter;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoId;
 import br.jus.stf.autuacao.distribuicao.domain.model.DistribuicaoRepository;
 import br.jus.stf.autuacao.distribuicao.domain.model.FilaDistribuicao;
 import br.jus.stf.autuacao.distribuicao.domain.model.OrganizarPecaRepository;
+import br.jus.stf.autuacao.distribuicao.domain.model.Visibilidade;
+import br.jus.stf.autuacao.distribuicao.domain.model.documento.TipoPecaRepository;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.DocumentoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDtoAssembler;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.TipoPecaDto;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.TipoPecaDtoAssembler;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.VisibilidadeDto;
 
 /**
  * @author Rafael Alencar
@@ -48,6 +58,15 @@ public class OrganizarPecasRestResource {
     
     @Autowired
     private ProcessoDtoAssembler processoDtoAssembler;
+    
+    @Autowired
+    private TipoPecaRepository tipoPecaRepository;
+    
+    @Autowired
+    private TipoPecaDtoAssembler tipoPecaDtoAssembler;
+    
+    @Autowired
+    private DocumentoAdapter documentoAdapter;
     
 
     /**
@@ -156,5 +175,25 @@ public class OrganizarPecasRestResource {
     			.map(processoDtoAssembler::toDto).orElseThrow(IllegalArgumentException::new);
     	
     }
+    
+    @RequestMapping(value="/tipopeca", method = RequestMethod.GET)
+    public List<TipoPecaDto> listarTipoPeca(){
+    	return tipoPecaRepository.findAll().stream().
+    			map(tipoPecaDtoAssembler::toDto).collect(Collectors.toList());
+    }
+    
+	/**
+	 * @return
+	 */
+	@RequestMapping(value="/visibilidade", method = RequestMethod.GET)
+    public List<VisibilidadeDto> listarVisibilidadePeca(){
+		return Arrays.asList(Visibilidade.values()).stream().map(tipo -> new VisibilidadeDto(tipo.name(), tipo.descricao()))
+				.collect(Collectors.toList());
+    }
+	
+	  @RequestMapping(value = "/pecas/documentos/{documentoId}", method = RequestMethod.GET)
+	    public DocumentoDto consultarDocumento(@PathVariable("documentoId") Long documentoId) {
+	    	return documentoAdapter.consultar(documentoId);
+	    }
 
 }

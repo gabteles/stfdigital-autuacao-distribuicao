@@ -5,8 +5,11 @@ import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.DocumentoDto;
 
 /**
  * @author Rafael Alencar
@@ -37,5 +40,13 @@ public interface DocumentoRestClient {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/api/documentos/unir", consumes = "application/json")
 	Long unir(MultiValueMap<String, Long> documents);
+	
+	/**
+	 * @param documents
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/api/documentos/{documentoId}", consumes = "application/json")
+	DocumentoDto consultar(@PathVariable("documentoId") Long documentoId);
+	
 
 }

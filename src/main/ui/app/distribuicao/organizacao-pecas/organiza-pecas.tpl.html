@@ -36,17 +36,17 @@
 										        <tr>
 										        	<th style="width: 10px;"><input type="checkbox" ng-model="organiza.checkToggle" ng-change="organiza.toggleCheck()"></th>
 										            <th>Descrição</th>
-										            <th>Nmero Ordem</th>
+										            <th>Número Ordem</th>
 										            <th>Visibilidade</th>
 										            <th>Situação</th>
 										        </tr>
 								    		</thead>
-									        <tbody ui-sortable="organiza.sortableOptions" ng-model="organiza.processo.pecas">
+									        <tbody ui-sortable="organiza.sortableOptions" ng-model="organiza.pecas">
 										        <tr ng-repeat="pecaSelecionavel in organiza.pecas" ng-class='pecaSelecionavel.peca.situacao === "Excluída" ? "line-through" : ""'>
 										        	<td><input type="checkbox" checklist-model="organiza.selecao" checklist-value="pecaSelecionavel"></td>
 										            <td>{{ pecaSelecionavel.peca.descricao }}</td>
 										            <td>{{ pecaSelecionavel.peca.numeroOrdem }}</td>
-										            <td>{{ pecaSelecionavel.peca.visibilidade }}</td>
+										            <td>{{ pecaSelecionavel.peca.visibilidade === "PUBLICO" ? "Pública" : "Pendente de visualização" }}</td>
 										            <td>{{ pecaSelecionavel.peca.situacao }}</td>
 										        </tr>
 									        </tbody>

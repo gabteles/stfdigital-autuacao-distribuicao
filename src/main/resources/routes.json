@@ -27,7 +27,32 @@
         "stateName": "app.tarefas.organizacao-pecas.juntar-pecas",
         "url": "/distribuicao/organizacao-pecas/:informationId/juntar-pecas",
         "src": "distribuicao/organizacao-pecas"
+    },
+    
+    
+    {
+        "id": "editar-peca",
+        "stateName": "app.tarefas.organizacao-pecas.editar-peca",
+        "url": "/distribuicao/organizacao-pecas/:informationId/editar-peca",
+        "src": "distribuicao/organizacao-pecas"
+    },
+    
+    
+    {
+        "id": "dividir-peca",
+        "stateName": "app.tarefas.organizacao-pecas.dividir-peca",
+        "url": "/distribuicao/organizacao-pecas/:informationId/dividir-peca",
+        "src": "distribuicao/organizacao-pecas"
+    },
+    
+    
+    {
+        "id": "inserir-pecas",
+        "stateName": "app.tarefas.organizacao-pecas.inserir-pecas",
+        "url": "/distribuicao/organizacao-pecas/:informationId/inserir-pecas",
+        "src": "distribuicao/organizacao-pecas"
     }
+    
     
     
 ]

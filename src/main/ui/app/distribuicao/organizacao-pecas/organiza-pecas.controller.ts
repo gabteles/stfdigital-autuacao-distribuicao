@@ -63,26 +63,20 @@ export class OrganizaPecasController {
         disabled: false
     };
     
-    public atualizarEstado() : void {
-        if (this.desabilitado){
-            this.sortableOptions.disabled = true;
-        }else{
-            this.sortableOptions.disabled = false;
-        }
-    }
-    
     public finalizar() : void {
+        this.pecas.forEach(peca => {
+            this.cmdPecas.pecas.push(peca.peca.pecaId);  
+        });
         
+        this.organizaPecasService.finalizaOrganizacaoPecas(this.cmdPecas)
+        .then(() => {
+            this.$state.go('app.tarefas.minhas-tarefas');
+            this.messagesService.success('Peça(s) organizada(s) com sucesso.');
+        }, () => {
+            this.messagesService.error('Erro ao organizar a(s) peça(s).');
+        });
     }
-    
-/*    public carregarViewTipoDistribuicao() : void {
-        if (this.cmdDistribuir.tipoDistribuicao == 'COMUM'){
-            this.$state.go('app.tarefas.distribuicao-comum');
-        }else{
-            this.$state.go('app.tarefas.distribuicao-prevencao');
-        }
-    }
-*/    
+        
  
 }
 

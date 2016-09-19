@@ -9,13 +9,13 @@ public class PecaDto {
 	
 	private Long pecaId;
 	private Long documentoId;
-	private String tipoPeca;
+	private Long tipoPeca;
 	private String descricao;
 	private Integer numeroOrdem;
 	private String visibilidade;
 	private String situacao;
 	
-	public PecaDto(Long pecaId, Long documentoId, String tipoPeca, String descricao, Integer numeroOrdem, String visibilidade, String situacao) {
+	public PecaDto(Long pecaId, Long documentoId, Long tipoPeca, String descricao, Integer numeroOrdem, String visibilidade, String situacao) {
 		this.pecaId = pecaId;
 		this.documentoId = documentoId;
 		this.tipoPeca = tipoPeca;
@@ -33,7 +33,7 @@ public class PecaDto {
 		return documentoId;
 	}
 
-	public String getTipoPeca() {
+	public Long getTipoPeca() {
 		return tipoPeca;
 	}
 
