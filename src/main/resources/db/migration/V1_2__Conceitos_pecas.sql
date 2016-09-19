@@ -8,10 +8,10 @@ alter table distribuicao.peca add constraint ck_peca_tip_situacao check (tip_sit
 alter table distribuicao.peca add constraint fk_tipo_peca_peca foreign key (seq_tipo_peca) references distribuicao.tipo_peca(seq_tipo_documento);
 alter table distribuicao.peca add constraint fk_processo_peca foreign key (seq_processo) references distribuicao.processo(seq_processo);
 
-alter table distribuicao.distribuicao alter column tip_status varchar2(17) not null;
+alter table distribuicao.distribuicao modify tip_status varchar2(17);
 alter table distribuicao.distribuicao drop constraint ck_dist_tip_status;
 alter table distribuicao.distribuicao add constraint ck_dist_tip_status check (tip_status in ('DISTRIBUICAO', 'DISTRIBUIDO', 'PECAS_ORGANIZADAS'));
 
-alter table distribuicao.fila_distribuicao alter column tip_status varchar2(17) not null;
+alter table distribuicao.fila_distribuicao modify tip_status varchar2(17);
 alter table distribuicao.fila_distribuicao drop constraint ck_fidi_tip_status;
 alter table distribuicao.fila_distribuicao add constraint ck_fidi_tip_status check (tip_status in ('DISTRIBUICAO', 'DISTRIBUIDO', 'PECAS_ORGANIZADAS'));
