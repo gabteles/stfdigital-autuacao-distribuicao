@@ -105,7 +105,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
-	@WithMockOauth2User(value = "organizador-pecas", components = "juntar-peca")
+	@WithMockOauth2User(value = "organizador-pecas", components = "juntar-pecas")
 	public void juntarPeca() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
