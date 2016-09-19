@@ -1,0 +1,47 @@
+<md-dialog aria-label="Editar Peça" flex="30">
+	<form ng-cloak>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Editar Peça Processual</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="vm.sair()">
+					<md-icon md-svg-src="assets/icons/ic_close_24px.svg" aria-label="Sair"></md-icon>
+				</md-button>
+      		</div>
+    	</md-toolbar>
+    	<md-dialog-content layout="column">
+        		<div layout="column" layout-xs="row">
+        			<md-input-container style="margin:0px 0">
+        				<label>Sequencial</label>
+        				<input ng-model="vm.cmdEditarPeca.pecaId">
+        			</md-input-container>
+        			<md-input-container style="margin:0px 0px 20px 0px">
+        				<label>Tipo de Peça</label>
+	        			<md-select ng-model="vm.cmdEditarPeca.tipoPecaId">
+	        				<md-option ng-repeat="tipo in vm.tipoPecas" ng-value="tipo.tipoId">
+	        					{{tipo.nome}}
+	        				</md-option>
+	        			</md-select>
+        			</md-input-container>
+        		</div>
+        		<div layout="column" layout-xs="row">
+        			<md-input-container>
+        				<label>Descrição</label>
+        				<input ng-model="vm.cmdEditarPeca.descricao">
+        			</md-input-container>
+        			<md-input-container style="margin:0px 0px 20px 0px">
+	        			<label> Visibilidade</label>
+	        			<md-select ng-model="vm.cmdEditarPeca.visibilidade">
+	        				<md-option ng-repeat="visibilidade in vm.visibilidades" ng-value="visibilidade.id">
+	        					{{visibilidade.nome}}
+	        				</md-option>
+	        			</md-select>
+	        		</md-input-container>
+        		</div>
+    	</md-dialog-content>
+		<md-dialog-actions>
+  			<md-button ng-click="vm.editar()" class="md-primary"> Editar </md-button>
+   			<md-button ng-click="vm.sair()">Sair</md-button>
+  		</md-dialog-actions>
+	</form>
+</md-dialog>

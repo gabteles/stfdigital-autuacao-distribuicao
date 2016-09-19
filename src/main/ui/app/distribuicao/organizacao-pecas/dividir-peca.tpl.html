@@ -1,0 +1,85 @@
+<md-dialog aria-label="Dividir Peça" flex="50">
+	<form ng-cloak>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Dividir Peça Processual</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="vm.sair()">
+					<md-icon md-svg-src="assets/icons/ic_close_24px.svg" aria-label="Sair"></md-icon>
+				</md-button>
+      		</div>
+    	</md-toolbar>
+    	<md-dialog-content layout="column">
+    		<div layout="column" layout-xs="row">
+       			<md-input-container>
+       				<label>Peça Original: {{vm.documentoRecuperado.quantidadePaginas}} páginas</label>
+       			</md-input-container>
+        	</div>
+       		<div layout="column" layout-xs="row">
+       			<md-input-container>
+       				<label>Tipo de Peça</label>
+        			<md-select ng-model="vm.cmdPecaParticionada.tipoPecaId">
+        				<md-option ng-repeat="tipo in vm.tipoPecas" ng-value="tipo.tipoId">
+        					{{tipo.nome}}
+        				</md-option>
+        			</md-select>
+       			</md-input-container>
+       			<md-input-container>
+       				<label>Descrição</label>
+       				<input ng-model="vm.cmdPecaParticionada.descricao">
+       			</md-input-container>
+       		</div>
+       		
+       		<div layout="row" layout-xs="column">
+       			<md-input-container>
+       				<label>Página Inicial</label>
+       				<input ng-model="vm.cmdPecaParticionada.paginaInicial">
+       			</md-input-container>
+       			<md-input-container>
+       				<label>Página Final</label>
+       				<input ng-model="vm.cmdPecaParticionada.paginaFinal">
+       			</md-input-container>
+       		</div>
+       		
+       		<div layout="row" layout-xs="column">
+      			<md-button type="button" class="md-raised md-accent" id="inserir-peca" aria-label="Submit" 
+                   	ng-click ="vm.adicionarPecaParticionada()" >
+                    	Adicionar
+                 </md-button>
+       		
+       		</div>
+       	</md-dialog-content>
+       		
+       	<md-dialog-content flex>
+       		<md-card flex layout="column">
+       			<md-card-content layout="column">
+				<div class="simple-table-container">
+					<table class="simple" ng-show="vm.cmdDividirPeca.pecas.length > 0">
+						<thead>
+	                           <tr>
+	                               <th>Tipo</th>
+	                               <th>Descrição</th>
+	                               <th>Pag.Inicial</th>
+	                               <th>Pag.Final</th>
+	                               <th>Ações</th>
+	                           </tr>
+	                       </thead>
+						<tbody>
+							<tr ng-repeat="peca in vm.cmdDividirPeca.pecas">
+								<td>{{peca.tipoPecaId}}</td>
+								<td>{{peca.descricao}}</td>
+								<td>{{peca.paginaInicial}}</td>
+								<td>{{peca.paginaFinal}}</td>
+								<td><span><a href="#" ng-click="vm.removerIntervalo($index)">Remover</a></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+       		</md-card>
+    	</md-dialog-content>
+		<md-dialog-actions>
+  			<md-button ng-click="vm.confirmar()" class="md-primary"> Confirmar </md-button>
+   			<md-button ng-click="vm.sair()">Sair</md-button>
+  		</md-dialog-actions>
+	</form>
+</md-dialog>

@@ -1,0 +1,89 @@
+<md-dialog aria-label="Inserir Peça" flex="50">
+	<form ng-cloak>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Inserir Peça Processual</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="vm.sair()">
+					<md-icon md-svg-src="assets/icons/ic_close_24px.svg" aria-label="Sair"></md-icon>
+				</md-button>
+      		</div>
+    	</md-toolbar>
+		<md-dialog-content layout="column">
+			<div layout="column">
+             	<div nv-file-drop="" uploader="vm.uploader">
+                	<div nv-file-over="" uploader="vm.uploader" over-class="another-file-over-class" 
+                		class="force-pointer" data-ng-class="vm.uploader.isHTML5 ? 'my-drop-zone' : 'my-drop-zone-single'" 
+                		onclick="$('#idSelectFilePecas').click();">
+                	</div>
+             	</div>
+             	<input  id="idSelectFilePecas" type="file" name="file" nv-file-select="" uploader="vm.uploader" multiple  ng-class="vm.uploader.isHTML5 ? 'invisible' : ''"/><br/>
+			</div>
+			<div layout="column">
+				<div class="simple-table-container md-whiteframe-4dp tabela-anexos" ng-show="vm.documentosTemporario.length > 0">
+					<div class="table-title">Anexos</div>
+					<div class="ms-responsive-table-wrapper">
+	                    <table class="simple" ms-responsive-table>
+	                        <col>
+	                        <col>
+	                        <col>
+	                        <col style="width: 310px;">
+	                        <col>
+	                        <thead>
+	                            <tr>
+	                                <th>Título</th>
+	                                <th ng-show="vm.uploader.isHTML5">Tamanho</th>
+	                                <th ng-show="vm.uploader.isHTML5">Progresso</th>
+	                                <th>Tipo de Peca</th>
+	                                <th>Ações</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr class="linha-anexo" ng-repeat="anexo in vm.documentosTemporario">
+	                                <td data-ng-click="vm.visualizar(anexo)" class="force-pointer"><strong>{{ anexo.arquivo.file.name }}</strong></td>
+	                                <td ng-show="vm.uploader.isHTML5">{{ anexo.arquivo.file.size/1024/1024|number:2 }} MB</td>
+	                                <td ng-show="vm.uploader.isHTML5" class="coluna-progresso" ng-class="{'upload-finished': anexo.isUploadConcluido}">
+	                                    <md-progress-linear ng-show="anexo.arquivo.progress" md-mode="determinate" value="{{anexo.arquivo.progress}}"></md-progress-linear>
+	                                </td>
+	                                <td class="coluna-tipo-anexo-{{$index}}">
+	                                    <div layout="row" flex="grow">
+	                   						<md-input-container flex="grow">
+							                   	<md-autocomplete md-items="tipo in vm.tipoPecas | filter:buscaTipoAnexo"
+							                   		md-item-text="tipo.nome"
+							                   		md-selected-item="anexo.tipo"
+							                   		md-search-text="buscaTipoAnexo"
+							                   		md-selected-item-change="vm.anexosMudaram()"
+							                   		md-min-length="0">
+							                   		<md-item-template>
+								        				{{tipo.nome}}
+		       										</md-item-template>
+	                   							</md-autocomplete>
+	                   						</md-input-container>
+	                  					</div>
+	                                </td>
+                                    <td>
+                                        <a title="Remover Anexo" ng-click="vm.removerAnexo(anexo)" data-placement="top" style="cursor:pointer;">
+                                            <i class="icon icon-close s30"></i>
+                                        </a>
+                                    </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+	            <div layout="row" layout-align="end">
+	                <div>
+	                    <button type="button" id="btnRemoverAnexos" class="md-raised md-warn md-button md-default-theme md-ink-ripple" ng-click="vm.limparAnexos()" ng-show="vm.anexos.length > 0">
+	                        <span class="glyphicon glyphicon-trash"></span> Remover Todos os Anexos
+	                    </button>
+	                </div>
+	            </div>					
+			</div>
+       	</md-dialog-content>
+       		
+		<md-dialog-actions>
+  			<md-button ng-click="vm.confirmar()" class="md-primary"> Confirmar </md-button>
+   			<md-button ng-click="vm.sair()">Sair</md-button>
+  		</md-dialog-actions>
+	</form>
+</md-dialog>
