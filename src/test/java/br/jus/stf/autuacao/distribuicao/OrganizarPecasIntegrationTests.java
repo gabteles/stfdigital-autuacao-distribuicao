@@ -109,7 +109,7 @@ public class OrganizarPecasIntegrationTests extends IntegrationTestsSupport {
 	public void juntarPeca() throws Exception {
 		JsonObject pecaJson = object(
 				field("processoId", 9002),
-				field("pecas", array(9001, 9002))
+				field("pecas", array(9001))
 		);
 		ResultActions result = mockMvc.perform(post("/api/organizacao-pecas/juntar").contentType(APPLICATION_JSON).content(pecaJson.toString()));
 		
