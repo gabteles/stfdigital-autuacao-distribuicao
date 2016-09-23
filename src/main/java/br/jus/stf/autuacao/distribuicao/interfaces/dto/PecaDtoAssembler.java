@@ -14,7 +14,7 @@ public class PecaDtoAssembler {
 	public PecaDto toDto(Peca peca) {
 		Validate.notNull(peca);
 		return new PecaDto(peca.identity().toLong(), peca.documento().toLong(), peca.tipo().identity().toLong(), peca.descricao(), peca.numeroOrdem(), 
-				peca.visibilidade().name(), peca.situacao().descricao());
+				peca.visibilidade().toString(), peca.situacao().toString());
 		
 	}
 	

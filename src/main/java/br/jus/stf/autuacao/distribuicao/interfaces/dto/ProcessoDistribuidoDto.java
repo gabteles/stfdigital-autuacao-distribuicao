@@ -9,11 +9,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * @author viniciusk
  */
-public abstract class ProcessoDistribuidoDto {
+public class ProcessoDistribuidoDto {
 
 	private Long processoId;
 	private Long relatorId;
 	private List<PecaDto> pecas;
+	private Long numero;
+	private String classe;
 
 
 	ProcessoDistribuidoDto() {
@@ -61,6 +63,22 @@ public abstract class ProcessoDistribuidoDto {
 
 	public void setDataAutuacao(Date dataAutuacao) {
 		this.dataAutuacao = dataAutuacao;
+	}
+
+	public Long getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Long numero) {
+		this.numero = numero;
+	}
+
+	public String getClasse() {
+		return classe;
+	}
+
+	public void setClasse(String classe) {
+		this.classe = classe;
 	}
 
 

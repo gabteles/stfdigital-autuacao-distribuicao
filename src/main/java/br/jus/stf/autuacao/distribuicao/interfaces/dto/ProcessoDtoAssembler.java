@@ -30,7 +30,7 @@ public class ProcessoDtoAssembler {
 	public ProcessoDistribuidoDto toDto(Processo processo) {
 		Validate.notNull(processo);
 		
-		ProcessoDistribuidoDto dto = new ProcessoDistribuidoDto() {};
+		ProcessoDistribuidoDto dto = new ProcessoDistribuidoDto();
 		
 		Long processoId = processo.identity().toLong();
 		

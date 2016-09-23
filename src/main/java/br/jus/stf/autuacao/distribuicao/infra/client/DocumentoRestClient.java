@@ -32,7 +32,7 @@ public interface DocumentoRestClient {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/api/documentos/dividir", consumes = "application/json")
-	List<Long> dividir(MultiValueMap<String, Object> documents);
+	List<Long> dividir(Map<String, Object> documents);
 	
 	/**
 	 * @param documents

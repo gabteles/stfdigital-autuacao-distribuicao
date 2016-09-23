@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.autuacao.distribuicao.domain.ProcessoAdapter;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ParteDto;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDto;
 
 @Component
@@ -37,6 +38,22 @@ public class ProcessoAdapterE2EImpl implements ProcessoAdapter {
 		processoDto.setPartes(partesDto);
 		return processoDto;
 		
+	}
+
+	@Override
+	public List<ProcessoDistribuidoDto> consultarPrevencaoPorParte(String parte) {
+		List<ProcessoDistribuidoDto> processosDistribuidos = new ArrayList<ProcessoDistribuidoDto>();
+		ProcessoDistribuidoDto procDistribuido1 = new ProcessoDistribuidoDto(9001L);
+		procDistribuido1.setRelatorId(41L);
+		procDistribuido1.setClasse("RE");
+		procDistribuido1.setNumero(123L);
+		ProcessoDistribuidoDto procDistribuido2 = new ProcessoDistribuidoDto(9000L);
+		procDistribuido2.setRelatorId(43L);
+		procDistribuido2.setClasse("AP");
+		procDistribuido2.setNumero(470L);
+		processosDistribuidos.add(procDistribuido1);
+		processosDistribuidos.add(procDistribuido2);
+		return processosDistribuidos;
 	}
 
 }

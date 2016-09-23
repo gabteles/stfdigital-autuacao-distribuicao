@@ -92,6 +92,5 @@ public class DistribuicaoRestResource {
     			.orElseThrow(() -> new IllegalArgumentException("Processo inválido."));
     	
     }
-	
 
 }

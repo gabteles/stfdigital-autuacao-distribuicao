@@ -95,6 +95,12 @@ export class ExcluirPecasCommand extends PecasCommand{
     }
 }
 
+export class UnirPecasCommand extends PecasCommand{
+    constructor(){
+        super();
+    }
+}
+
 export class JuntarPecaCommand extends PecasCommand{
     constructor(){
         super();

@@ -83,19 +83,19 @@ public class PecaRestAdapterUnitTests {
 	
 	@Test
 	public void dividir() {
-		MultiValueMap<String, Object> command = new LinkedMultiValueMap<>();
+		Map<String, Object> command = new HashMap<>();
 		Map<String, Integer> primeiraQuebra = new HashMap<>(0);
 		Map<String, Integer> segundaQuebra = new HashMap<>(0);
 		
-		command.add("documentoId", 1L);
+		command.put("documentoId", 1L);
 		
 		primeiraQuebra.put("paginaInicial", 1);
 		primeiraQuebra.put("paginaFinal", 2);
-		command.add("intervalos", primeiraQuebra);
+		command.put("intervalos", primeiraQuebra);
 		
 		segundaQuebra.put("paginaInicial", 3);
 		segundaQuebra.put("paginaFinal", 4);
-		command.add("intervalos", segundaQuebra);
+		command.put("intervalos", segundaQuebra);
 		
 		Mockito.when(documentoRestClient.dividir(command)).thenReturn(Arrays.asList(2L, 3L));
 		

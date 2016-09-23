@@ -56,6 +56,28 @@ function config($stateProvider: IStateProvider,
             informationId : undefined,
             targets: []
         }
+    }).state('app.tarefas.organizacao-pecas.unir-pecas', {
+        url: '/unir-pecas',
+        views: {
+            '@app.tarefas.organizacao-pecas': {
+                controller: /** @ngInject **/($mdDialog, $stateParams) => {
+                    $mdDialog.show({
+                        controller: 'app.distribuicao.organizacao-pecas.UnirPecasController',
+                        controllerAs: 'vm',
+                        templateUrl: 'unir-pecas.tpl.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: false,
+                        locals: {
+                            pecas : $stateParams['targets']
+                        }
+                    });
+                }
+            }
+        },
+        params : {
+            informationId : undefined,
+            targets: []
+        }
     }).state('app.tarefas.organizacao-pecas.juntar-pecas', {
         url: '/juntar-pecas',
         views: {
@@ -117,7 +139,7 @@ function config($stateProvider: IStateProvider,
         url: '/dividir-peca',
         views: {
             '@app.tarefas.organizacao-pecas': {
-                controller: /** @ngInject **/($mdDialog, $stateParams, $mdMedia, tipoPecas, visibilidades) => {
+                controller: /** @ngInject **/($mdDialog, $stateParams, $mdMedia, tipoPecas) => {
                     var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && false;
                     $mdDialog.show({
                         controller: 'app.distribuicao.organizacao-pecas.DividirPecaController',
@@ -129,8 +151,7 @@ function config($stateProvider: IStateProvider,
                         locals: {
                             peca : $stateParams['target'].peca,
                             processoId : $stateParams['target'].processoId,
-                            tipoPecas: tipoPecas,
-                            visibilidades : visibilidades
+                            tipoPecas: tipoPecas
                         }
                     });
                 }

@@ -14,16 +14,18 @@ export class DividirPecaController {
     public cmdPecaParticionada : QuebrarPecaCommand;
     public documentoRecuperado : Documento;
     private situacaoPeca : string;
+    private visibilidadePeca : string;
 
     static $inject = ['$state', '$previousState', '$mdDialog', '$stateParams', 'messagesService', 
-                      'app.distribuicao.organizacao-pecas.OrganizaPecasService', 'peca', 'processoId', 'tipoPecas', 'visibilidades'];
+                      'app.distribuicao.organizacao-pecas.OrganizaPecasService', 'peca', 'processoId', 'tipoPecas'];
     
     constructor(private $state: IStateService, private $previousState, private $mdDialog, private $stateParams: IStateParamsService,
         private messagesService: app.support.messaging.MessagesService, private organizaPecasService: OrganizaPecasService,
-        public peca: Peca, private processoId: number, public tipoPecas : Array<TipoPeca>, public visibilidades : Array<Visibilidade>) {
+        public peca: Peca, private processoId: number, public tipoPecas : Array<TipoPeca>) {
             $previousState.memo('modalInvoker');
             this.cmdDividirPeca = new DividirPecaCommand(peca.pecaId, processoId);
             this.situacaoPeca = peca.situacao;
+            this.visibilidadePeca = peca.visibilidade;
             this.cmdPecaParticionada = new QuebrarPecaCommand(peca.situacao);
             organizaPecasService.consultarDocumento(peca.documentoId).then((documento : Documento) => {
                 this.documentoRecuperado = documento;
@@ -35,6 +37,7 @@ export class DividirPecaController {
             this.messagesService.error('Número final da página é maior que o numero total de páginas do documento.');
             return;
         }
+        this.cmdPecaParticionada.visibilidade = this.visibilidadePeca;
         this.cmdDividirPeca.pecas.push(this.cmdPecaParticionada);
         this.cmdPecaParticionada = new QuebrarPecaCommand(this.situacaoPeca);
     }

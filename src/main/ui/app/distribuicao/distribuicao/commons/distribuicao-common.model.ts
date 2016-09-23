@@ -40,15 +40,12 @@ export interface Processo {
     partes: Array<Parte>;
 }
 
-export interface ProcessoIndexado {
+export interface ProcessoDistribuido {
     
     processoId: string;
-    protocoloId: number;
-    protocolo: string;
     classe: string;
     numero: number;
-    partes: Array<string>;
-    distribuicoes : Array<DistribuicaoIndexada>;
+    relatorId: number;
 }
 
 export class DistribuirCommand implements Command {

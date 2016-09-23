@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.distribuicao.infra;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,16 +42,18 @@ public class PecaRestAdapter implements PecaAdapter {
 	
 	@Override
 	public List<DocumentoId> dividir(DocumentoId documento, List<Range<Integer>> intervalosDivisao) {
-		MultiValueMap<String, Object> command = new LinkedMultiValueMap<>();
+		Map<String, Object> command = new HashMap<>();
 		
-		command.add("documentoId", documento.toLong());
+		command.put("documentoId", documento.toLong());
+		List<Map<String,Integer>> intervalos = new ArrayList<Map<String,Integer>>();
 		intervalosDivisao.forEach(i -> {
 			Map<String, Integer> intervalo = new HashMap<>(0);
 			
 			intervalo.put("paginaInicial", i.getMinimum());
 			intervalo.put("paginaFinal", i.getMaximum());
-			command.add("intervalos", intervalo);
+			intervalos.add(intervalo);
 		});
+		command.put("intervalos", intervalos);
 		
 		List<Long> documentos = documentoRestClient.dividir(command);
 		

@@ -10,13 +10,13 @@
 		        <div flex ng-show="vm.processo.partes.length > 0">
 		            <md-item ng-repeat="parte in vm.partes track by $index">
 				        <md-item-content layout="column">
-				          <div layout="row" layout-fill ng-click="vm.consultarProcesso(parte.nome, $index)" class="folded">
+				          <div layout="row" layout-fill class="folded">
 				            <div class="md-tile-content" layout="column" layout-align="center start">
 				              <h3><a ng-click="vm.consultarProcesso(parte.nome, $index)" href="#">{{parte.nome}}</a></h3>
 				            </div>
 				          </div>
 				          <div layout="column" layout-fill class="expanded" ng-repeat="processo in parte.processos track by $index">
-				            <a ng-click="vm.adicionarProcessosPreventos(processo)" style="padding-left: 10px; color: red;" href="#"> {{processo.classe}}&nbsp;{{processo.numero}}</a>
+				            <a ng-click="vm.adicionarProcessosPreventos(processo)" style="padding-left: 15px; color: red;" href="#"> {{processo.classe}}&nbsp;{{processo.numero}}</a>
 				          </div>
 				        </md-item-content>
 				        <md-divider></md-divider>

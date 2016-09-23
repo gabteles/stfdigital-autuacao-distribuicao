@@ -17,7 +17,7 @@
         			</md-input-container>
         			<md-input-container style="margin:0px 0px 20px 0px">
         				<label>Tipo de Peça</label>
-	        			<md-select ng-model="vm.cmdEditarPeca.tipoPecaId">
+	        			<md-select ng-model="vm.cmdEditarPeca.tipoPecaId" id="tipoPecaIdSelect">
 	        				<md-option ng-repeat="tipo in vm.tipoPecas" ng-value="tipo.tipoId">
 	        					{{tipo.nome}}
 	        				</md-option>
@@ -40,7 +40,7 @@
         		</div>
     	</md-dialog-content>
 		<md-dialog-actions>
-  			<md-button ng-click="vm.editar()" class="md-primary"> Editar </md-button>
+  			<md-button ng-click="vm.editar()" class="md-primary" id="btnEditar"> Editar </md-button>
    			<md-button ng-click="vm.sair()">Sair</md-button>
   		</md-dialog-actions>
 	</form>

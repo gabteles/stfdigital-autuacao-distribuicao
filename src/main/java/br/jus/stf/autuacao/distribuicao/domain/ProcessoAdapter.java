@@ -1,8 +1,10 @@
 package br.jus.stf.autuacao.distribuicao.domain;
 
+import java.util.List;
+
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDto;
 
-@FunctionalInterface
 public interface ProcessoAdapter {
 
 	/**
@@ -12,4 +14,11 @@ public interface ProcessoAdapter {
 	 */
 	ProcessoDto consultar(Long processoId);
 	
+	/**
+	 * Consulta prevenção por parte
+	 * 
+	 * @param parte
+	 * @return
+	 */
+	List<ProcessoDistribuidoDto> consultarPrevencaoPorParte(String parte);
 }

@@ -18,7 +18,7 @@
        		<div layout="column" layout-xs="row">
        			<md-input-container>
        				<label>Tipo de Peça</label>
-        			<md-select ng-model="vm.cmdPecaParticionada.tipoPecaId">
+        			<md-select ng-model="vm.cmdPecaParticionada.tipoPecaId" id="tipoPecaIdSelect">
         				<md-option ng-repeat="tipo in vm.tipoPecas" ng-value="tipo.tipoId">
         					{{tipo.nome}}
         				</md-option>
@@ -26,18 +26,18 @@
        			</md-input-container>
        			<md-input-container>
        				<label>Descrição</label>
-       				<input ng-model="vm.cmdPecaParticionada.descricao">
+       				<input ng-model="vm.cmdPecaParticionada.descricao" id="txtDescricao">
        			</md-input-container>
        		</div>
        		
        		<div layout="row" layout-xs="column">
        			<md-input-container>
        				<label>Página Inicial</label>
-       				<input ng-model="vm.cmdPecaParticionada.paginaInicial">
+       				<input ng-model="vm.cmdPecaParticionada.paginaInicial" id="txtPaginaInicial">
        			</md-input-container>
        			<md-input-container>
        				<label>Página Final</label>
-       				<input ng-model="vm.cmdPecaParticionada.paginaFinal">
+       				<input ng-model="vm.cmdPecaParticionada.paginaFinal" id="txtPaginaFinal">
        			</md-input-container>
        		</div>
        		
@@ -78,7 +78,7 @@
        		</md-card>
     	</md-dialog-content>
 		<md-dialog-actions>
-  			<md-button ng-click="vm.confirmar()" class="md-primary"> Confirmar </md-button>
+  			<md-button ng-click="vm.confirmar()" class="md-primary" id="btnDividir"> Confirmar </md-button>
    			<md-button ng-click="vm.sair()">Sair</md-button>
   		</md-dialog-actions>
 	</form>

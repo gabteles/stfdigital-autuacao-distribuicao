@@ -5,7 +5,7 @@ import Properties = app.support.constants.Properties;
 import cmd = app.support.command;
 import pecas from "./organiza-pecas.module";
 import {Processo, TipoPeca, Visibilidade, Documento, API_PECAS, 
-            OrganizaPecasCommand, ExcluirPecasCommand, JuntarPecaCommand, DividirPecaCommand,
+            OrganizaPecasCommand, ExcluirPecasCommand, UnirPecasCommand, JuntarPecaCommand, DividirPecaCommand,
             EditarPecaCommand, InserirPecaCommand} from "./shared/pecas.model";
             
 export class OrganizaPecasService {
@@ -60,6 +60,10 @@ export class OrganizaPecasService {
     
     public excluirPecas(excluirCmd : ExcluirPecasCommand) : IPromise<any> {
         return this.$http.post(this.apiPeca + '/excluir', excluirCmd);
+    }
+    
+    public unirPecas(unirCmd : UnirPecasCommand) : IPromise<any> {
+        return this.$http.post(this.apiPeca + '/unir', unirCmd);
     }
     
     public juntarPecas(juntarCmd : JuntarPecaCommand) : IPromise<any> {

@@ -6,5 +6,6 @@ import "./organizacao-pecas/juntar-pecas.controller";
 import "./organizacao-pecas/editar-peca.controller";
 import "./organizacao-pecas/dividir-peca.controller";
 import "./organizacao-pecas/inserir-pecas.controller";
+import "./organizacao-pecas/unir-pecas.controller";
 
 export default pecas;

@@ -13,7 +13,7 @@ import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDto;
  *
  */
 @FeignClient(name="autuacao")
-public interface ProcessoRestClient {
+public interface AutuacaoRestClient {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/api/processos/{id}")
 	ProcessoDto processo(@PathVariable("id") Long processoId);

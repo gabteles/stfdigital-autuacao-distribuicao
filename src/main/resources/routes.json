@@ -51,6 +51,14 @@
         "stateName": "app.tarefas.organizacao-pecas.inserir-pecas",
         "url": "/distribuicao/organizacao-pecas/:informationId/inserir-pecas",
         "src": "distribuicao/organizacao-pecas"
+    },
+    
+    
+    {
+        "id": "unir-pecas",
+        "stateName": "app.tarefas.organizacao-pecas.unir-pecas",
+        "url": "/distribuicao/organizacao-pecas/:informationId/unir-pecas",
+        "src": "distribuicao/organizacao-pecas"
     }
     
     
