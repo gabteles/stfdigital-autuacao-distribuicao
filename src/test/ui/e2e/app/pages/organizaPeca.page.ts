@@ -65,6 +65,15 @@ export class OrganizaPecasPage {
         });
     };
     
+    public recuperaTotalDePecas() : webdriver.promise.Promise<number> {
+        return element.all(by.repeater('pecaSelecionavel in organiza.pecas')).count();
+    }
+    
+    public recuperarSituacaoPeca(indice : number) : webdriver.promise.Promise<string> {
+        let peca = element(by.repeater('pecaSelecionavel in organiza.pecas').row(indice));
+        return peca.element(by.css('td:last-child')).getText();
+    }
+    
     public alterarTipoPeca(tipo : string) : void {
         mdHelpers.mdSelect.selectOptionWithText(element(by.id('tipoPecaIdSelect')), tipo);
     }

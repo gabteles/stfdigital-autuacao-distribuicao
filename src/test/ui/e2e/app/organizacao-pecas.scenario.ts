@@ -41,7 +41,13 @@ describe("Organizar Peças", () => {
     });
 
     it('Deveria executar a ação de inserir uma peça', () => {
+        let quantidadeInicialPromise = organizaPage.recuperaTotalDePecas();
         organizaPage.inserir();
+        let quantidadeFinalPromise = organizaPage.recuperaTotalDePecas();
+        quantidadeInicialPromise.then((quantidade) => {
+            expect(quantidadeFinalPromise).toBeGreaterThan(quantidade, 'A quantitidade depois da inserção deveria ser maior que a quantidade inicial');
+            
+        });
     });
         
 
@@ -49,6 +55,9 @@ describe("Organizar Peças", () => {
         organizaPage.selecionarUltimaPeca();
         organizaPage.selecionarAcao("Juntar peças");
         organizaPage.juntar();
+        organizaPage.recuperaTotalDePecas().then((quantidade) =>{
+            expect(organizaPage.recuperarSituacaoPeca(quantidade - 1)).toEqual("JUNTADA", "A última peça deveria estar com a situação de JUNTADA");
+        });
     });
     
     it ("Deveria editar as informações da peça", () => {
@@ -59,6 +68,7 @@ describe("Organizar Peças", () => {
     });
     
     it ("Deveria dividir uma peça" , () => {
+        let quantidadeInicialPromise = organizaPage.recuperaTotalDePecas();
         organizaPage.selecionarUltimaPeca();
         organizaPage.selecionarAcao("Dividir peça");
         organizaPage.alterarTipoPeca("Informação");
@@ -72,18 +82,26 @@ describe("Organizar Peças", () => {
         organizaPage.preencherNumeroPagina("txtPaginaFinal", 5);
         organizaPage.adicionarPecaParticionada();
         organizaPage.dividir();
+        let quantidadeFinalPromise = organizaPage.recuperaTotalDePecas();
+        quantidadeInicialPromise.then((quantidadeInicial) =>{
+            expect(quantidadeFinalPromise).toBeGreaterThan(quantidadeInicial, 'A quantitidade depois da divisão deveria ser maior que a quantidade inicial');
+        })
     });
     
     it("Deveria unir peças", () => {
-       organizaPage.selecionarPeca(0);
-       organizaPage.selecionarPeca(1);
+       organizaPage.selecionarPeca(3);
+       organizaPage.selecionarUltimaPeca();
+       organizaPage.selecionarAcao("Unir peças");
        organizaPage.unir();
     });
     
     it ("Deveria excluir a peça", () => {
         organizaPage.selecionarUltimaPeca();
-        organizaPage.selecionarAcao("Excluir pecas");
+        organizaPage.selecionarAcao("Excluir peças");
         organizaPage.excluir();
+        organizaPage.recuperaTotalDePecas().then((quantidade) => {
+            expect(organizaPage.recuperarSituacaoPeca(quantidade - 1)).toEqual("EXCLUIDA", "A última peça deveria estar com o status de excluída");
+        });
     });
     
     
