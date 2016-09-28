@@ -91,11 +91,11 @@ public class PecaRestAdapterUnitTests {
 		
 		primeiraQuebra.put("paginaInicial", 1);
 		primeiraQuebra.put("paginaFinal", 2);
-		command.put("intervalos", primeiraQuebra);
 		
 		segundaQuebra.put("paginaInicial", 3);
 		segundaQuebra.put("paginaFinal", 4);
-		command.put("intervalos", segundaQuebra);
+		
+		command.put("intervalos", Arrays.asList(primeiraQuebra, segundaQuebra));
 		
 		Mockito.when(documentoRestClient.dividir(command)).thenReturn(Arrays.asList(2L, 3L));
 		
