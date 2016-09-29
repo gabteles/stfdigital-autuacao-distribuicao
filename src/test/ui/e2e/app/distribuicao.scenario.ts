@@ -29,4 +29,9 @@ describe("Distribuição de Processos", () => {
         distribuicaoPage.distribuirProcesso();
         expect(browser.getCurrentUrl()).toMatch(/\/minhas-tarefas/);
     });
+    
+    it('Deveria fazer o logout do sistema', () => {
+        principalPage.logout();
+    });
+    
 });
