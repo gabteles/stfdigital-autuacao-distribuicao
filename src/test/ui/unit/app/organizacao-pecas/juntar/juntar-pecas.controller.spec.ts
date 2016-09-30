@@ -52,25 +52,25 @@ describe ("Teste do controlador de juntar pecas", () => {
         };
         
         mockStateParams = {
-                informationId: "9004",
-                target : mockPecaSelecionavel
+            informationId: "9004",
+            target : mockPecaSelecionavel
         };
         
         mockMdDialog = {
-                cancel : () => {}
+            cancel : () => {}
         };
         
         mockPreviousState = {
-                go : () => {},
-                memo : () => {}
+            go : () => {},
+            memo : () => {}
         };
         
         mockOrganizacaoPecasService = {
-                excluirPecas : () => {}
+            juntarPecas : () => {}
         };
         
         controller = new JuntarPecasController(mockState, mockPreviousState, mockMdDialog, mockStateParams, mockMessagesService, mockOrganizacaoPecasService, 
-                mockPecaSelecionavel);
+            mockPecaSelecionavel);
     });
     
     it ("Deveria juntar a(s) peça(s)", () => {
