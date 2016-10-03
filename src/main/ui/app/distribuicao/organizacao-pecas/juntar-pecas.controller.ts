@@ -27,7 +27,7 @@ export class JuntarPecasController {
     public juntar() : void {
         let pecaJuntada : boolean = false;
         this.pecas.forEach(peca => { 
-            pecaJuntada = peca.peca.situacao === "Juntada" ? true : false;
+            pecaJuntada = peca.peca.situacao === "JUNTADA" ? true : false;
         });
         
         if (pecaJuntada){

@@ -27,7 +27,7 @@ export class ExcluirPecasController {
     public excluirPecas() : void {
         let pecaExcluida : boolean = false;
         this.pecas.forEach(peca => { 
-            pecaExcluida = peca.peca.situacao === "Excluída" ? true : false;
+            pecaExcluida = peca.peca.situacao === "EXCLUIDA" ? true : false;
         });
         
         if (pecaExcluida){

@@ -31,7 +31,7 @@ export class UnirPecasController {
     }
     
     public unirPecas() : void {
-        let tamanhoTotal : number;
+        let tamanhoTotal : number = 0;
         this.documentosRecuperados.forEach(documento => {
             tamanhoTotal = tamanhoTotal + documento.tamanho;
         });

@@ -149,8 +149,16 @@ export class QuebrarPecaCommand {
     public paginaInicial : number;
     public paginaFinal : number;
 
-    constructor(situacao : string){
+    constructor(situacao : string, documentoTemporarioId ?: string, tipoPecaId? : number, visibilidade?: string, descricao?: string, 
+            paginaInicial?: number, paginaFinal?: number){
         this.situacao = situacao;
+        this.documentoTemporarioId = documentoTemporarioId;
+        this.tipoPecaId = tipoPecaId;
+        this.visibilidade = visibilidade;
+        this.situacao = situacao;
+        this.descricao = descricao;
+        this.paginaInicial = paginaInicial;
+        this.paginaFinal = paginaFinal;
     }
 }
 

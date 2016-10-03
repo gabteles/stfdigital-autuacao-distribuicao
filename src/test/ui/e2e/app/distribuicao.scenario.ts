@@ -21,6 +21,11 @@ describe("Distribuição de Processos", () => {
         distribuicaoPage.selecionarComboTipoDistribuicao('COMUM')
     });
     
+    
+    it('Deveria fazer o logout do sistema', () => {
+        principalPage.logout();
+    });
+    
     xit("Deveria selecionar os ministros canditados e impedidos" , () => {
         distribuicaoPage.selecionarMinistroPrevento("MINISTRO PRESIDENTE");
         browser.sleep(1500);
@@ -29,4 +34,5 @@ describe("Distribuição de Processos", () => {
         distribuicaoPage.distribuirProcesso();
         expect(browser.getCurrentUrl()).toMatch(/\/minhas-tarefas/);
     });
+    
 });
