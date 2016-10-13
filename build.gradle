@@ -8,7 +8,7 @@ buildscript {
         gradleGulpPluginVersion = '0.12'
         sonarqubeGradlePluginVersion = '2.0.1'
         
-        springCloudReleaseTrainVersion = 'Brixton.SR5'
+        springCloudReleaseTrainVersion = 'Brixton.SR6'
         apacheCommonsVersion = '3.3.2'
         jacksonVersion = '2.8.1'
         jacksonMapperVersion = '1.9.13'
@@ -187,9 +187,10 @@ task gulpPublishUnitCoverage(type: GulpTask) {
 
 ext.e2eBaseUrl = project.hasProperty('e2eBaseUrl') ? project.getProperty('e2eBaseUrl') : 'https://docker:8443'
 ext.e2eSeleniumAddress = project.hasProperty('e2eSeleniumAddress') ? project.getProperty('e2eSeleniumAddress') : 'http://docker:4444/wd/hub'
+ext.e2eFilesDirPath = project.hasProperty('e2eFilesDirPath') ? project.getProperty('e2eFilesDirPath') : '/e2e/files'
 
 task gulpTestE2E(type: GulpTask) {
-    args = ['test:e2e', '--e2eBaseUrl', e2eBaseUrl, '--e2eSeleniumAddress', e2eSeleniumAddress]
+    args = ['test:e2e', '--e2eBaseUrl', e2eBaseUrl, '--e2eSeleniumAddress', e2eSeleniumAddress, '--e2eFilesDirPath', e2eFilesDirPath]
 }
 
 task gulpBuildDist(type: GulpTask) {

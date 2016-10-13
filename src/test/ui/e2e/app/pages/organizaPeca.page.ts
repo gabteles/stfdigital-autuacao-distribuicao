@@ -6,7 +6,7 @@ import support = require('../shared/helpers/support');
 
 export class OrganizaPecasPage {
     
-    private caminhoArquivo = browser.params.filesDirPath ? browser.params.filesDirPath : (__dirname + '/../../files');
+    private caminhoArquivo = browser.params.filesDirPath ? browser.params.filesDirPath : path.resolve(__dirname + '/../../files');
     
     public selecionarAcao(acao : string) : void {
         
@@ -38,7 +38,7 @@ export class OrganizaPecasPage {
     public uploadAnexo(): void {
       //  this.scrollToBottom();
         let nomeArquivo = 'pdf-de-teste-assinado-02.pdf';
-        let caminhoAbsoluto =  path.resolve(this.caminhoArquivo, nomeArquivo);
+        let caminhoAbsoluto =  this.caminhoArquivo + "/" + nomeArquivo;
         let fileUpload = element(by.css('input[type="file"]'));
 
         fileUpload.sendKeys(caminhoAbsoluto);
