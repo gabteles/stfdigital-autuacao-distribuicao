@@ -68,7 +68,7 @@ export class OrganizaPecasController {
             this.cmdPecas.pecas.push(peca.peca.pecaId);  
         });
         
-        this.organizaPecasService.finalizaOrganizacaoPecas(this.cmdPecas)
+        this.organizaPecasService.finalizarOrganizacaoPecas(this.cmdPecas)
         .then(() => {
             this.$state.go('app.tarefas.minhas-tarefas');
             this.messagesService.success('Peça(s) organizada(s) com sucesso.');

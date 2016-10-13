@@ -4,6 +4,7 @@ import IDialogService = angular.material.IDialogService;
 import ICookiesService = angular.cookies.ICookiesService;
 import IWindowService = angular.IWindowService;
 import {OrganizaPecasService} from "./organiza-pecas.service";
+import {PecasService} from "./shared/pecas.service";
 import {Peca, TipoPeca, Visibilidade, Processo, Documento,  DocumentoTemporario, DocumentoTemporarioDto, TipoAnexo, 
             PecaSelecionavel, InserirPecaCommand, CadastrarPecaCommand} from "./shared/pecas.model"
 import pecas from "./organiza-pecas.module";
@@ -24,11 +25,11 @@ export class InserirPecasController {
     private configurarSelect2: any;
 
     static $inject = ['$state', '$previousState', '$mdDialog', '$stateParams', 'messagesService', '$window', '$cookies', 'FileUploader', 'properties',
-                      'app.distribuicao.organizacao-pecas.OrganizaPecasService', 'tipoPecas', 'processo'];
+                      'app.distribuicao.organizacao-pecas.OrganizaPecasService',  'app.distribuicao.organizacao-pecas.PecasService', 'tipoPecas', 'processo'];
     
     constructor(private $state: IStateService, private $previousState, private $mdDialog, private $stateParams: IStateParamsService,
         private messagesService: app.support.messaging.MessagesService,  private $window: IWindowService, private $cookies: ICookiesService, 
-        FileUploader: any, private properties, private organizaPecasService: OrganizaPecasService,
+        FileUploader: any, private properties, private organizaPecasService: OrganizaPecasService, private pecasService : PecasService,
         public tipoPecas : Array<TipoPeca>, public processo : Processo) {
         
             $previousState.memo('modalInvoker');
@@ -120,7 +121,7 @@ export class InserirPecasController {
     //remove uma peças da petição.
     private removerAnexo(documentoTemporario: any): void {
         if (documentoTemporario.isExcluirServidor){
-            this.organizaPecasService.excluirDocumentoTemporarioAssinado([documentoTemporario.documentoTemporario]);
+            this.pecasService.excluirDocumentoTemporarioAssinado([documentoTemporario.documentoTemporario]);
         }
         
         let indice = this.documentosTemporario.indexOf(documentoTemporario);
@@ -136,7 +137,7 @@ export class InserirPecasController {
             arquivosTemporarios.push(this.documentosTemporario[i].documentoTemporario);
         }
         
-        this.organizaPecasService.excluirDocumentoTemporarioAssinado(arquivosTemporarios);
+        this.pecasService.excluirDocumentoTemporarioAssinado(arquivosTemporarios);
         
         this.documentosTemporario.splice(0);
         this.uploader.clearQueue();

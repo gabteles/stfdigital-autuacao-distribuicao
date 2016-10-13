@@ -4,6 +4,7 @@ import IModule = angular.IModule;
 import Properties = app.support.constants.Properties;
 import IStateParamsService = angular.ui.IStateParamsService;
 import {OrganizaPecasService} from "./organiza-pecas.service";
+import {PecasService} from "./shared/pecas.service";
 
 /*
  * Modulo de configuração do serviço de oorganização de peças
@@ -25,9 +26,11 @@ function config($stateProvider: IStateProvider,
             }
         },
         resolve : { 
-            processo: ['app.distribuicao.organizacao-pecas.OrganizaPecasService', '$stateParams', (organizaPecasService: OrganizaPecasService,  $stateParams : IStateParamsService) => {
+            processo: ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService', 
+                       '$stateParams', (organizaPecasService: OrganizaPecasService,  pecasService : PecasService, 
+                    $stateParams : IStateParamsService) => {
             	let distribuicaoId = $stateParams['informationId'];
-                return organizaPecasService.consultarProcesso(distribuicaoId);
+                return pecasService.consultarProcesso(distribuicaoId);
             }]
         },
         params : {
@@ -124,11 +127,13 @@ function config($stateProvider: IStateProvider,
             }
         },
         resolve : {
-            tipoPecas : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', (organizaPecasService: OrganizaPecasService) => {
-                return organizaPecasService.listarTipoPecas();
+            tipoPecas : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService', 
+                         (organizaPecasService: OrganizaPecasService, pecasService : PecasService) => {
+                return pecasService.listarTipoPecas();
             }],
-            visibilidades : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', (organizaPecasService: OrganizaPecasService) => {
-                return organizaPecasService.listarVisibilidade();
+            visibilidades : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService', 
+                         (organizaPecasService: OrganizaPecasService, pecasService : PecasService) => {
+                return pecasService.listarVisibilidade();
             }]
         },
         params : {
@@ -158,11 +163,13 @@ function config($stateProvider: IStateProvider,
             }
         },
         resolve : {
-            tipoPecas : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', (organizaPecasService: OrganizaPecasService) => {
-                return organizaPecasService.listarTipoPecas();
+            tipoPecas : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService',
+                         (organizaPecasService: OrganizaPecasService, pecasService : PecasService) => {
+                return pecasService.listarTipoPecas();
             }],
-            visibilidades : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', (organizaPecasService: OrganizaPecasService) => {
-                return organizaPecasService.listarVisibilidade();
+            visibilidades : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService', 
+                    (organizaPecasService: OrganizaPecasService, pecasService : PecasService) => {
+                return pecasService.listarVisibilidade();
             }]
         },
         params : {
@@ -194,15 +201,19 @@ function config($stateProvider: IStateProvider,
             }
         },
         resolve : {
-            tipoPecas : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', (organizaPecasService: OrganizaPecasService) => {
-                return organizaPecasService.listarTipoPecas();
+            tipoPecas : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService',
+                         (organizaPecasService: OrganizaPecasService, pecasService : PecasService) => {
+                return pecasService.listarTipoPecas();
             }],
-            visibilidades : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', (organizaPecasService: OrganizaPecasService) => {
-                return organizaPecasService.listarVisibilidade();
+            visibilidades : ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService', 
+                             (organizaPecasService: OrganizaPecasService, pecasService : PecasService) => {
+                return pecasService.listarVisibilidade();
             }],
-            processo: ['app.distribuicao.organizacao-pecas.OrganizaPecasService', '$stateParams', (organizaPecasService: OrganizaPecasService,  $stateParams : IStateParamsService) => {
+            processo: ['app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService',
+                       '$stateParams', (organizaPecasService: OrganizaPecasService,  
+                    pecasService : PecasService, $stateParams : IStateParamsService) => {
                 let distribuicaoId = $stateParams['informationId'];
-                return organizaPecasService.consultarProcesso(distribuicaoId);
+                return pecasService.consultarProcesso(distribuicaoId);
             }]
         },
         params : {

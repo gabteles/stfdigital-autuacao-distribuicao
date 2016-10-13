@@ -1,6 +1,7 @@
 import IStateParamsService = angular.ui.IStateParamsService;
 import IStateService = angular.ui.IStateService;
 import {OrganizaPecasService} from "./organiza-pecas.service";
+import {PecasService} from "./shared/pecas.service";
 import {Peca, TipoPeca, Visibilidade, Processo, Documento, DividirPecaCommand, QuebrarPecaCommand} from "./shared/pecas.model"
 import pecas from "./organiza-pecas.module";
 
@@ -17,17 +18,18 @@ export class DividirPecaController {
     private visibilidadePeca : string;
 
     static $inject = ['$state', '$previousState', '$mdDialog', '$stateParams', 'messagesService', 
-                      'app.distribuicao.organizacao-pecas.OrganizaPecasService', 'peca', 'processoId', 'tipoPecas'];
+                      'app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService', 
+                      'peca', 'processoId', 'tipoPecas'];
     
     constructor(private $state: IStateService, private $previousState, private $mdDialog, private $stateParams: IStateParamsService,
-        private messagesService: app.support.messaging.MessagesService, private organizaPecasService: OrganizaPecasService,
+        private messagesService: app.support.messaging.MessagesService, private organizaPecasService: OrganizaPecasService, private pecasService : PecasService,
         public peca: Peca, private processoId: number, public tipoPecas : Array<TipoPeca>) {
             $previousState.memo('modalInvoker');
             this.cmdDividirPeca = new DividirPecaCommand(peca.pecaId, processoId);
             this.situacaoPeca = peca.situacao;
             this.visibilidadePeca = peca.visibilidade;
             this.cmdPecaParticionada = new QuebrarPecaCommand(peca.situacao);
-            organizaPecasService.consultarDocumento(peca.documentoId).then((documento : Documento) => {
+            pecasService.consultarDocumento(peca.documentoId).then((documento : Documento) => {
                 this.documentoRecuperado = documento;
             });
     }

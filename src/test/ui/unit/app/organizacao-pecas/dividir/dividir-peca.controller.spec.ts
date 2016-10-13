@@ -1,5 +1,6 @@
 import {DividirPecaController} from "distribuicao/organizacao-pecas/dividir-peca.controller";
 import {OrganizaPecasService} from "distribuicao/organizacao-pecas/organiza-pecas.service";
+import {PecasService} from "distribuicao/organizacao-pecas/shared/pecas.service";
 import {Peca, TipoPeca, Visibilidade, Processo, Documento, DividirPecaCommand, QuebrarPecaCommand, PecaSelecionavel} from "distribuicao/organizacao-pecas/shared/pecas.model";
 
 describe ("Teste do controlador de dividir pecas", () => {
@@ -9,6 +10,7 @@ describe ("Teste do controlador de dividir pecas", () => {
     let $rootScope : ng.IRootScopeService;
     let mockState;
     let mockOrganizacaoPecasService;
+    let mockPecasService;
     let mockPreviousState;
     let mockMdDialog;
     let mockPecaSelecionavel : PecaSelecionavel;
@@ -71,13 +73,16 @@ describe ("Teste do controlador de dividir pecas", () => {
         
         mockOrganizacaoPecasService = {
                 dividirPeca : () => {},
-                consultarDocumento : () => {
-                }
         };
         
-        spyOn(mockOrganizacaoPecasService, 'consultarDocumento').and.callFake(() => $q.when(new Documento(1, '', 100, 5)));
+        mockPecasService = {
+                consultarDocumento : () => {
+                }      
+        };
         
-        controller = new DividirPecaController(mockState, mockPreviousState, mockMdDialog, mockStateParams, mockMessagesService, mockOrganizacaoPecasService, 
+        spyOn(mockPecasService, 'consultarDocumento').and.callFake(() => $q.when(new Documento(1, '', 100, 5)));
+        
+        controller = new DividirPecaController(mockState, mockPreviousState, mockMdDialog, mockStateParams, mockMessagesService, mockOrganizacaoPecasService, mockPecasService,
                 mockPeca, mockProcessoId, mockTipoPecas);
         
         $rootScope.$apply();
