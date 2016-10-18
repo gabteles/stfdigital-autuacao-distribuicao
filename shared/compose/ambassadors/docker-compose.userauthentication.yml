@@ -5,4 +5,4 @@ services:
     container_name: userauthentication
     image: svendowideit/ambassador
     environment:
-     - USERAUTHENTICATION_PORT_8095_TCP=tcp://${AMBASSADOR_HOST}:8095
+     - USERAUTHENTICATION_PORT_8095_TCP=tcp://${HOST_ADDRESS}:8095

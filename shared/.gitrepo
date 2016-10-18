@@ -6,6 +6,6 @@
 [subrepo]
 	remote = https://github.com/supremotribunalfederal/stfdigital-shared
 	branch = master
-	commit = 4755f10661e42777392280fb0c039e431d331d22
-	parent = a27a60592bc9c2d237b2aa54b402ff2ccf74032e
+	commit = 927cb70b1d2f326caf2795b135ac93dc26456fa3
+	parent = 91293527d97e09a6a69b180f87f060622986e87f
 	cmdver = 0.3.0
