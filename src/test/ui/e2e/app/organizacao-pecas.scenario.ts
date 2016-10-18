@@ -90,7 +90,8 @@ describe("Organizar Peças", () => {
     });
     
     it("Deveria unir peças", () => {
-       organizaPage.selecionarPeca(3);
+       browser.sleep(3000);
+       organizaPage.selecionarPeca(2);
        organizaPage.selecionarUltimaPeca();
        organizaPage.selecionarAcao("Unir peças");
        organizaPage.unir();
