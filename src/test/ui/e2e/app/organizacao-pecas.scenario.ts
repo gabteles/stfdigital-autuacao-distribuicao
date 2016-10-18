@@ -42,13 +42,13 @@ describe("Organizar Peças", () => {
 
     it('Deveria executar a ação de inserir uma peça', () => {
         let quantidadeInicialPromise = organizaPage.recuperaTotalDePecas();
-        organizaPage.inserir();
-        principalPage.aguardarMensagemSucesso();
-        let quantidadeFinalPromise = organizaPage.recuperaTotalDePecas();
         quantidadeInicialPromise.then((quantidade) => {
+            organizaPage.inserir();
+            let quantidadeFinalPromise = organizaPage.recuperaTotalDePecas();
             expect(quantidadeFinalPromise).toBeGreaterThan(quantidade, 'A quantitidade depois da inserção deveria ser maior que a quantidade inicial');
             
         });
+        
     });
         
 
@@ -90,7 +90,8 @@ describe("Organizar Peças", () => {
     });
     
     it("Deveria unir peças", () => {
-       organizaPage.selecionarPeca(3);
+       browser.sleep(3000);
+       organizaPage.selecionarPeca(2);
        organizaPage.selecionarUltimaPeca();
        organizaPage.selecionarAcao("Unir peças");
        organizaPage.unir();

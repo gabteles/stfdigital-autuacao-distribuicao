@@ -4,7 +4,7 @@ import IHttpService = angular.IHttpService;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import Properties = app.support.constants.Properties;
 import cmd = app.support.command;
-import {ProcessoDistribuido, API_DISTRIBUICAO, DistribuirProcessoPrevencaoCommand} from "../commons/distribuicao-common.model";
+import {ProcessoConsultado, API_DISTRIBUICAO, DistribuirProcessoPrevencaoCommand} from "../commons/distribuicao-common.model";
 
 
 export class DistribuicaoPrevencaoService {
@@ -17,10 +17,10 @@ export class DistribuicaoPrevencaoService {
         commandService.addValidator("distribuir-processo-prevencao", new ValidadorDistribuicaoPrevencao());
     }
     
-    public pesquisarProcessoPelaParte(nomeParte : String) : IPromise<ProcessoDistribuido[]>{
+    public pesquisarProcessoPelaParte(nomeParte : String) : IPromise<ProcessoConsultado[]>{
         let config = {params: {parte: nomeParte}};
         return this.$http.get(this.properties.apiUrl + '/distribuicao/api/processos/distribuidos', config)
-            .then((response: IHttpPromiseCallbackArg<ProcessoDistribuido[]>) => { 
+            .then((response: IHttpPromiseCallbackArg<ProcessoConsultado[]>) => { 
                 return response.data;
             });
     }

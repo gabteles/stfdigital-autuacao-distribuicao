@@ -1,6 +1,7 @@
 import IStateParamsService = angular.ui.IStateParamsService;
 import IStateService = angular.ui.IStateService;
 import {OrganizaPecasService} from "./organiza-pecas.service";
+import {PecasService} from "./shared/pecas.service";
 import {Peca, Processo, UnirPecasCommand, PecaSelecionavel, Documento} from "./shared/pecas.model"
 import pecas from "./organiza-pecas.module";
 
@@ -13,15 +14,16 @@ export class UnirPecasController {
     public cmdUnirPecas : UnirPecasCommand = new UnirPecasCommand();
     public documentosRecuperados : Array<Documento> = [];
    
-    static $inject = ['$state', '$previousState', '$mdDialog', '$stateParams', 'messagesService', 'app.distribuicao.organizacao-pecas.OrganizaPecasService', 'pecas'];
+    static $inject = ['$state', '$previousState', '$mdDialog', '$stateParams', 'messagesService', 
+                      'app.distribuicao.organizacao-pecas.OrganizaPecasService', 'app.distribuicao.organizacao-pecas.PecasService', 'pecas'];
     
     constructor(private $state: IStateService, private $previousState, private $mdDialog, private $stateParams: IStateParamsService,
         private messagesService: app.support.messaging.MessagesService, private organizaPecasService: OrganizaPecasService,
-        public pecas: Array<PecaSelecionavel>) {
+        private pecasService : PecasService, public pecas: Array<PecaSelecionavel>) {
             $previousState.memo('modalInvoker');
             pecas.forEach(pecaSelecionavel => {
                 this.cmdUnirPecas.pecas.push(pecaSelecionavel.peca.pecaId);
-                organizaPecasService.consultarDocumento(pecaSelecionavel.peca.documentoId).then((documento : Documento) => {
+                pecasService.consultarDocumento(pecaSelecionavel.peca.documentoId).then((documento : Documento) => {
                     this.documentosRecuperados.push(documento);
                 });
                 

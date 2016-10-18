@@ -1,5 +1,4 @@
 import {UnirPecasController} from "distribuicao/organizacao-pecas/unir-pecas.controller";
-import {OrganizaPecasService} from "distribuicao/organizacao-pecas/organiza-pecas.service";
 import {Peca, Processo, Documento, UnirPecasCommand, PecaSelecionavel} from "distribuicao/organizacao-pecas/shared/pecas.model";
 
 describe ("Teste do controlador de unir pecas", () => {
@@ -9,6 +8,7 @@ describe ("Teste do controlador de unir pecas", () => {
     let $rootScope : ng.IRootScopeService;
     let mockState;
     let mockOrganizacaoPecasService;
+    let mockPecasService;
     let mockPreviousState;
     let mockMdDialog;
     let mockPecasSelecionaveis : Array<PecaSelecionavel>;
@@ -80,11 +80,14 @@ describe ("Teste do controlador de unir pecas", () => {
         };
         
         mockOrganizacaoPecasService = {
-            unirPecas : () => {}, 
-            consultarDocumento : () => {}
+            unirPecas : () => {}
         };
         
-        spyOn(mockOrganizacaoPecasService, 'consultarDocumento').and.callFake((documentoId) => {
+        mockPecasService = {
+            consultarDocumento : () => {}      
+        };
+        
+        spyOn(mockPecasService, 'consultarDocumento').and.callFake((documentoId) => {
             return mockCallback(documentoId);
         });
         
@@ -99,8 +102,8 @@ describe ("Teste do controlador de unir pecas", () => {
                 return $q.when(new Documento(18, '', 1000000, 5))
             }
         };
-        controller = new UnirPecasController(mockState, mockPreviousState, mockMdDialog, mockStateParams, mockMessagesService, mockOrganizacaoPecasService, 
-            mockPecasSelecionaveis);
+        controller = new UnirPecasController(mockState, mockPreviousState, mockMdDialog, mockStateParams, mockMessagesService, mockOrganizacaoPecasService,
+                mockPecasService, mockPecasSelecionaveis);
         $rootScope.$apply();
         spyOn(mockMessagesService, 'error').and.callThrough();
         controller.unirPecas();
@@ -116,8 +119,8 @@ describe ("Teste do controlador de unir pecas", () => {
                 return $q.when(new Documento(18, '', 50000, 5))
             }
         };
-        controller = new UnirPecasController(mockState, mockPreviousState, mockMdDialog, mockStateParams, mockMessagesService, mockOrganizacaoPecasService, 
-                mockPecasSelecionaveis);
+        controller = new UnirPecasController(mockState, mockPreviousState, mockMdDialog, mockStateParams, mockMessagesService, mockOrganizacaoPecasService,
+                mockPecasService, mockPecasSelecionaveis);
         $rootScope.$apply();
         spyOn(mockOrganizacaoPecasService, 'unirPecas').and.callFake(() => $q.when());
         spyOn(mockState, 'go').and.callThrough();

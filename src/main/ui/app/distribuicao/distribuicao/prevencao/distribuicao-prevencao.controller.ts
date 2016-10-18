@@ -1,12 +1,12 @@
 import IStateParamsService = angular.ui.IStateParamsService;
 import IStateService = angular.ui.IStateService;
 import {DistribuicaoPrevencaoService} from "./distribuicao-prevencao.service";
-import {DistribuirProcessoPrevencaoCommand, Processo, ProcessoDistribuido, DistribuicaoIndexada} from "../commons/distribuicao-common.model"
+import {DistribuirProcessoPrevencaoCommand, Processo, ProcessoConsultado, DistribuicaoIndexada} from "../commons/distribuicao-common.model"
 import distribuicao from "../distribuicao.module";
 
 export class PartePrevencao {
     
-    public processos: Array<ProcessoDistribuido> = [];
+    public processos: Array<ProcessoConsultado> = [];
     
     constructor(public nome: string) { }
 }
@@ -16,7 +16,7 @@ export class DistribuicaoPrevencaoController {
     public numProcessoPrevencao: string;
     public distribuicaoId: number;
     public partes : Array<PartePrevencao> = [];
-    public processosPreventosAdicionados : Array<ProcessoDistribuido> = [];
+    public processosPreventosAdicionados : Array<ProcessoConsultado> = [];
     
     public cmdDistribuir : DistribuirProcessoPrevencaoCommand = new DistribuirProcessoPrevencaoCommand(); 
     
@@ -43,15 +43,16 @@ export class DistribuicaoPrevencaoController {
         }); 
     };
     
-    public adicionarProcessosPreventos (processoPrevento : ProcessoDistribuido) : void {
+    public adicionarProcessosPreventos (processoPrevento : ProcessoConsultado) : void {
         for (let i = 0; i < this.processosPreventosAdicionados.length; i++){
             if (this.processosPreventosAdicionados[i].processoId === processoPrevento.processoId){
                 this.messagesService.error('O processo já foi adicionado!');
                 return;
             }
-            if (this.processosPreventosAdicionados[i].relatorId != processoPrevento.relatorId){
-                this.messagesService.error('Este processo possui um relator diferente do processo já adicionado!');
-                return;
+            if (this.processosPreventosAdicionados[i].distribuicoes.slice(-1).pop().relatorId != 
+                processoPrevento.distribuicoes.slice(-1).pop().relatorId){
+                    this.messagesService.error('Este processo possui um relator diferente do processo já adicionado!');
+                    return;
             }
         }
         
@@ -65,7 +66,6 @@ export class DistribuicaoPrevencaoController {
     public distribuirProcesso(): void {
         this.processosPreventosAdicionados.forEach(processo => {
             this.cmdDistribuir.processosPreventos.push(Number(processo.processoId));
-            
         });
         
         this.distribuicaoPrevencaoService.distribuirPorPrevencao(this.cmdDistribuir).then(() => {
