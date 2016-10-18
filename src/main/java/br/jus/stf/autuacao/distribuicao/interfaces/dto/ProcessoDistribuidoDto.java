@@ -18,6 +18,7 @@ public class ProcessoDistribuidoDto {
 	private String classe;
 
 
+
 	ProcessoDistribuidoDto() {
 	}
 
@@ -80,7 +81,6 @@ public class ProcessoDistribuidoDto {
 	public void setClasse(String classe) {
 		this.classe = classe;
 	}
-
 
 	
 }

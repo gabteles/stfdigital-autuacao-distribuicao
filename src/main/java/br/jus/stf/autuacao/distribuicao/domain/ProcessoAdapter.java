@@ -2,7 +2,7 @@ package br.jus.stf.autuacao.distribuicao.domain;
 
 import java.util.List;
 
-import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoConsultaDto;
 import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDto;
 
 public interface ProcessoAdapter {
@@ -20,5 +20,5 @@ public interface ProcessoAdapter {
 	 * @param parte
 	 * @return
 	 */
-	List<ProcessoDistribuidoDto> consultarPrevencaoPorParte(String parte);
+	List<ProcessoConsultaDto> consultarPrevencaoPorParte(String parte);
 }

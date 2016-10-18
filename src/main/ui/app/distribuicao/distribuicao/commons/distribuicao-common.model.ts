@@ -40,13 +40,13 @@ export interface Processo {
     partes: Array<Parte>;
 }
 
-export interface ProcessoDistribuido {
-    
+export interface ProcessoConsultado {
     processoId: string;
     classe: string;
-    numero: number;
-    relatorId: number;
+    numero: string;
+    distribuicoes : Array<DistribuicaoIndexada>
 }
+
 
 export class DistribuirCommand implements Command {
     public distribuicaoId: number;

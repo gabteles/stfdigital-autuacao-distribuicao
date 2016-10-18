@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.distribuicao.domain.ProcessoAdapter;
-import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoDistribuidoDto;
+import br.jus.stf.autuacao.distribuicao.interfaces.dto.ProcessoConsultaDto;
 
 /**
  * @author viniciusk
@@ -24,11 +24,11 @@ public class ProcessoRestResource {
     private ProcessoAdapter processoAdapter;
 	
     /**
-     * @param id
+     * @param parte
      * @return
      */
     @RequestMapping(value = "/distribuidos", params = "parte", method = RequestMethod.GET)
-    public List<ProcessoDistribuidoDto> consultarPartesProcessoDistribuicao(
+    public List<ProcessoConsultaDto> consultarPartesProcessoDistribuicao(
     		@NotBlank(message = "Nome da parte inválida!") @RequestParam("parte") String parte) {
     	
     	return processoAdapter.consultarPrevencaoPorParte(parte);
