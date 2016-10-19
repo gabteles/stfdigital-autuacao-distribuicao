@@ -164,10 +164,11 @@ export class InserirPecasController {
         
         this.organizaPecasService.inserirPecas(this.cmdInserirPeca)
             .then(() => {
-                this.messagesService.success('Peça(s) inserida(s) com sucesso.');
                 this.$state.go('app.tarefas.organizacao-pecas', 
                         {informationId: this.$stateParams['informationId']},
-                        {reload: true});
+                        {reload: true}).then(() => {
+                            this.messagesService.success('Peça(s) inserida(s) com sucesso.');
+                        });
                 this.$mdDialog.cancel();
             }, () => {
                 this.messagesService.error('Erro ao inserir a peça.');
