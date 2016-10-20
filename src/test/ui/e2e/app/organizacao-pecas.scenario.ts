@@ -44,7 +44,7 @@ describe("Organizar Peças", () => {
         let quantidadeInicialPromise = organizaPage.recuperaTotalDePecas();
         quantidadeInicialPromise.then((quantidade) => {
             organizaPage.inserir();
-            principalPage.aguardarMensagemSucesso(20000);
+            browser.sleep(15000);
             let quantidadeFinalPromise = organizaPage.recuperaTotalDePecas();
             expect(quantidadeFinalPromise).toBeGreaterThan(quantidade, 'A quantitidade depois da inserção deveria ser maior que a quantidade inicial');
         });
