@@ -157,11 +157,12 @@ export class InserirPecasController {
         })
         
         this.cmdInserirPeca.pecas = this.pecasInseridas;
+        console.error('anexos mudaram: ' + JSON.stringify(this.cmdInserirPeca));
     }
     
     public confirmar() : void {
         let ultimoIndice = this.cmdInserirPeca.pecas.length;
-        
+        console.error('vai inserir peças com command: ' + JSON.stringify(this.cmdInserirPeca));
         this.organizaPecasService.inserirPecas(this.cmdInserirPeca)
             .then(() => {
                 this.$state.go('app.tarefas.organizacao-pecas', 
