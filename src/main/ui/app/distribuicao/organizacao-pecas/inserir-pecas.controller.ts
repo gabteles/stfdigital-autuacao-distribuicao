@@ -62,7 +62,7 @@ export class InserirPecasController {
             });
             
             this.uploader.onAfterAddingFile = (arquivo) => {
-                console.error("onAfterAddingFile: " + JSON.stringify(arquivo));
+                //console.error("onAfterAddingFile: " + JSON.stringify(arquivo));
                 let documentoTemporario = new DocumentoTemporario(arquivo, null, null, false);
                 arquivo.anexo = documentoTemporario;
                 this.documentosTemporario.push(documentoTemporario);
@@ -70,7 +70,7 @@ export class InserirPecasController {
             };
             
             this.uploader.onSuccessItem = (arquivo, response, status) => {
-                console.error("onSucessItem-arquivo: " + JSON.stringify(arquivo));
+                //console.error("onSucessItem-arquivo: " + JSON.stringify(arquivo));
                 console.error("onSucessItem-response: " + JSON.stringify(response));
                 console.error("onSucessItem-status: " + JSON.stringify(status));
                 arquivo.anexo.documentoTemporario = response;
@@ -80,7 +80,7 @@ export class InserirPecasController {
             };
             
             this.uploader.onErrorItem = (arquivo, response, status) => {
-                console.error("onErrorItem-arquivo: ", JSON.stringify(arquivo));
+                //console.error("onErrorItem-arquivo: ", JSON.stringify(arquivo));
                 console.error("onErrorItem-response: ", JSON.stringify(response));
                 console.error("onErrorItem-status: ", JSON.stringify(status));
                 /* O status 0 provavelmente foi porque a conexão foi resetada por ultrapassar o tamanho máximo de 10 MB no backend. */
@@ -156,17 +156,17 @@ export class InserirPecasController {
         console.error("entrou em anexos mudaram");
         let documentosTemporarios: Array<DocumentoTemporarioDto> = new Array<DocumentoTemporarioDto>();
         let quantidadePecas = this.processo.pecas.length;
-        console.error("antes do primeiro map: " + JSON.stringify(this.documentosTemporario));
+        //console.error("antes do primeiro map: " + JSON.stringify(this.documentosTemporario));
         documentosTemporarios = this.documentosTemporario.map<DocumentoTemporarioDto>((documento) => {
-            console.error("dentro do primeiro map: " + JSON.stringify(documento));
+            //console.error("dentro do primeiro map: " + JSON.stringify(documento.documentoTemporario));
             return new DocumentoTemporarioDto(documento.tipo ? documento.tipo.tipoId : null, documento.documentoTemporario);
         });
-        console.error("depois do primeiro map: " + JSON.stringify(documentosTemporarios));
+        //console.error("depois do primeiro map: " + JSON.stringify(documentosTemporarios));
         this.pecasInseridas = documentosTemporarios.map<CadastrarPecaCommand>(doc => {
-            console.error("dentro do segundo map: " + JSON.stringify(doc));
+            //console.error("dentro do segundo map: " + JSON.stringify(doc.documentoId));
             return new CadastrarPecaCommand(doc.documentoId.toString(), doc.tipoDocumentoId, ++quantidadePecas);
         });
-        console.error("depois do segundo map: " + JSON.stringify(this.pecasInseridas));
+        //console.error("depois do segundo map: " + JSON.stringify(this.pecasInseridas));
         this.cmdInserirPeca.pecas = this.pecasInseridas;
         console.error('anexos mudaram: ' + JSON.stringify(this.cmdInserirPeca));
     }
