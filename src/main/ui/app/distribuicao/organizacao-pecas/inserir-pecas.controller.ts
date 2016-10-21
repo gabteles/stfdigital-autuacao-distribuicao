@@ -158,12 +158,14 @@ export class InserirPecasController {
         let quantidadePecas = this.processo.pecas.length;
         //console.error("antes do primeiro map: " + JSON.stringify(this.documentosTemporario));
         documentosTemporarios = this.documentosTemporario.map<DocumentoTemporarioDto>((documento) => {
-            //console.error("dentro do primeiro map: " + JSON.stringify(documento.documentoTemporario));
+            console.error("dentro do primeiro map-documentoTemporario: " + documento.documentoTemporario);
+            console.error("dentro do primeiro map-tipo: " + documento.tipo);
             return new DocumentoTemporarioDto(documento.tipo ? documento.tipo.tipoId : null, documento.documentoTemporario);
         });
         //console.error("depois do primeiro map: " + JSON.stringify(documentosTemporarios));
         this.pecasInseridas = documentosTemporarios.map<CadastrarPecaCommand>(doc => {
-            //console.error("dentro do segundo map: " + JSON.stringify(doc.documentoId));
+            console.error("dentro do segundo map-documentoId: " + doc.documentoId);
+            console.error("dentro do segundo map-tipoDocumentoId: " + doc.tipoDocumentoId);
             return new CadastrarPecaCommand(doc.documentoId.toString(), doc.tipoDocumentoId, ++quantidadePecas);
         });
         //console.error("depois do segundo map: " + JSON.stringify(this.pecasInseridas));
