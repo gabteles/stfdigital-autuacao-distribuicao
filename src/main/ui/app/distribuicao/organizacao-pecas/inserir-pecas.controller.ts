@@ -166,7 +166,7 @@ export class InserirPecasController {
         this.pecasInseridas = documentosTemporarios.map<CadastrarPecaCommand>(doc => {
             console.error("dentro do segundo map-documentoId: " + doc.documentoId);
             console.error("dentro do segundo map-tipoDocumentoId: " + doc.tipoDocumentoId);
-            return new CadastrarPecaCommand(doc.documentoId.toString(), doc.tipoDocumentoId, ++quantidadePecas);
+            return new CadastrarPecaCommand(doc.documentoId ? doc.documentoId.toString() : null, doc.tipoDocumentoId, ++quantidadePecas);
         });
         //console.error("depois do segundo map: " + JSON.stringify(this.pecasInseridas));
         this.cmdInserirPeca.pecas = this.pecasInseridas;
