@@ -43,9 +43,8 @@ describe("Organizar Peças", () => {
     it('Deveria executar a ação de inserir uma peça', () => {
         let quantidadeInicialPromise = organizaPage.recuperaTotalDePecas();
         quantidadeInicialPromise.then((quantidade) => {
-            browser.sleep(10000);
             organizaPage.inserir();
-            browser.sleep(10000);
+            principalPage.aguardarMensagemSucesso();
             let quantidadeFinalPromise = organizaPage.recuperaTotalDePecas();
             expect(quantidadeFinalPromise).toBeGreaterThan(quantidade, 'A quantitidade depois da inserção deveria ser maior que a quantidade inicial');
         });
@@ -104,18 +103,6 @@ describe("Organizar Peças", () => {
         organizaPage.excluir();
         organizaPage.recuperaTotalDePecas().then((quantidade) => {
             expect(organizaPage.recuperarSituacaoPeca(quantidade - 1)).toEqual("EXCLUIDA", "A última peça deveria estar com o status de excluída");
-        });
-    });
-    
-    afterEach(() => {
-        browser.manage().logs().get('browser').then(function(browserLogs) {
-            // browserLogs is an array of objects with level and message fields
-            browserLogs.forEach(function(log){
-                if (log.level.value > 900) { // it's an error log
-                    console.log('Browser console error!');
-                    console.log(log.message);
-                }
-            });
         });
     });
     
