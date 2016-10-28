@@ -26,47 +26,48 @@ import br.jus.stf.core.shared.documento.DocumentoTemporarioId;
 @Component
 public class PecaRestAdapter implements PecaAdapter {
 
-	@Autowired
+    @Autowired
     private DocumentoRestClient documentoRestClient;
-	
-	@Override
-	public List<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios) {
-		MultiValueMap<String, String> command = new LinkedMultiValueMap<>();
-		
-		documentosTemporarios.forEach(doc -> command.add("idsDocumentosTemporarios", doc.toString()));
-		
-		List<Map<String, Object>> documentos = documentoRestClient.salvar(command);
-		
-		return documentos.stream().map(doc -> new DocumentoId(new Long(doc.get("documentoId").toString()))).collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<DocumentoId> dividir(DocumentoId documento, List<Range<Integer>> intervalosDivisao) {
-		Map<String, Object> command = new HashMap<>();
-		
-		command.put("documentoId", documento.toLong());
-		List<Map<String,Integer>> intervalos = new ArrayList<Map<String,Integer>>();
-		intervalosDivisao.forEach(i -> {
-			Map<String, Integer> intervalo = new HashMap<>(0);
-			
-			intervalo.put("paginaInicial", i.getMinimum());
-			intervalo.put("paginaFinal", i.getMaximum());
-			intervalos.add(intervalo);
-		});
-		command.put("intervalos", intervalos);
-		
-		List<Long> documentos = documentoRestClient.dividir(command);
-		
-		return documentos.stream().map(DocumentoId::new).collect(Collectors.toList());
-	}
 
-	@Override
-	public DocumentoId unir(List<DocumentoId> documentos) {
-		MultiValueMap<String, Long> command = new LinkedMultiValueMap<>();
-		
-		documentos.forEach(doc -> command.add("idsDocumentos", doc.toLong()));
-		
-		return new DocumentoId(documentoRestClient.unir(command));
-	}
+    @Override
+    public List<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios) {
+        MultiValueMap<String, String> command = new LinkedMultiValueMap<>();
+
+        documentosTemporarios.forEach(doc -> command.add("idsDocumentosTemporarios", doc.toString()));
+
+        List<Map<String, Object>> documentos = documentoRestClient.salvar(command);
+
+        return documentos.stream().map(doc -> new DocumentoId(new Long(doc.get("documentoId").toString())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DocumentoId> dividir(DocumentoId documento, List<Range<Integer>> intervalosDivisao) {
+        Map<String, Object> command = new HashMap<>();
+
+        command.put("documentoId", documento.toLong());
+        List<Map<String, Integer>> intervalos = new ArrayList<>(0);
+        intervalosDivisao.forEach(i -> {
+            Map<String, Integer> intervalo = new HashMap<>(0);
+
+            intervalo.put("paginaInicial", i.getMinimum());
+            intervalo.put("paginaFinal", i.getMaximum());
+            intervalos.add(intervalo);
+        });
+        command.put("intervalos", intervalos);
+
+        List<Long> documentos = documentoRestClient.dividir(documento.toLong(), command);
+
+        return documentos.stream().map(DocumentoId::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public DocumentoId unir(List<DocumentoId> documentos) {
+        MultiValueMap<String, Long> command = new LinkedMultiValueMap<>();
+
+        documentos.forEach(doc -> command.add("idsDocumentos", doc.toLong()));
+
+        return new DocumentoId(documentoRestClient.unir(command));
+    }
 
 }
