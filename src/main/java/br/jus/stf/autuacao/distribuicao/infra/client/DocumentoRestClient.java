@@ -20,33 +20,33 @@ import br.jus.stf.autuacao.distribuicao.interfaces.dto.DocumentoDto;
 @FeignClient(name = "documents")
 public interface DocumentoRestClient {
 
-	/**
-	 * @param documents
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/api/documentos", consumes = "application/json")
-	List<Map<String, Object>> salvar(MultiValueMap<String, String> documents);
-	
-	/**
-	 * @param documents
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/api/documentos/dividir", consumes = "application/json")
-	List<Long> dividir(Map<String, Object> documents);
-	
-	/**
-	 * @param documents
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/api/documentos/unir", consumes = "application/json")
-	Long unir(MultiValueMap<String, Long> documents);
-	
-	/**
-	 * @param documents
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/api/documentos/{documentoId}", consumes = "application/json")
-	DocumentoDto consultar(@PathVariable("documentoId") Long documentoId);
-	
+    /**
+     * @param documents
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/api/documentos", consumes = "application/json")
+    List<Map<String, Object>> salvar(MultiValueMap<String, String> documents);
+
+    /**
+     * @param documents
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/api/documentos/{documentoId}/divisao",
+            consumes = "application/json")
+    List<Long> dividir(@PathVariable("documentoId") Long documentoId, Map<String, Object> documents);
+
+    /**
+     * @param documents
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/api/documentos/uniao", consumes = "application/json")
+    Long unir(MultiValueMap<String, Long> documents);
+
+    /**
+     * @param documents
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/api/documentos/{documentoId}", consumes = "application/json")
+    DocumentoDto consultar(@PathVariable("documentoId") Long documentoId);
 
 }
